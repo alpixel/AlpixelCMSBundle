@@ -11,6 +11,12 @@ class BaseNodeEntityAdmin extends Admin
     {
         $container = $this->getConfigurationPool()->getContainer();
 
+        $realLocales = [];
+        $locales = $container->getParameter('lunetics_locale.allowed_locales');
+        foreach($locales as $val) {
+            $realLocales[$val] = $val;
+        }
+
         $formMapper
             ->add('node.title', null, [
                 'label'    => 'Titre',
@@ -23,7 +29,7 @@ class BaseNodeEntityAdmin extends Admin
             ])
             ->add('node.locale', 'choice', [
                 'label'    => 'Langue du contenu',
-                'choices'  => $container->getParameter('lunetics_locale.allowed_locales'),
+                'choices'  => $realLocales,
                 'required' => true,
             ])
             ->add('node.published', 'checkbox', [

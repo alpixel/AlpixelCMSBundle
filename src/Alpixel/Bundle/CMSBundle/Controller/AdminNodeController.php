@@ -13,7 +13,7 @@ class AdminNodeController extends Controller
         $object = $this->admin->getSubject();
 
         if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
+            throw new NotFoundHttpException(sprintf('unable to find the object'));
         }
 
         if (!$this->container->hasParameter('cms.content_types')) {

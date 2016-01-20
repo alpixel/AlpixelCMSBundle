@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class FrontNodeController extends Controller
@@ -18,7 +19,7 @@ class FrontNodeController extends Controller
      * @ParamConverter("node", options={"mapping" : {"slug": "slug"}})
      * @Method("GET")
      */
-    public function dispatchAction(Node $node)
+    public function dispatchAction(Request $request, Node $node)
     {
         $entities = [];
         $entityManager = $this->get('doctrine.orm.entity_manager');
@@ -40,11 +41,13 @@ class FrontNodeController extends Controller
                 $contentTypes = $this->container->getParameter('cms.content_types');
                 foreach ($contentTypes as $contentType) {
                     if ($contentType['class'] == get_class($object)) {
-                        return $this->forward($contentType['controller'], [
-                            '_route'        => $this->getRequest()->attributes->get('_route'),
-                            '_route_params' => $this->getRequest()->attributes->get('_route_params'),
-                            'object'        => $object,
-                        ]);
+                        if(stripos($request->getLocale(), $object->getNode()->getLocale()) !== false) {
+                            return $this->forward($contentType['controller'], [
+                                '_route'        => $this->getRequest()->attributes->get('_route'),
+                                '_route_params' => $this->getRequest()->attributes->get('_route_params'),
+                                'object'        => $object,
+                            ]);
+                        }
                     }
                 }
             }
