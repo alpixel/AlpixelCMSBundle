@@ -2,36 +2,33 @@
 
 namespace Alpixel\Bundle\CMSBundle\Admin;
 
-
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
 class BaseNodeEntityAdmin extends Admin
 {
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $container       = $this->getConfigurationPool()->getContainer();
+        $container = $this->getConfigurationPool()->getContainer();
 
         $formMapper
-            ->add('node.title', null, array(
+            ->add('node.title', null, [
                 'label'    => 'Titre',
                 'required' => true,
-            ))
-            ->add('node.content', 'ckeditor', array(
+            ])
+            ->add('node.content', 'ckeditor', [
                 'label'       => 'Contenu',
                 'required'    => true,
                 'config_name' => 'admin',
-            ))
-            ->add('node.locale', 'choice', array(
+            ])
+            ->add('node.locale', 'choice', [
                 'label'    => 'Langue du contenu',
                 'choices'  => $container->getParameter('lunetics_locale.allowed_locales'),
                 'required' => true,
-            ))
-            ->add('node.published', 'checkbox', array(
+            ])
+            ->add('node.published', 'checkbox', [
                 'label'    => 'Publié',
                 'required' => false,
-            ))
-        ;
+            ]);
     }
 }

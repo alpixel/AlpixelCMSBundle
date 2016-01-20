@@ -2,20 +2,20 @@
 
 namespace Alpixel\Bundle\CMSBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Page.
+ *
  * @ORM\Table(name="cms_block")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Alpixel\Bundle\CMSBundle\Entity\Repository\BlockRepository")
  */
 class Block
 {
-
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="block_id", type="integer")
      * @ORM\Id
@@ -58,15 +58,15 @@ class Block
      */
     protected $dateUpdated;
 
-
     public function __construct()
     {
         $this->dateCreated = new \DateTime();
         $this->dateUpdated = new \DateTime();
-        $this->weight      = 0;
+        $this->weight = 0;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 
@@ -81,7 +81,7 @@ class Block
     /**
      * Gets the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -91,7 +91,7 @@ class Block
     /**
      * Sets the value of id.
      *
-     * @param integer $id the id
+     * @param int $id the id
      *
      * @return self
      */
@@ -222,4 +222,3 @@ class Block
         return $this;
     }
 }
-

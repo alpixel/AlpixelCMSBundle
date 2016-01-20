@@ -2,22 +2,21 @@
 
 namespace Alpixel\Bundle\CMSBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Alpixel\Bundle\SEOBundle\Entity\MetaTagPlaceholderInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Page.
+ *
  * @ORM\Table(name="cms_node")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Alpixel\Bundle\CMSBundle\Entity\Repository\NodeRepository")
  */
 class Node implements MetaTagPlaceholderInterface
 {
-
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="node_id", type="integer")
      * @ORM\Id
@@ -77,14 +76,14 @@ class Node implements MetaTagPlaceholderInterface
     protected $dateUpdated;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="published", type="boolean", nullable=false, options={"default"= true})
      */
     protected $published;
 
     /**
-     * @var integer
+     * @var int
      * @Gedmo\SortablePosition
      * @ORM\Column(name="weight", type="integer", nullable=false)
      */
@@ -100,22 +99,21 @@ class Node implements MetaTagPlaceholderInterface
     {
     }
 
-
     public function getUriParameters()
     {
-        return array(
+        return [
             'id'            => $this->id,
             'slug'          => $this->slug,
-        );
+        ];
     }
 
-    public function getPlaceholders() {
-        return array(
-            "[cms:title]"  => $this->title,
-            "[cms:resume]" => substr(strip_tags($this->content), 0, 150)
-        );
+    public function getPlaceholders()
+    {
+        return [
+            '[cms:title]'  => $this->title,
+            '[cms:resume]' => substr(strip_tags($this->content), 0, 150),
+        ];
     }
-
 
     public function __toString()
     {
@@ -125,7 +123,7 @@ class Node implements MetaTagPlaceholderInterface
     /**
      * Gets the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -135,7 +133,7 @@ class Node implements MetaTagPlaceholderInterface
     /**
      * Sets the value of id.
      *
-     * @param integer $id the id
+     * @param int $id the id
      *
      * @return self
      */
@@ -245,7 +243,7 @@ class Node implements MetaTagPlaceholderInterface
     /**
      * Gets the value of published.
      *
-     * @return boolean
+     * @return bool
      */
     public function getPublished()
     {
@@ -255,7 +253,7 @@ class Node implements MetaTagPlaceholderInterface
     /**
      * Sets the value of published.
      *
-     * @param boolean $published the published
+     * @param bool $published the published
      *
      * @return self
      */
@@ -269,7 +267,7 @@ class Node implements MetaTagPlaceholderInterface
     /**
      * Gets the value of weight.
      *
-     * @return integer
+     * @return int
      */
     public function getWeight()
     {
@@ -279,7 +277,7 @@ class Node implements MetaTagPlaceholderInterface
     /**
      * Sets the value of weight.
      *
-     * @param integer $weight the weight
+     * @param int $weight the weight
      *
      * @return self
      */
@@ -362,4 +360,3 @@ class Node implements MetaTagPlaceholderInterface
         return $this;
     }
 }
-

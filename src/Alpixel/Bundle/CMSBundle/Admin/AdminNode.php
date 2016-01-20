@@ -9,15 +9,14 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class AdminNode extends Admin
 {
-
-    protected $datagridValues   = array(
+    protected $datagridValues = [
         '_page'       => 1,
         '_sort_order' => 'DESC',
-    );
+    ];
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('editContent', $this->getRouterIdParameter() . '/edit/node');
+        $collection->add('editContent', $this->getRouterIdParameter().'/edit/node');
     }
 
     /**
@@ -28,7 +27,7 @@ class AdminNode extends Admin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $cmsContentTypes = $this->getConfigurationPool()->getContainer()->getParameter('cms.content_types');
-        $arrayField      = array();
+        $arrayField = [];
 
         foreach ($cmsContentTypes as $key => $array) {
             $arrayField[$array['class']] = $array['title'];
@@ -36,47 +35,44 @@ class AdminNode extends Admin
 
         $datagridMapper
             ->add('id')
-            ->add('locale', null, array(
+            ->add('locale', null, [
                 'label' => 'Langue',
-            ))
-            ->add('title', null, array(
+            ])
+            ->add('title', null, [
                 'label' => 'Page',
-            ))
-            ->add('node', 'doctrine_orm_callback', array(
+            ])
+            ->add('node', 'doctrine_orm_callback', [
                 'label'    => 'Type de contenu',
-                'callback' => function($queryBuilder, $alias, $field, $value){
-                    if(!$value['value']) {
+                'callback' => function ($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
                         return false;
                     }
 
                     $saveQueryBuilder = clone $queryBuilder;
-                    $contentNode      = $saveQueryBuilder
+                    $contentNode = $saveQueryBuilder
                         ->select('n.id')
                         ->from($value['value'], 'c')
                         ->join('c.node', 'n')
                         ->getQuery()
-                        ->getResult()
-                    ;
+                        ->getResult();
 
-                    $nodeIdTab = array();
+                    $nodeIdTab = [];
                     foreach ($contentNode as $content) {
                         $nodeIdTab[] = $content['id'];
                     }
 
                     $queryBuilder
                         ->andWhere(sprintf('%s.id IN (:id)', $alias))
-                        ->setParameter('id', $nodeIdTab)
-                    ;
+                        ->setParameter('id', $nodeIdTab);
 
                     return true;
-                }
-            ),
+                },
+            ],
                 'choice',
-                array(
+                [
                     'choices' => $arrayField,
-                )
-            )
-        ;
+                ]
+            );
     }
 
     /**
@@ -88,32 +84,31 @@ class AdminNode extends Admin
     {
         $listMapper
             ->add('id')
-            ->add('locale', null, array(
+            ->add('locale', null, [
                 'label' => 'Langue',
-            ))
-            ->add('title', null, array(
+            ])
+            ->add('title', null, [
                 'label' => 'Page',
-            ))
-            ->add('type', null, array(
-                'label' => 'Type',
+            ])
+            ->add('type', null, [
+                'label'    => 'Type',
                 'template' => 'CMSBundle:admin:fields/list__field_type.html.twig',
-            ))
-            ->add('dateCreated', null, array(
+            ])
+            ->add('dateCreated', null, [
                 'label' => 'Date de création',
-            ))
-            ->add('dateUpdated', null, array(
+            ])
+            ->add('dateUpdated', null, [
                 'label' => 'Date d\'édition',
-            ))
-            ->add('published', null, array(
+            ])
+            ->add('published', null, [
                 'label' => 'Publié',
-            ))
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'Voir' => array('template' => 'CMSBundle:admin:fields/list__action_see.html.twig'),
-                    'editContent' => array('template' => 'CMSBundle:admin:fields/list__action_edit.html.twig'),
-                    'delete' => array(),
-                ),
-            ))
-        ;
+            ])
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'Voir'        => ['template' => 'CMSBundle:admin:fields/list__action_see.html.twig'],
+                    'editContent' => ['template' => 'CMSBundle:admin:fields/list__action_edit.html.twig'],
+                    'delete'      => [],
+                ],
+            ]);
     }
 }
