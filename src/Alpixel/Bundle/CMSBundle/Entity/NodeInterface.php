@@ -2,7 +2,7 @@
 
 namespace Alpixel\Bundle\CMSBundle\Entity;
 
-
-interface NodeInterface {
+interface NodeInterface
+{
     public function defineNodeType();
 }

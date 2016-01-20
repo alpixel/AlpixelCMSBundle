@@ -8,16 +8,16 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginListener
 {
+    private $securityContext;
+    private $request;
+    private $secret;
 
-  private $securityContext;
-  private $request;
-  private $secret;
-
-  public function __construct(SecurityContext $securityContext, Request $request, $secret) {
-    $this->securityContext = $securityContext;
-    $this->request         = $request;
-    $this->secret          = $secret;
-  }
+    public function __construct(SecurityContext $securityContext, Request $request, $secret)
+    {
+        $this->securityContext = $securityContext;
+        $this->request = $request;
+        $this->secret = $secret;
+    }
 
   /**
    * Do the magic.
@@ -26,8 +26,8 @@ class LoginListener
    */
   public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
   {
-    if ($this->securityContext->isGranted('ROLE_ADMIN')) {
-      setcookie ("can_edit", hash('sha256', 'can_edit'.$this->secret), 0, '/');
-    }
+      if ($this->securityContext->isGranted('ROLE_ADMIN')) {
+          setcookie('can_edit', hash('sha256', 'can_edit'.$this->secret), 0, '/');
+      }
   }
 }

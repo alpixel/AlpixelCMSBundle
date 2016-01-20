@@ -3,7 +3,6 @@
 namespace Alpixel\Bundle\CMSBundle\Twig\Extension;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Alpixel\Bundle\CMSBundle\Entity\Block;
 
 class CMSExtension extends \Twig_Extension
 {
@@ -19,7 +18,7 @@ class CMSExtension extends \Twig_Extension
         if ($this->container->isScopeActive('request')) {
             $this->request = $this->container->get('request');
         }
-        $this->doctrine     = $doctrine;
+        $this->doctrine = $doctrine;
         $this->contentTypes = $contentTypes;
     }
 
@@ -30,8 +29,8 @@ class CMSExtension extends \Twig_Extension
 
     public function getGlobals()
     {
-        return array(
+        return [
             'cms_contentTypes' => $this->contentTypes,
-        );
+        ];
     }
 }
