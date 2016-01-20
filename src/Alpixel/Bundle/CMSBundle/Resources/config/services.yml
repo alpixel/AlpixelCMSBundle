@@ -1,0 +1,31 @@
+services:
+    twig.extension.cms:
+        class: Alpixel\Bundle\CMSBundle\Twig\Extension\CMSExtension
+        arguments:
+            - @service_container
+            - @doctrine
+            - %cms.content_types%
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.cms_block:
+        class: Alpixel\Bundle\CMSBundle\Twig\Extension\BlockExtension
+        arguments:
+            - @service_container
+            - @doctrine
+            - %cms.blocks%
+        tags:
+            - { name: twig.extension }
+
+    cms.sitemap:
+        class: Alpixel\Bundle\CMSBundle\Listener\SitemapListener
+        arguments: [@doctrine, @router]
+        tags:
+            - { name: kernel.event_listener, event: 'seo.sitemap.populate', method: populateSitemap }
+
+    cms.listener.login:
+        class: Alpixel\Bundle\CMSBundle\Listener\LoginListener
+        arguments: ['@security.context', @request, %secret%]
+        scope: "request"
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }

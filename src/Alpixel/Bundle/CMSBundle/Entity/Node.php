@@ -1,0 +1,365 @@
+<?php
+
+namespace Alpixel\Bundle\CMSBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Alpixel\Bundle\SEOBundle\Entity\MetaTagPlaceholderInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
+
+/**
+ * Page.
+ * @ORM\Table(name="cms_node")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Entity(repositoryClass="Alpixel\Bundle\CMSBundle\Entity\Repository\NodeRepository")
+ */
+class Node implements MetaTagPlaceholderInterface
+{
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="node_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="locale", type="string", length=10, nullable=true)
+     */
+    protected $locale;
+
+    /**
+     * @var \Alpixel\Bundle\CMSBundle\Entity\Node
+     *
+     * @ORM\ManyToOne(targetEntity="Alpixel\Bundle\CMSBundle\Entity\Node")
+     * @ORM\JoinColumn(name="translation_source_id",referencedColumnName="node_id", nullable=true, onDelete="SET NULL")
+     */
+    protected $translationSource;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     */
+    protected $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=255, nullable=false)
+     */
+    protected $type;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="content", type="text", nullable=true)
+     */
+    protected $content;
+
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="date_created", type="datetime", nullable=false)
+     */
+    protected $dateCreated;
+
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="date_updated", type="datetime", nullable=false)
+     */
+    protected $dateUpdated;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="published", type="boolean", nullable=false, options={"default"= true})
+     */
+    protected $published;
+
+    /**
+     * @var integer
+     * @Gedmo\SortablePosition
+     * @ORM\Column(name="weight", type="integer", nullable=false)
+     */
+    protected $weight;
+
+    /**
+     * @Gedmo\Slug(fields={"title"}, updatable=false, separator="_")
+     * @ORM\Column(length=128, unique=true)
+     **/
+    protected $slug;
+
+    public function __construct()
+    {
+    }
+
+
+    public function getUriParameters()
+    {
+        return array(
+            'id'            => $this->id,
+            'slug'          => $this->slug,
+        );
+    }
+
+    public function getPlaceholders() {
+        return array(
+            "[cms:title]"  => $this->title,
+            "[cms:resume]" => substr(strip_tags($this->content), 0, 150)
+        );
+    }
+
+
+    public function __toString()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Gets the value of id.
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Sets the value of id.
+     *
+     * @param integer $id the id
+     *
+     * @return self
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of title.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Sets the value of title.
+     *
+     * @param string $title the title
+     *
+     * @return self
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of content.
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Sets the value of content.
+     *
+     * @param string $content the content
+     *
+     * @return self
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of dateCreated.
+     *
+     * @return \DateTime
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * Sets the value of dateCreated.
+     *
+     * @param \DateTime $dateCreated the date created
+     *
+     * @return self
+     */
+    public function setDateCreated(\DateTime $dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of dateUpdated.
+     *
+     * @return \DateTime
+     */
+    public function getDateUpdated()
+    {
+        return $this->dateUpdated;
+    }
+
+    /**
+     * Sets the value of dateUpdated.
+     *
+     * @param \DateTime $dateUpdated the date updated
+     *
+     * @return self
+     */
+    public function setDateUpdated(\DateTime $dateUpdated)
+    {
+        $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of published.
+     *
+     * @return boolean
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * Sets the value of published.
+     *
+     * @param boolean $published the published
+     *
+     * @return self
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of weight.
+     *
+     * @return integer
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * Sets the value of weight.
+     *
+     * @param integer $weight the weight
+     *
+     * @return self
+     */
+    public function setWeight($weight)
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of slug.
+     *
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Sets the value of slug.
+     *
+     * @param mixed $slug the slug
+     *
+     * @return self
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of type.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Sets the value of type.
+     *
+     * @param string $type the type
+     *
+     * @return self
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of locale.
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Sets the value of locale.
+     *
+     * @param string $locale the locale
+     *
+     * @return self
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+}
+
