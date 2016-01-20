@@ -47,7 +47,7 @@ class SitemapListener implements SitemapListenerInterface
             }
 
             foreach ($pages as $cms) {
-                $url = $this->router->generate('front_cms', [
+                $url = $this->router->generate('alpixel_cms', [
                         'slug' => $cms->getNode()->getSlug(),
                     ],
                     true
