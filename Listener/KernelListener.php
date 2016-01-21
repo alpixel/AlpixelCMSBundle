@@ -31,7 +31,7 @@ class KernelListener
         if ($token !== null && $this->securityContext->isGranted('ROLE_ADMIN')) {
             $cookie = new Cookie('can_edit', hash('sha256', 'can_edit'.$this->secret), 0, '/', null, false, false);
             $response->headers->setCookie($cookie);
-        } else if (!in_array($route, ['_profiler', '_wdt']) && $cookies->has('can_edit2')) {
+        } elseif (!in_array($route, ['_profiler', '_wdt']) && $cookies->has('can_edit2')) {
             $response->headers->clearCookie('can_edit', '/');
         }
     }
