@@ -41,7 +41,7 @@ class FrontNodeController extends Controller
                 $contentTypes = $this->container->getParameter('cms.content_types');
                 foreach ($contentTypes as $contentType) {
                     if ($contentType['class'] == get_class($object)) {
-                        if(stripos($request->getLocale(), $object->getNode()->getLocale()) !== false) {
+                        if (stripos($request->getLocale(), $object->getNode()->getLocale()) !== false) {
                             return $this->forward($contentType['controller'], [
                                 '_route'        => $this->getRequest()->attributes->get('_route'),
                                 '_route_params' => $this->getRequest()->attributes->get('_route_params'),

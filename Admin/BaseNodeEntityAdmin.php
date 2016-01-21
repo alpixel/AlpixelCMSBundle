@@ -13,7 +13,7 @@ class BaseNodeEntityAdmin extends Admin
 
         $realLocales = [];
         $locales = $container->getParameter('lunetics_locale.allowed_locales');
-        foreach($locales as $val) {
+        foreach ($locales as $val) {
             $realLocales[$val] = $val;
         }
 
