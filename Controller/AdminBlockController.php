@@ -63,7 +63,7 @@ class AdminBlockController extends Controller
             $className = $this->_blockDefaultClass;
         }
 
-        return array($content, $className);
+        return [$content, $className];
     }
 
     public function listAction(Request $request = null)
