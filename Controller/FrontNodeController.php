@@ -26,6 +26,7 @@ class FrontNodeController extends Controller
         if ($object !== null && $object->getNode()->getPublished()) {
             if (stripos($request->getLocale(), $object->getNode()->getLocale()) !== false) {
                 $contentType = $this->get('cms.helper')->getContentTypeFromNodeElementClass($object);
+
                 return $this->forward($contentType['controller'], [
                     '_route'        => $this->getRequest()->attributes->get('_route'),
                     '_route_params' => $this->getRequest()->attributes->get('_route_params'),
