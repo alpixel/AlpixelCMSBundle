@@ -4,7 +4,6 @@ namespace Alpixel\Bundle\CMSBundle\Twig\Extension;
 
 use Alpixel\Bundle\CMSBundle\Entity\NodeInterface;
 use Alpixel\Bundle\CMSBundle\Helper\CMSHelper;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class CMSExtension extends \Twig_Extension
 {
@@ -35,15 +34,14 @@ class CMSExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('cms_get_translation', array($this, 'cmsHasTranslation')),
+            new \Twig_SimpleFunction('cms_get_translation', [$this, 'cmsHasTranslation']),
         ];
     }
-
 
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('iso_to_country_name', array($this, 'isoToCountryName'))
+            new \Twig_SimpleFilter('iso_to_country_name', [$this, 'isoToCountryName']),
         ];
     }
 
@@ -56,5 +54,4 @@ class CMSExtension extends \Twig_Extension
     {
         return $this->cmsHelper->nodeGetTranslation($node, $locale);
     }
-
 }

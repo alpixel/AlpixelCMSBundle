@@ -17,7 +17,7 @@ class NodeRepository extends EntityRepository
         // from an other node
         if ($node->getTranslationSource() !== null) {
             $nodeSource = $node->getTranslationSource();
-            if($nodeSource->getLocale() == $locale) {
+            if ($nodeSource->getLocale() == $locale) {
                 return $nodeSource;
             }
         } else {
@@ -30,9 +30,9 @@ class NodeRepository extends EntityRepository
                     ->andWhere('n.locale = :locale')
                     ->setParameters([
                         'source' => $nodeSource,
-                        'locale' => $locale
+                        'locale' => $locale,
                     ])
                     ->getQuery()
                     ->getOneOrNullResult();
-        }
+    }
 }
