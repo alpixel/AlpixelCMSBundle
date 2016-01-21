@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+
+{% block field %}
+    {% if object.type is not empty %}
+        {{ cms_contentTypes[object.type].title }}
+    {% endif %}
+{% endblock %}
