@@ -2,7 +2,6 @@
 
 namespace Alpixel\Bundle\CMSBundle\Listener;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
