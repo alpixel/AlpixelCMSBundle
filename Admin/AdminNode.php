@@ -9,6 +9,9 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class AdminNode extends Admin
 {
+    protected $baseRouteName = 'cms_node';
+    protected $baseRoutePattern = 'cms';
+
     protected $datagridValues = [
         '_page'       => 1,
         '_sort_order' => 'DESC',
@@ -17,6 +20,7 @@ class AdminNode extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('editContent', $this->getRouterIdParameter().'/edit/node');
+        $collection->add('createTranslation', $this->getRouterIdParameter().'/translate');
     }
 
     /**

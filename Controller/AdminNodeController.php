@@ -2,6 +2,7 @@
 
 namespace Alpixel\Bundle\CMSBundle\Controller;
 
+use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -16,30 +17,54 @@ class AdminNodeController extends Controller
             throw new NotFoundHttpException(sprintf('unable to find the object'));
         }
 
-        if (!$this->container->hasParameter('cms.content_types')) {
-            throw new NotFoundHttpException('cms.content_types parameters in '.__FILE__.'  file at line '.__LINE__.' in '.__FUNCTION__.' method, has not been  not found, maybe you must be configured cms.yml file');
-        }
+        $content = $this->findContentFromNode($object);
 
-        // Get admin class define in cms.yml
-        $cmsContentType = $this->container->getParameter('cms.content_types');
-        $entityManager = $this->getDoctrine()->getManager();
+        if ($content !== null) {
+            $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($content));
 
-        if (array_key_exists($object->getType(), $cmsContentType)) {
-            $contentType = $cmsContentType[$object->getType()];
-
-            $content = $entityManager
-                        ->getRepository($contentType['class'])
-                        ->findOneByNode($object);
-
-            if ($content !== null) {
-                $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass($contentType['class']);
-
-                if ($instanceAdmin !== null) {
-                    return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $content->getId()]));
-                }
+            if ($instanceAdmin !== null) {
+                return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $content->getId()]));
             }
         }
+
         throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', $contentType['class']));
+    }
+
+    public function createTranslationAction(Request $request)
+    {
+        $object = $this->admin->getSubject();
+        $locale = $request->query->get('locale');
+
+        if($locale === null || $object === null)
+            return $this->createNotFoundException();
+
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $translation = $entityManager->getRepository('CMSBundle:Node')
+                                     ->findTranslation($object, $locale);
+
+        if ($translation !== null) {
+            return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translation->getId()]));
+        } else {
+            if($object->getTranslationSource() !== null) {
+                $source = $object->getTranslationSource();
+            } else {
+                $source = $object;
+            }
+
+            $content = $this->findContentFromNode($source);
+
+            $translatedContent = clone $content;
+
+            $node = $translatedContent->getNode();
+            $node->setLocale($locale);
+            $node->setTranslationSource($source);
+            $node->setTitle(sprintf('Version %s de la page "%s"', strtoupper($locale), $node->getTitle()));
+            $entityManager->persist($translatedContent);
+            $entityManager->persist($node);
+
+            $entityManager->flush();
+            return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translatedContent->getNode()->getId()]));
+        }
     }
 
     public function listAction(Request $request = null)
@@ -92,5 +117,22 @@ class AdminNodeController extends Controller
         }
 
         return false;
+    }
+
+    protected function findContentFromNode(Node $node)
+    {
+        if (!$this->container->hasParameter('cms.content_types')) {
+            throw new NotFoundHttpException('cms.content_types parameters in '.__FILE__.'  file at line '.__LINE__.' in '.__FUNCTION__.' method, has not been  not found, maybe you must be configured cms.yml file');
+        }
+
+        $cmsContentType = $this->container->getParameter('cms.content_types');
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+
+        if (array_key_exists($node->getType(), $cmsContentType)) {
+            $contentType = $cmsContentType[$node->getType()];
+            return $entityManager
+                        ->getRepository($contentType['class'])
+                        ->findOneByNode($node);
+        }
     }
 }

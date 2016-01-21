@@ -18,7 +18,7 @@ class CMSHelper
     {
         $node = $this->entityManager
                      ->getRepository('CMSBundle:Node')
-                     ->findTranslation($node, $locale);
+                     ->findTranslation($node->getNode(), $locale);
 
         return $node;
     }

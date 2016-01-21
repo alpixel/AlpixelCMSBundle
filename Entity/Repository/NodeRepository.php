@@ -2,15 +2,13 @@
 
 namespace Alpixel\Bundle\CMSBundle\Entity\Repository;
 
-use Alpixel\Bundle\CMSBundle\Entity\NodeInterface;
+use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Doctrine\ORM\EntityRepository;
 
 class NodeRepository extends EntityRepository
 {
-    public function findTranslation(NodeInterface $nodeItem, $locale)
+    public function findTranslation(Node $node, $locale)
     {
-        $node = $nodeItem->getNode();
-
         $nodeSource = null;
 
         // We are checking if the node is the translation provider or translated

@@ -99,6 +99,15 @@ class Node implements MetaTagPlaceholderInterface
     {
     }
 
+    public function __clone()
+    {
+        $this->id = null;
+        $this->dateCreated = null;
+        $this->dateUpdated = null;
+        $this->weight = null;
+        $this->slug = null;
+    }
+
     public function getUriParameters()
     {
         return [

@@ -1,9 +1,8 @@
 {% block form %}
     {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
-    {% set isMultilingual = cms_languages|length > 0 %}
+    {% set isMultilingual = object.id is not null and cms_languages|length > 0 %}
     {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
-
     {% if not admin.hasRoute(url) %}
         <div>
             {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
@@ -80,7 +79,10 @@
                                         {% set translationLink = admin.generateUrl('edit', {id: translation.id}) %}
                                     {% else %}
                                         {% set translationLabel = "Traduire en" %}
-                                        {% set translationLink = "#" %}
+                                        {% set translationLink = sonata_admin.url('cms.admin.node', 'createTranslation', {
+                                            id: object.node.id,
+                                            locale: language
+                                        }) %}
                                     {% endif %}
                                     <a href='{{translationLink}}' class="btn btn-primary btn-block">
                                         {% set flagIcon = language %}
