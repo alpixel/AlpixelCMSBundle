@@ -15,7 +15,7 @@
     "require": {
         "php": ">=5.3.0",
         "symfony/symfony": ">=2.8",
-        "sonata-project/admin-bundle": "dev-master@dev",
+        "sonata-project/admin-bundle": "2.4.x-dev",
         "egeloen/ckeditor-bundle": "^4.0",
         "lunetics/locale-bundle": "^2.4",
         "stof/doctrine-extensions-bundle": "^1.2"
