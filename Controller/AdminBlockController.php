@@ -60,6 +60,7 @@ class AdminBlockController extends Controller
             $content = $repository->findOneById($object);
             $className = $this->_blockDefaultClass;
         }
+
         return $content;
     }
 
