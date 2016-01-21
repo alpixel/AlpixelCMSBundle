@@ -17,8 +17,8 @@
         "stof/doctrine-extensions-bundle": "^1.2"
     },
     "autoload": {
-        "psr-0": {
-            "Alpixel\\Bundle\\CMSBundle\\": "src/"
+        "psr-4": {
+            "Alpixel\\Bundle\\CMSBundle\\": ""
         }
     }
 }
