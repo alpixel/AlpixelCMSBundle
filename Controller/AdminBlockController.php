@@ -2,10 +2,10 @@
 
 namespace Alpixel\Bundle\CMSBundle\Controller;
 
-use Alpixel\Bundle\CMSBundle\Entity\Block;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AdminBlockController extends Controller
 {
@@ -103,7 +103,7 @@ class AdminBlockController extends Controller
         $user = $this->getUser();
 
         if (!$user) {
-            throw new NotFoundHttpException(sprintf('unable to find user in %s file', __FILE__));
+            throw new NotFoundHttpException(sprintf('unable to find user'));
         }
 
         if (!array_key_exists('role', $role) || in_array($user->getRoles()[0], $role['role'])) {

@@ -1,16 +1,20 @@
 {
     "name": "alpixel/cmsbundle",
+    "description": "This bundle is used by our team to build a CMS tool on top of Sonata",
     "type": "symfony-bundle",
+    "keywords": ["alpixel", "cms", "symfony2", "symfony", "bundle"],
+    "homepage": "https://www.alpixel.fr",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Benjamin HUBERT",
-            "email": "benjamin@alpixel.fr"
+            "name": "ALPIXEL",
+            "email": "contact@alpixel.fr"
         }
     ],
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.0",
-        "symfony/symfony": ">=2.5",
+        "symfony/symfony": ">=2.8",
         "sonata-project/admin-bundle": "dev-master@dev",
         "egeloen/ckeditor-bundle": "^4.0",
         "lunetics/locale-bundle": "^2.4",

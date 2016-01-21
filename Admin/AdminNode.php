@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 class AdminNode extends Admin
 {
@@ -47,7 +48,7 @@ class AdminNode extends Admin
             ])
             ->add('node', 'doctrine_orm_callback', [
                 'label'    => 'Type de contenu',
-                'callback' => function ($queryBuilder, $alias, $field, $value) {
+                'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
                     if (!$value['value']) {
                         return false;
                     }

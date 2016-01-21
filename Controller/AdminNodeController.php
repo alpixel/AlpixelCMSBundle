@@ -4,6 +4,7 @@ namespace Alpixel\Bundle\CMSBundle\Controller;
 
 use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -107,7 +108,7 @@ class AdminNodeController extends Controller
         $user = $this->getUser();
 
         if (!$user) {
-            throw new NotFoundHttpException(sprintf('unable to find user in %s file', __FILE__));
+            throw new NotFoundHttpException(sprintf('unable to find user'));
         }
 
         $userRole = $user->getRoles()[0];
@@ -122,7 +123,7 @@ class AdminNodeController extends Controller
     protected function findContentFromNode(Node $node)
     {
         if (!$this->container->hasParameter('cms.content_types')) {
-            throw new NotFoundHttpException('cms.content_types parameters in '.__FILE__.'  file at line '.__LINE__.' in '.__FUNCTION__.' method, has not been  not found, maybe you must be configured cms.yml file');
+            throw $this->createNotFoundException('cms.content_types parameters has not been not found, maybe you must be configured cms.yml file');
         }
 
         $cmsContentType = $this->container->getParameter('cms.content_types');
