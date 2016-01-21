@@ -20,10 +20,25 @@ class AdminBlockController extends Controller
             throw new NotFoundHttpException(sprintf('unable to find the object'));
         }
 
-        $entityManager = $this->getDoctrine()->getManager();
-        $content = null;
+        $content = $this->findContent();
+
+        if ($content !== null) {
+            $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass($className);
+
+            if ($instanceAdmin !== null) {
+                return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $content->getId()]));
+            }
+        }
+
+        throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', get_class($content)));
+    }
+
+    private function findContent()
+    {
         $classPassed = [];
         $className = '';
+        $content = null;
+        $entityManager = $this->get('doctrine.orm.entity_manager');
         foreach ($this->getCMSParameter() as $key => $value) {
             if ($this->_blockDefaultClass === $value['class'] || in_array($value['class'], $classPassed)) {
                 continue;
@@ -45,16 +60,7 @@ class AdminBlockController extends Controller
             $content = $repository->findOneById($object);
             $className = $this->_blockDefaultClass;
         }
-
-        if ($content !== null) {
-            $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass($className);
-
-            if ($instanceAdmin !== null) {
-                return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $content->getId()]));
-            }
-        }
-
-        throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', get_class($content)));
+        return $content;
     }
 
     public function listAction(Request $request = null)
