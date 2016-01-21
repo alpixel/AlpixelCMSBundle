@@ -36,8 +36,9 @@ class AdminNodeController extends Controller
         $object = $this->admin->getSubject();
         $locale = $request->query->get('locale');
 
-        if($locale === null || $object === null)
+        if ($locale === null || $object === null) {
             return $this->createNotFoundException();
+        }
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $translation = $entityManager->getRepository('CMSBundle:Node')
@@ -46,7 +47,7 @@ class AdminNodeController extends Controller
         if ($translation !== null) {
             return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translation->getId()]));
         } else {
-            if($object->getTranslationSource() !== null) {
+            if ($object->getTranslationSource() !== null) {
                 $source = $object->getTranslationSource();
             } else {
                 $source = $object;
@@ -64,6 +65,7 @@ class AdminNodeController extends Controller
             $entityManager->persist($node);
 
             $entityManager->flush();
+
             return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translatedContent->getNode()->getId()]));
         }
     }
@@ -131,6 +133,7 @@ class AdminNodeController extends Controller
 
         if (array_key_exists($node->getType(), $cmsContentType)) {
             $contentType = $cmsContentType[$node->getType()];
+
             return $entityManager
                         ->getRepository($contentType['class'])
                         ->findOneByNode($node);
