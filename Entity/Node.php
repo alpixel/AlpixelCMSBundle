@@ -359,4 +359,28 @@ class Node implements MetaTagPlaceholderInterface
 
         return $this;
     }
+
+    /**
+     * Gets the value of translationSource.
+     *
+     * @return \Alpixel\Bundle\CMSBundle\Entity\Node
+     */
+    public function getTranslationSource()
+    {
+        return $this->translationSource;
+    }
+
+    /**
+     * Sets the value of translationSource.
+     *
+     * @param \Alpixel\Bundle\CMSBundle\Entity\Node $translationSource the translation source
+     *
+     * @return self
+     */
+    public function setTranslationSource(\Alpixel\Bundle\CMSBundle\Entity\Node $translationSource)
+    {
+        $this->translationSource = $translationSource;
+
+        return $this;
+    }
 }

@@ -2,8 +2,8 @@ services:
     twig.extension.cms:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\CMSExtension
         arguments:
+            - @cms.helper
             - @service_container
-            - @doctrine
             - %cms.content_types%
         tags:
             - { name: twig.extension }
@@ -22,6 +22,10 @@ services:
         arguments: [@doctrine, @router]
         tags:
             - { name: kernel.event_listener, event: 'seo.sitemap.populate', method: populateSitemap }
+
+    cms.helper:
+        class: Alpixel\Bundle\CMSBundle\Helper\CMSHelper
+        arguments: ["@doctrine.orm.entity_manager"]
 
     cms.listener.login:
         class: Alpixel\Bundle\CMSBundle\Listener\LoginListener

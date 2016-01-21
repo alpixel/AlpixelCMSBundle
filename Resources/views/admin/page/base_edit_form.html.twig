@@ -1,9 +1,10 @@
 {% block form %}
     {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
+    {% set isMultilingual = cms_languages|length > 0 %}
     {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
 
-    {% if not admin.hasRoute(url)%}
+    {% if not admin.hasRoute(url) %}
         <div>
             {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
         </div>
@@ -30,7 +31,7 @@
             {% block sonata_tab_content %}
                 {% set has_tab = ((admin.formtabs|length == 1 and admin.formtabs|keys[0] != 'default') or admin.formtabs|length > 1 ) %}
 
-                <div class="col-md-12">
+                <div class="{% if isMultilingual %}col-md-10{% else %}col-md-12{% endif %}">
                     {% if has_tab %}
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs" role="tablist">
@@ -58,6 +59,43 @@
                         {{ form_helper.render_groups(admin, form, admin.formtabs['default'].groups, has_tab) }}
                     {% endif %}
                 </div>
+                {% if isMultilingual %}
+                <div class="col-md-2">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h4 class="box-title">
+                                Traductions
+                            </h4>
+                        </div>
+                        <div class="box-body container-fluid">
+                            {% for language in cms_languages %}
+                                {% if language != object.node.locale %}
+                                    {% set translation = cms_get_translation(object, language) %}
+                                    {% if translation is not null %}
+                                        {% if object.node.translationSource is not null and translation.id == object.node.translationSource.id %}
+                                            {% set translationLabel = "Voir le contenu source en" %}
+                                        {% else %}
+                                            {% set translationLabel = "Voir la traduction en" %}
+                                        {% endif %}
+                                        {% set translationLink = admin.generateUrl('edit', {id: translation.id}) %}
+                                    {% else %}
+                                        {% set translationLabel = "Traduire en" %}
+                                        {% set translationLink = "#" %}
+                                    {% endif %}
+                                    <a href='{{translationLink}}' class="btn btn-primary btn-block">
+                                        {% set flagIcon = language %}
+                                        {% if language == 'en' %}
+                                            {% set flagIcon = 'gb' %}
+                                        {% endif %}
+                                        <img src='https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/{{flagIcon}}.png'>
+                                        {{translationLabel}} {{language|iso_to_country_name}}
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             {% endblock %}
 
             {% block sonata_post_fieldsets %}
