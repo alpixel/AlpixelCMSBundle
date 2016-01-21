@@ -2,7 +2,6 @@
 
 namespace Alpixel\Bundle\CMSBundle\Controller;
 
-use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
