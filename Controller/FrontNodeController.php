@@ -21,37 +21,19 @@ class FrontNodeController extends Controller
      */
     public function dispatchAction(Request $request, Node $node)
     {
-        $entities = [];
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $meta = $entityManager->getMetadataFactory()->getAllMetadata();
+        $object = $this->get('cms.helper')->getNodeElementEntityFromNode($node);
 
-        foreach ($meta as $m) {
-            $relations = $m->getAssociationMappings();
-            if (array_key_exists('node', $relations) && $relations['node']['targetEntity'] == 'Alpixel\Bundle\CMSBundle\Entity\Node') {
-                $entities[] = $m;
+        if ($object !== null && $object->getNode()->getPublished()) {
+            if (stripos($request->getLocale(), $object->getNode()->getLocale()) !== false) {
+                $contentType = $this->get('cms.helper')->getContentTypeFromNodeElementClass($object);
+                return $this->forward($contentType['controller'], [
+                    '_route'        => $this->getRequest()->attributes->get('_route'),
+                    '_route_params' => $this->getRequest()->attributes->get('_route_params'),
+                    'object'        => $object,
+                ]);
             }
         }
 
-        foreach ($entities as $entity) {
-            $object = $entityManager
-                        ->getRepository($entity->getName())
-                        ->findOneByNode($node);
-
-            if ($object !== null && $object->getNode()->getPublished()) {
-                $contentTypes = $this->container->getParameter('cms.content_types');
-                foreach ($contentTypes as $contentType) {
-                    if ($contentType['class'] == get_class($object)) {
-                        if (stripos($request->getLocale(), $object->getNode()->getLocale()) !== false) {
-                            return $this->forward($contentType['controller'], [
-                                '_route'        => $this->getRequest()->attributes->get('_route'),
-                                '_route_params' => $this->getRequest()->attributes->get('_route_params'),
-                                'object'        => $object,
-                            ]);
-                        }
-                    }
-                }
-            }
-        }
         throw $this->createNotFoundException();
     }
 

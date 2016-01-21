@@ -55,4 +55,13 @@ class CMSHelper
                         ->findOneByNode($node);
         }
     }
+
+    public function getContentTypeFromNodeElementClass(NodeInterface $object)
+    {
+        foreach ($this->contentTypes as $contentType) {
+            if ($contentType['class'] == get_class($object)) {
+                return $contentType;
+            }
+        }
+    }
 }
