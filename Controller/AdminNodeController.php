@@ -80,7 +80,7 @@ class AdminNodeController extends Controller
         $formView = $datagrid->getForm()->createView();
 
         if (!$this->container->hasParameter('cms.content_types')) {
-            throw $this->createNotFoundException('cms.content_types parameters in '.__FILE__.'  file at line '.__LINE__.' in '.__FUNCTION__.' method, has not been  not found, maybe you must be configured cms.yml file');
+            throw $this->createNotFoundException('cms.content_types parameters has not been  not found, maybe you must be configured cms.yml file');
         }
 
         $cmsContentType = $this->container->getParameter('cms.content_types');

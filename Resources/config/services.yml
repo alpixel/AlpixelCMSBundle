@@ -29,7 +29,6 @@ services:
 
     cms.listener.login:
         class: Alpixel\Bundle\CMSBundle\Listener\LoginListener
-        arguments: ['@security.context', @request, %secret%]
-        scope: "request"
+        arguments: ['@security.context', %secret%]
         tags:
             - { name: 'kernel.event_listener', event: 'security.interactive_login' }
