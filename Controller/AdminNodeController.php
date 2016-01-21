@@ -18,7 +18,7 @@ class AdminNodeController extends Controller
             throw new NotFoundHttpException(sprintf('unable to find the object'));
         }
 
-        $content = $this->findContentFromNode($object);
+        $content = $this->get('cms.helper')->getNodeElementEntityFromNode($object);
 
         if ($content !== null) {
             $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($content));
@@ -47,25 +47,10 @@ class AdminNodeController extends Controller
         if ($translation !== null) {
             return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translation->getId()]));
         } else {
-            if ($object->getTranslationSource() !== null) {
-                $source = $object->getTranslationSource();
-            } else {
-                $source = $object;
-            }
-
-            $content = $this->findContentFromNode($source);
-
-            $translatedContent = clone $content;
-
-            $node = $translatedContent->getNode();
-            $node->setLocale($locale);
-            $node->setTranslationSource($source);
-            $node->setTitle(sprintf('Version %s de la page "%s"', strtoupper($locale), $node->getTitle()));
+            $translatedContent = $this->get('cms.helper')->createTranslation($object, $locale);
             $entityManager->persist($translatedContent);
-            $entityManager->persist($node);
-
+            $entityManager->persist($translatedContent->getNode());
             $entityManager->flush();
-
             return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translatedContent->getNode()->getId()]));
         }
     }
@@ -122,21 +107,4 @@ class AdminNodeController extends Controller
         return false;
     }
 
-    protected function findContentFromNode(Node $node)
-    {
-        if (!$this->container->hasParameter('cms.content_types')) {
-            throw $this->createNotFoundException('cms.content_types parameters has not been not found, maybe you must be configured cms.yml file');
-        }
-
-        $cmsContentType = $this->container->getParameter('cms.content_types');
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-
-        if (array_key_exists($node->getType(), $cmsContentType)) {
-            $contentType = $cmsContentType[$node->getType()];
-
-            return $entityManager
-                        ->getRepository($contentType['class'])
-                        ->findOneByNode($node);
-        }
-    }
 }

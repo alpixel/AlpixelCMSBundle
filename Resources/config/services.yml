@@ -25,7 +25,9 @@ services:
 
     cms.helper:
         class: Alpixel\Bundle\CMSBundle\Helper\CMSHelper
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%cms.content_types%"
 
     cms.listener.login:
         class: Alpixel\Bundle\CMSBundle\Listener\LoginListener
