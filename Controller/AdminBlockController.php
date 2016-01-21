@@ -21,6 +21,8 @@ class AdminBlockController extends Controller
         }
 
         $content = $this->findContent();
+        $className = $content[1];
+        $content = $content[0];
 
         if ($content !== null) {
             $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass($className);
@@ -61,7 +63,7 @@ class AdminBlockController extends Controller
             $className = $this->_blockDefaultClass;
         }
 
-        return $content;
+        return array($content, $className);
     }
 
     public function listAction(Request $request = null)
