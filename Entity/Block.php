@@ -2,7 +2,6 @@
 
 namespace Alpixel\Bundle\CMSBundle\Entity;
 
-use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -73,7 +72,7 @@ class Block
     /**
      * @ORM\PreUpdate
      */
-    public function preUpdate(PreUpdateEventArgs $eventArgs)
+    public function preUpdate()
     {
         $this->dateUpdated = new \DateTime();
     }
