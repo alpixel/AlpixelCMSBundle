@@ -14,7 +14,7 @@ class CMSHelper
     public function __construct(EntityManager $entityManager, $contentTypes)
     {
         $this->entityManager = $entityManager;
-        $this->contentTypes  = $contentTypes;
+        $this->contentTypes = $contentTypes;
     }
 
     public function nodeGetTranslation(NodeInterface $node, $locale)
