@@ -51,6 +51,7 @@ class AdminNodeController extends Controller
             $entityManager->persist($translatedContent);
             $entityManager->persist($translatedContent->getNode());
             $entityManager->flush();
+
             return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translatedContent->getNode()->getId()]));
         }
     }
@@ -106,5 +107,4 @@ class AdminNodeController extends Controller
 
         return false;
     }
-
 }
