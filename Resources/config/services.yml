@@ -2,8 +2,8 @@ services:
     twig.extension.cms:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\CMSExtension
         arguments:
-            - @cms.helper
-            - @service_container
+            - '@cms.helper'
+            - '@service_container'
             - %cms.content_types%
         tags:
             - { name: twig.extension }
@@ -11,15 +11,15 @@ services:
     twig.extension.cms_block:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\BlockExtension
         arguments:
-            - @service_container
-            - @doctrine
+            - '@service_container'
+            - '@doctrine'
             - %cms.blocks%
         tags:
             - { name: twig.extension }
 
     cms.sitemap:
         class: Alpixel\Bundle\CMSBundle\Listener\SitemapListener
-        arguments: [@doctrine, @router]
+        arguments: ['@doctrine', '@router']
         tags:
             - { name: kernel.event_listener, event: 'seo.sitemap.populate', method: populateSitemap }
 
