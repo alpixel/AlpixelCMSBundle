@@ -40,8 +40,9 @@ class BlockExtension extends \Twig_Extension
 
     public function displayBlock(\Twig_Environment $twig, $blockName)
     {
-        if($this->blocks === null)
+        if ($this->blocks === null) {
             return;
+        }
 
         if (array_key_exists($blockName, $this->blocks)) {
             $blockConf = $this->blocks[$blockName];
