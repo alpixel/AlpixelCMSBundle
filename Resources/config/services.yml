@@ -4,7 +4,7 @@ services:
         arguments:
             - '@cms.helper'
             - '@service_container'
-            - %cms.content_types%
+            - '%cms.content_types%'
         tags:
             - { name: twig.extension }
 
@@ -13,7 +13,7 @@ services:
         arguments:
             - '@service_container'
             - '@doctrine'
-            - %cms.blocks%
+            - '%cms.blocks%'
         tags:
             - { name: twig.extension }
 

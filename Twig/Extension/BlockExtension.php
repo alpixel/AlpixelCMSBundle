@@ -12,7 +12,7 @@ class BlockExtension extends \Twig_Extension
     protected $container;
     protected $request;
 
-    public function __construct($container, Registry $doctrine, $blocks)
+    public function __construct($container, Registry $doctrine, $blocks = null)
     {
         $this->container = $container;
 
@@ -40,6 +40,9 @@ class BlockExtension extends \Twig_Extension
 
     public function displayBlock(\Twig_Environment $twig, $blockName)
     {
+        if($this->blocks === null)
+            return;
+
         if (array_key_exists($blockName, $this->blocks)) {
             $blockConf = $this->blocks[$blockName];
 

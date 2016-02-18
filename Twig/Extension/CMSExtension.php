@@ -11,7 +11,7 @@ class CMSExtension extends \Twig_Extension
     protected $container;
     protected $cmsHelper;
 
-    public function __construct(CMSHelper $cmsHelper, $container, $contentTypes)
+    public function __construct(CMSHelper $cmsHelper, $container, $contentTypes = null)
     {
         $this->cmsHelper = $cmsHelper;
         $this->container = $container;
