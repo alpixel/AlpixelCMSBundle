@@ -47,7 +47,7 @@ class CMSExtension extends \Twig_Extension
 
     public function isoToCountryName($iso)
     {
-        return \Locale::getDisplayLanguage($iso, $this->container->getParameter('locale'));
+        return \Locale::getDisplayLanguage($iso, $this->container->getParameter('default_locale'));
     }
 
     public function cmsHasTranslation(NodeInterface $node, $locale)
