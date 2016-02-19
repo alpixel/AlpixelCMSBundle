@@ -26,10 +26,20 @@ class FrontNodeController extends Controller
         if ($object !== null && $object->getNode()->getPublished()) {
             if (stripos($request->getLocale(), $object->getNode()->getLocale()) !== false) {
                 $contentType = $this->get('cms.helper')->getContentTypeFromNodeElementClass($object);
+                $controller = explode('::', $contentType['controller']);
+                if (count($controller) !== 2) {
+                    throw new \LogicException('The parameter controller must be a valid callable controller, like "My\Namespace\Controller\Class::method"');
+                } else if (!class_exists($controller[0]) || !method_exists($controller[0], $controller[1])) {
+                    throw new \LogicException(sprintf(
+                        'Unable to find the "%s" controller or the method "%s" doesn\'t exist.',
+                        $controller[0],
+                        $controller[1]
+                    ));
+                }
 
                 return $this->forward($contentType['controller'], [
-                    '_route'        => $this->getRequest()->attributes->get('_route'),
-                    '_route_params' => $this->getRequest()->attributes->get('_route_params'),
+                    '_route'        => $request->attributes->get('_route'),
+                    '_route_params' => $request->attributes->get('_route_params'),
                     'object'        => $object,
                 ]);
             }
