@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 class FrontNodeController extends Controller
 {
     /**
-     * @Route("/page/{slug}", name="alpixel_cms")
      * @MetaTag("node", providerClass="Alpixel\Bundle\CMSBundle\Entity\Node", title="Page de contenu")
      * @ParamConverter("node", options={"mapping" : {"slug": "slug"}})
      * @Method("GET")
