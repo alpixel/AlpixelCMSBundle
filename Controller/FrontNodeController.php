@@ -27,7 +27,7 @@ class FrontNodeController extends Controller
                 $controller = explode('::', $contentType['controller']);
                 if (count($controller) !== 2) {
                     throw new \LogicException('The parameter controller must be a valid callable controller, like "My\Namespace\Controller\Class::method"');
-                } else if (!class_exists($controller[0]) || !method_exists($controller[0], $controller[1])) {
+                } elseif (!class_exists($controller[0]) || !method_exists($controller[0], $controller[1])) {
                     throw new \LogicException(sprintf(
                         'Unable to find the "%s" controller or the method "%s" doesn\'t exist.',
                         $controller[0],
