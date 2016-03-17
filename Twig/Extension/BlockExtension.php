@@ -74,10 +74,13 @@ class BlockExtension extends \Twig_Extension
 
             if (!empty($blockConf['service'])) {
                 $controller = $this->container->get($blockConf['service']);
-
                 return $controller->renderAction();
             } else {
-                return $twig->render($blockConf['template'], [
+                $template = $blockConf['template'];
+                if($template === null) {
+                    $template = 'CMSBundle:front:blocks/base_block.html.twig';
+                }
+                return $twig->render($template, [
                     'block' => $block,
                 ]);
             }
