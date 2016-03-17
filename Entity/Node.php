@@ -85,9 +85,9 @@ class Node implements MetaTagPlaceholderInterface
     /**
      * @var int
      * @Gedmo\SortablePosition
-     * @ORM\Column(name="weight", type="integer", nullable=false)
+     * @ORM\Column(name="position", type="integer", nullable=false)
      */
-    protected $weight;
+    protected $position;
 
     /**
      * @Gedmo\Slug(fields={"title"}, updatable=false, separator="_")
@@ -104,7 +104,7 @@ class Node implements MetaTagPlaceholderInterface
         $this->id = null;
         $this->dateCreated = null;
         $this->dateUpdated = null;
-        $this->weight = null;
+        $this->position = null;
         $this->slug = null;
     }
 
@@ -274,25 +274,25 @@ class Node implements MetaTagPlaceholderInterface
     }
 
     /**
-     * Gets the value of weight.
+     * Gets the value of position.
      *
      * @return int
      */
-    public function getWeight()
+    public function getPosition()
     {
-        return $this->weight;
+        return $this->position;
     }
 
     /**
-     * Sets the value of weight.
+     * Sets the value of position.
      *
-     * @param int $weight the weight
+     * @param int $position the position
      *
      * @return self
      */
-    public function setWeight($weight)
+    public function setPosition($position)
     {
-        $this->weight = $weight;
+        $this->position = $position;
 
         return $this;
     }
