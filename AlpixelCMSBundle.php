@@ -11,9 +11,9 @@ class AlpixelCMSBundle extends Bundle
     /**
      * Returns the bundle's container extension.
      *
-     * @return ExtensionInterface|null The container extension
-     *
      * @throws \LogicException
+     *
+     * @return ExtensionInterface|null The container extension
      */
     public function getContainerExtension()
     {
@@ -46,5 +46,4 @@ class AlpixelCMSBundle extends Bundle
             return $this->extension;
         }
     }
-
 }

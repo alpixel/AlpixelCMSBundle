@@ -38,7 +38,7 @@ class AdminBlockController extends Controller
     private function findContent()
     {
         $object = $this->admin->getSubject();
-        
+
         $classPassed = [];
         $className = '';
         $content = null;
