@@ -27,7 +27,7 @@ class AdminNodeController extends Controller
             }
         }
 
-        throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', $contentType['class']));
+        throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', get_class($content)));
     }
 
     public function createTranslationAction(Request $request)
