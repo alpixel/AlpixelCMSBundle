@@ -37,3 +37,7 @@ services:
             - "%secret%"
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.response' }
+
+    alpixel_cms.exception_controller:
+        class: Alpixel\Bundle\CMSBundle\Controller\ExceptionController
+        arguments: ['@twig', '%kernel.debug%']

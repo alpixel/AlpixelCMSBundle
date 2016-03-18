@@ -1,10 +1,13 @@
 <?php
 
-namespace Controller;
+namespace Alpixel\Bundle\CMSBundle\Controller;
 
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController as BaseController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\FlattenException;
+use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ExceptionController extends BaseController
 {
