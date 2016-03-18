@@ -30,7 +30,7 @@ class ExceptionController extends BaseController
                 'logger' => $logger,
                 'currentContent' => $currentContent,
             )
-        ));
+        ), $code);
     }
 
     /**
@@ -43,28 +43,12 @@ class ExceptionController extends BaseController
      */
     protected function findTemplate(Request $request, $format, $code, $showException)
     {
-        $name = $showException ? 'exception' : 'error';
-        if ($showException && 'html' == $format) {
-            $name = 'exception_full';
-        }
-
-        // For error pages, try to find a template for the specific HTTP status code and format
-        if (!$showException) {
-            $template = sprintf('@Twig/Exception/%s%s.%s.twig', $name, $code, $format);
-            if ($this->templateExists($template)) {
-                return $template;
-            }
-        }
-
         // try to find a template for the given format
-        $template = sprintf('@Twig/Exception/%s.%s.twig', $name, $format);
+        $template = sprintf('page/errors.html.twig');
         if ($this->templateExists($template)) {
             return $template;
         }
 
-        // default to a generic HTML exception
-        $request->setRequestFormat('html');
-
-        return sprintf('@Twig/Exception/%s.html.twig', $showException ? 'exception_full' : $name);
+        return parent::findTemplate($request, $format, $code, $showException);
     }
 }
