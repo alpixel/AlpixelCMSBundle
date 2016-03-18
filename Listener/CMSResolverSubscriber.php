@@ -34,13 +34,13 @@ class CMSResolverSubscriber implements EventSubscriber
         $metadata = $eventArgs->getClassMetadata();
 
         $discriminatorMap = [];
-        if (Node::CLASS === $metadata->getName()) {
-            foreach ($this->contentTypes as $key=>$contentType) {
+        if (Node::class === $metadata->getName()) {
+            foreach ($this->contentTypes as $key => $contentType) {
                 $discriminatorMap[$key] = $contentType['class'];
             }
-        } elseif (Block::CLASS === $metadata->getName()) {
-            foreach ($this->blocks as $key=>$block) {
-                if(!empty($block['class'])) {
+        } elseif (Block::class === $metadata->getName()) {
+            foreach ($this->blocks as $key => $block) {
+                if (!empty($block['class'])) {
                     $discriminatorMap[$key] = $block['class'];
                 }
             }

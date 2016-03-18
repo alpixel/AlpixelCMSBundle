@@ -16,7 +16,7 @@ class AdminNode extends Admin
     protected $datagridValues = [
         '_page'       => 1,
         '_sort_order' => 'DESC',
-        '_sort_by'    => 'dateUpdated'
+        '_sort_by'    => 'dateUpdated',
     ];
 
     protected function configureRoutes(RouteCollection $collection)

@@ -7,7 +7,8 @@ use Doctrine\ORM\EntityRepository;
 
 class NodeRepository extends EntityRepository
 {
-    public function findAllWithLocale($locale) {
+    public function findAllWithLocale($locale)
+    {
         return $this
             ->getEntityManager()
             ->createQueryBuilder('n')
@@ -16,8 +17,7 @@ class NodeRepository extends EntityRepository
             ->setParameter('locale', $locale)
             ->orderBy('n.position', 'ASC')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
     public function findTranslation(Node $node, $locale)

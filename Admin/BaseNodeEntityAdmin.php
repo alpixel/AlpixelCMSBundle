@@ -42,22 +42,21 @@ class BaseNodeEntityAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id', null, array(
-                'label' => 'ID'
-            ))
-            ->add('title', null, array(
-                'label' => 'Titre'
-            ))
-            ->add('published', null, array(
-                'label' => 'Publié'
-            ))
-            ->add('dateCreated', null, array(
-                'label' => 'Crée'
-            ))
-            ->add('dateUpdated', null, array(
-                'label' => 'Mis à jour'
-            ))
-            ->add('_action', 'actions')
-        ;
+            ->add('id', null, [
+                'label' => 'ID',
+            ])
+            ->add('title', null, [
+                'label' => 'Titre',
+            ])
+            ->add('published', null, [
+                'label' => 'Publié',
+            ])
+            ->add('dateCreated', null, [
+                'label' => 'Crée',
+            ])
+            ->add('dateUpdated', null, [
+                'label' => 'Mis à jour',
+            ])
+            ->add('_action', 'actions');
     }
 }
