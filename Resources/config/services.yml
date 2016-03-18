@@ -1,35 +1,39 @@
 services:
-    twig.extension.cms:
+    alpixel_cms.twig.extension.cms:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\CMSExtension
         arguments:
-            - '@cms.helper'
+            - '@alpixel_cms.helper'
             - '@service_container'
-            - '%cms.content_types%'
+            - '%alpixel_cms.content_types%'
         tags:
             - { name: twig.extension }
 
-    twig.extension.cms_block:
+    alpixel_cms.twig.extension.block:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\BlockExtension
         arguments:
             - '@service_container'
             - '@doctrine'
-            - '%cms.blocks%'
+            - '%alpixel_cms.blocks%'
         tags:
             - { name: twig.extension }
+    alpixel_cms.helper:
+        class: Alpixel\Bundle\CMSBundle\Helper\CMSHelper
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%alpixel_cms.content_types%"
 
-    cms.sitemap:
+    alpixel_cms.exception_controller:
+        class: Alpixel\Bundle\CMSBundle\Controller\ExceptionController
+        arguments: ['@twig', '%kernel.debug%']
+
+
+    alpixel_cms.listener.sitemap:
         class: Alpixel\Bundle\CMSBundle\Listener\SitemapListener
         arguments: ['@doctrine', '@router']
         tags:
             - { name: kernel.event_listener, event: 'seo.sitemap.populate', method: populateSitemap }
 
-    cms.helper:
-        class: Alpixel\Bundle\CMSBundle\Helper\CMSHelper
-        arguments:
-            - "@doctrine.orm.entity_manager"
-            - "%cms.content_types%"
-
-    cms.listener.kernel:
+    alpixel_cms.listener.kernel:
         class: Alpixel\Bundle\CMSBundle\Listener\KernelListener
         arguments:
             - "@request_stack"
@@ -37,7 +41,9 @@ services:
             - "%secret%"
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.response' }
-
-    alpixel_cms.exception_controller:
-        class: Alpixel\Bundle\CMSBundle\Controller\ExceptionController
-        arguments: ['@twig', '%kernel.debug%']
+    alpixel_cms.listener.doctrine.node_resolver_subscriber:
+        class: Alpixel\Bundle\CMSBundle\Listener\NodeResolverSubscriber
+        arguments:
+            - '%alpixel_cms.content_types%'
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

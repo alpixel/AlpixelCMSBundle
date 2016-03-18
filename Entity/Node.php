@@ -12,8 +12,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="cms_node")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Alpixel\Bundle\CMSBundle\Entity\Repository\NodeRepository")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({})
  */
-class Node implements MetaTagPlaceholderInterface
+abstract class Node implements MetaTagPlaceholderInterface
 {
     /**
      * @var int
@@ -45,13 +48,6 @@ class Node implements MetaTagPlaceholderInterface
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
      */
     protected $title;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255, nullable=false)
-     */
-    protected $type;
 
     /**
      * @var string
@@ -95,9 +91,12 @@ class Node implements MetaTagPlaceholderInterface
      **/
     protected $slug;
 
+
     public function __construct()
     {
     }
+
+    abstract public function getType();
 
     public function __clone()
     {
@@ -317,30 +316,6 @@ class Node implements MetaTagPlaceholderInterface
     public function setSlug($slug)
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of type.
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Sets the value of type.
-     *
-     * @param string $type the type
-     *
-     * @return self
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
 
         return $this;
     }

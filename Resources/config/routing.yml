@@ -1,3 +1,3 @@
 alpixel_cms:
     path: /page/{slug}
-    defaults: { _controller: AlpixelCMSBundle:FrontNode:dispatch }
+    defaults: { _controller: AlpixelCMSBundle:Node:dispatch }

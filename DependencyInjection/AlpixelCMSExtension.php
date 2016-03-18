@@ -37,7 +37,7 @@ class AlpixelCMSExtension extends Extension
                 throw new InvalidConfigurationException('CMS '.$contentType['controller'].' can\'t be found');
             }
         }
-        $container->setParameter('cms.content_types', $config['content_types']);
+        $container->setParameter('alpixel_cms.content_types', $config['content_types']);
 
         foreach ($config['blocks'] as $name => $contentType) {
             if (empty($contentType['title'])) {
@@ -52,7 +52,7 @@ class AlpixelCMSExtension extends Extension
                 throw new InvalidConfigurationException('Block '.$contentType['class'].' can\'t be found');
             }
         }
-        $container->setParameter('cms.blocks', $config['blocks']);
+        $container->setParameter('alpixel_cms.blocks', $config['blocks']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
