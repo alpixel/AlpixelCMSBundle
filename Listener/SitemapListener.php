@@ -40,7 +40,7 @@ class SitemapListener implements SitemapListenerInterface
                             ->getRepository($entity->getName())
                             ->findAll();
                 foreach ($objects as $object) {
-                    if ($object->getNode()->getPublished() === true) {
+                    if ($object->getPublished() === true) {
                         $pages[] = $object;
                     }
                 }
@@ -48,7 +48,7 @@ class SitemapListener implements SitemapListenerInterface
 
             foreach ($pages as $cms) {
                 $url = $this->router->generate('alpixel_cms', [
-                        'slug' => $cms->getNode()->getSlug(),
+                        'slug' => $cms->getSlug(),
                     ],
                     true
                 );

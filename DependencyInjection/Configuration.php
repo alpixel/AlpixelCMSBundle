@@ -26,14 +26,14 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('variable')
                 ->end()
-            ->end();
-
-        $rootNode
-            ->children()
-                ->arrayNode('blocks')
-                    ->useAttributeAsKey('name')
-                    ->prototype('variable')
-                ->end()
+            ->end()
+            ->scalarNode('exception_template')
+                ->defaultValue('page/errors.html.twig')
+                ->cannotBeEmpty()
+            ->end()
+            ->arrayNode('blocks')
+                ->useAttributeAsKey('name')
+                ->prototype('variable')
             ->end();
 
         return $treeBuilder;

@@ -3,13 +3,17 @@
 namespace Alpixel\Bundle\CMSBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Page.
+ * Block.
  *
  * @ORM\Table(name="cms_block")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Alpixel\Bundle\CMSBundle\Entity\Repository\BlockRepository")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"block" = "Alpixel\Bundle\CMSBundle\Entity\Block"})
  */
 class Block
 {
@@ -46,6 +50,7 @@ class Block
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="date_created", type="datetime", nullable=false)
      */
     protected $dateCreated;
@@ -53,28 +58,18 @@ class Block
     /**
      * @var \DateTime
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="date_updated", type="datetime", nullable=false)
      */
     protected $dateUpdated;
 
     public function __construct()
     {
-        $this->dateCreated = new \DateTime();
-        $this->dateUpdated = new \DateTime();
-        $this->weight = 0;
     }
 
     public function __toString()
     {
         return $this->name;
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->dateUpdated = new \DateTime();
     }
 
     /**

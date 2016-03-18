@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class FrontNodeController extends Controller
+class NodeController extends Controller
 {
     /**
      * @MetaTag("node", providerClass="Alpixel\Bundle\CMSBundle\Entity\Node", title="Page de contenu")
@@ -19,11 +19,9 @@ class FrontNodeController extends Controller
      */
     public function dispatchAction(Request $request, Node $node)
     {
-        $object = $this->get('cms.helper')->getNodeElementEntityFromNode($node);
-
-        if ($object !== null && $object->getNode()->getPublished()) {
-            if (stripos($request->getLocale(), $object->getNode()->getLocale()) !== false) {
-                $contentType = $this->get('cms.helper')->getContentTypeFromNodeElementClass($object);
+        if ($node !== null && $node->getPublished()) {
+            if (stripos($request->getLocale(), $node->getLocale()) !== false) {
+                $contentType = $this->get('alpixel_cms.helper')->getContentTypeFromNodeElementClass($node);
                 $controller = explode('::', $contentType['controller']);
                 if (count($controller) !== 2) {
                     throw new \LogicException('The parameter controller must be a valid callable controller, like "My\Namespace\Controller\Class::method"');
@@ -38,7 +36,7 @@ class FrontNodeController extends Controller
                 return $this->forward($contentType['controller'], [
                     '_route'        => $request->attributes->get('_route'),
                     '_route_params' => $request->attributes->get('_route_params'),
-                    'object'        => $object,
+                    'object'        => $node,
                 ]);
             }
         }

@@ -2,7 +2,7 @@
 
 namespace Alpixel\Bundle\CMSBundle\Twig\Extension;
 
-use Alpixel\Bundle\CMSBundle\Entity\NodeInterface;
+use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Alpixel\Bundle\CMSBundle\Helper\CMSHelper;
 
 class CMSExtension extends \Twig_Extension
@@ -35,7 +35,16 @@ class CMSExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('cms_get_translation', [$this, 'cmsHasTranslation']),
+            new \Twig_SimpleFunction('cms_contentType_get_description', [$this, 'cmsGetDescription']),
         ];
+    }
+
+    public function cmsGetDescription(Node $node)
+    {
+        $contentType = $this->cmsHelper->getContentTypeFromNodeElementClass($node);
+        if ($contentType !== null) {
+            return $contentType['description'];
+        }
     }
 
     public function getFilters()
@@ -50,7 +59,7 @@ class CMSExtension extends \Twig_Extension
         return \Locale::getDisplayLanguage($iso, $this->container->getParameter('default_locale'));
     }
 
-    public function cmsHasTranslation(NodeInterface $node, $locale)
+    public function cmsHasTranslation(Node $node, $locale)
     {
         return $this->cmsHelper->nodeGetTranslation($node, $locale);
     }

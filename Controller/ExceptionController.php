@@ -21,7 +21,7 @@ class ExceptionController extends BaseController
 
         $code = $exception->getStatusCode();
 
-        if($showException) {
+        if ($showException) {
             $statusCode = Response::HTTP_ACCEPTED;
         } else {
             $statusCode = $code;
@@ -49,9 +49,9 @@ class ExceptionController extends BaseController
      */
     protected function findTemplate(Request $request, $format, $code, $showException)
     {
-        if(!$showException) {
+        if (!$showException) {
             // try to find a template for the given format
-            $template = sprintf('page/errors.html.twig');
+            $template = sprintf($this->getParameter('alpixel_cms.exception_template'));
             if ($this->templateExists($template)) {
                 return $template;
             }

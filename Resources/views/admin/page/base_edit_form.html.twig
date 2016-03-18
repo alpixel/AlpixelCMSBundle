@@ -68,10 +68,10 @@
                         </div>
                         <div class="box-body container-fluid">
                             {% for language in cms_languages %}
-                                {% if language != object.node.locale %}
+                                {% if language != object.locale %}
                                     {% set translation = cms_get_translation(object, language) %}
                                     {% if translation is not null %}
-                                        {% if object.node.translationSource is not null and translation.id == object.node.translationSource.id %}
+                                        {% if object.translationSource is not null and translation.id == object.translationSource.id %}
                                             {% set translationLabel = "Voir le contenu source en" %}
                                         {% else %}
                                             {% set translationLabel = "Voir la traduction en" %}
@@ -80,7 +80,7 @@
                                     {% else %}
                                         {% set translationLabel = "Traduire en" %}
                                         {% set translationLink = sonata_admin.url('cms.admin.node', 'createTranslation', {
-                                            id: object.node.id,
+                                            id: object.id,
                                             locale: language
                                         }) %}
                                     {% endif %}

@@ -17,17 +17,12 @@ class AdminNodeController extends Controller
             throw new NotFoundHttpException(sprintf('unable to find the object'));
         }
 
-        $content = $this->get('cms.helper')->getNodeElementEntityFromNode($object);
-
-        if ($content !== null) {
-            $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($content));
-
-            if ($instanceAdmin !== null) {
-                return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $content->getId()]));
-            }
+        $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($object));
+        if ($instanceAdmin !== null) {
+            return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $object->getId()]));
         }
 
-        throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', get_class($content)));
+        throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', get_class($object)));
     }
 
     public function createTranslationAction(Request $request)
@@ -46,12 +41,11 @@ class AdminNodeController extends Controller
         if ($translation !== null) {
             return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translation->getId()]));
         } else {
-            $translatedContent = $this->get('cms.helper')->createTranslation($object, $locale);
+            $translatedContent = $this->get('alpixel_cms.helper')->createTranslation($object, $locale);
             $entityManager->persist($translatedContent);
-            $entityManager->persist($translatedContent->getNode());
             $entityManager->flush();
 
-            return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translatedContent->getNode()->getId()]));
+            return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translatedContent->getId()]));
         }
     }
 
@@ -64,11 +58,11 @@ class AdminNodeController extends Controller
         $datagrid = $this->admin->getDatagrid();
         $formView = $datagrid->getForm()->createView();
 
-        if (!$this->container->hasParameter('cms.content_types')) {
-            throw $this->createNotFoundException('cms.content_types parameters has not been  not found, maybe you must be configured cms.yml file');
+        if (!$this->container->hasParameter('alpixel_cms.content_types')) {
+            throw $this->createNotFoundException('alpixel_cms.content_types parameters has not been  not found, maybe you must be configured cms.yml file');
         }
 
-        $cmsContentType = $this->container->getParameter('cms.content_types');
+        $cmsContentType = $this->container->getParameter('alpixel_cms.content_types');
 
         foreach ($cmsContentType as $key => $value) {
             if ($this->checkRolesCMS($value)) {

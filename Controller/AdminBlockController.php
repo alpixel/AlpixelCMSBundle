@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AdminBlockController extends Controller
 {
-    private $_cmsParameter = 'cms.blocks';
+    private $_cmsParameter = 'alpixel_cms.blocks';
     private $_cmsContentParameter = null;
     private $_blockDefaultClass = 'Alpixel\Bundle\CMSBundle\Entity\Block';
 
@@ -49,9 +49,8 @@ class AdminBlockController extends Controller
             }
 
             $repository = $entityManager->getRepository($value['class']);
-            $content = $repository->findOneByBlock($object->getId());
 
-            if ($content !== null) {
+            if ($object !== null) {
                 $className = $value['class'];
                 break;
             }
@@ -59,13 +58,13 @@ class AdminBlockController extends Controller
             $classPassed[] = $value['class'];
         }
 
-        if ($content === null) {
+        if ($object === null) {
             $repository = $entityManager->getRepository($this->_blockDefaultClass);
-            $content = $repository->findOneById($object);
+            $object = $repository->find($object);
             $className = $this->_blockDefaultClass;
         }
 
-        return [$content, $className];
+        return [$object, $className];
     }
 
     public function listAction(Request $request = null)

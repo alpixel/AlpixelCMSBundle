@@ -3,7 +3,6 @@
 namespace Alpixel\Bundle\CMSBundle\Helper;
 
 use Alpixel\Bundle\CMSBundle\Entity\Node;
-use Alpixel\Bundle\CMSBundle\Entity\NodeInterface;
 use Doctrine\ORM\EntityManager;
 
 class CMSHelper
@@ -17,11 +16,11 @@ class CMSHelper
         $this->contentTypes = $contentTypes;
     }
 
-    public function nodeGetTranslation(NodeInterface $node, $locale)
+    public function nodeGetTranslation(Node $node, $locale)
     {
         $node = $this->entityManager
                      ->getRepository('AlpixelCMSBundle:Node')
-                     ->findTranslation($node->getNode(), $locale);
+                     ->findTranslation($node, $locale);
 
         return $node;
     }
@@ -34,29 +33,15 @@ class CMSHelper
             $source = $object;
         }
 
-        $content = $this->getNodeElementEntityFromNode($object);
-        $translatedContent = clone $content;
-
-        $node = $translatedContent->getNode();
+        $node = clone $object;
         $node->setLocale($locale);
         $node->setTranslationSource($source);
         $node->setTitle(sprintf('Version %s de la page "%s"', strtoupper($locale), $node->getTitle()));
 
-        return $translatedContent;
+        return $node;
     }
 
-    public function getNodeElementEntityFromNode(Node $node)
-    {
-        if (array_key_exists($node->getType(), $this->contentTypes)) {
-            $contentType = $this->contentTypes[$node->getType()];
-
-            return $this->entityManager
-                        ->getRepository($contentType['class'])
-                        ->findOneByNode($node);
-        }
-    }
-
-    public function getContentTypeFromNodeElementClass(NodeInterface $object)
+    public function getContentTypeFromNodeElementClass(Node $object)
     {
         foreach ($this->contentTypes as $contentType) {
             if ($contentType['class'] == get_class($object)) {
