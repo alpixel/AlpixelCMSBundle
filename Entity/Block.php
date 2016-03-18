@@ -65,14 +65,12 @@ class Block
 
     public function __construct()
     {
-
     }
 
     public function __toString()
     {
         return $this->name;
     }
-
 
     /**
      * Gets the value of id.
