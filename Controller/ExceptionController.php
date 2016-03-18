@@ -5,7 +5,7 @@ namespace Alpixel\Bundle\CMSBundle\Controller;
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\HttpKernel\Exception\FlattenException;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,6 +21,12 @@ class ExceptionController extends BaseController
 
         $code = $exception->getStatusCode();
 
+        if($showException) {
+            $statusCode = Response::HTTP_ACCEPTED;
+        } else {
+            $statusCode = $code;
+        }
+
         return new Response($this->twig->render(
             (string) $this->findTemplate($request, $request->getRequestFormat(), $code, $showException),
             [
@@ -30,7 +36,7 @@ class ExceptionController extends BaseController
                 'logger'         => $logger,
                 'currentContent' => $currentContent,
             ]
-        ), $code);
+        ), $statusCode);
     }
 
     /**
@@ -43,10 +49,12 @@ class ExceptionController extends BaseController
      */
     protected function findTemplate(Request $request, $format, $code, $showException)
     {
-        // try to find a template for the given format
-        $template = sprintf('page/errors.html.twig');
-        if ($this->templateExists($template)) {
-            return $template;
+        if(!$showException) {
+            // try to find a template for the given format
+            $template = sprintf('page/errors.html.twig');
+            if ($this->templateExists($template)) {
+                return $template;
+            }
         }
 
         return parent::findTemplate($request, $format, $code, $showException);
