@@ -74,7 +74,6 @@ class BlockExtension extends \Twig_Extension
 
             if (!empty($blockConf['service'])) {
                 $controller = $this->container->get($blockConf['service']);
-
                 return $controller->renderAction();
             } else {
                 $template = $blockConf['template'];

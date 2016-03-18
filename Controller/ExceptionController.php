@@ -51,7 +51,7 @@ class ExceptionController extends BaseController
     {
         if(!$showException) {
             // try to find a template for the given format
-            $template = sprintf('page/errors.html.twig');
+            $template = sprintf($this->getParameter('alpixel_cms.exception_template'));
             if ($this->templateExists($template)) {
                 return $template;
             }

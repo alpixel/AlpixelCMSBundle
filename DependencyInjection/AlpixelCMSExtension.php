@@ -53,6 +53,7 @@ class AlpixelCMSExtension extends Extension
             }
         }
         $container->setParameter('alpixel_cms.blocks', $config['blocks']);
+        $container->setParameter('alpixel_cms.exception_template', $config['exception_template']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

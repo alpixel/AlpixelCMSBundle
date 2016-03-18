@@ -42,8 +42,9 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.response' }
     alpixel_cms.listener.doctrine.node_resolver_subscriber:
-        class: Alpixel\Bundle\CMSBundle\Listener\NodeResolverSubscriber
+        class: Alpixel\Bundle\CMSBundle\Listener\CMSResolverSubscriber
         arguments:
             - '%alpixel_cms.content_types%'
+            - '%alpixel_cms.blocks%'
         tags:
             - { name: doctrine.event_subscriber, connection: default }

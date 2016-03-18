@@ -2,17 +2,20 @@
 
 namespace Alpixel\Bundle\CMSBundle\Listener;
 
+use Alpixel\Bundle\CMSBundle\Entity\Block;
 use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
 
-class NodeResolverSubscriber implements EventSubscriber
+class CMSResolverSubscriber implements EventSubscriber
 {
     private $contentTypes;
+    private $blocks;
 
-    public function __construct($contentTypes = [])
+    public function __construct($contentTypes = [], $blocks = [])
     {
+        $this->blocks = $blocks;
         $this->contentTypes = $contentTypes;
     }
 
@@ -28,18 +31,21 @@ class NodeResolverSubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
-        if (empty($this->productInheritance)) {
-            return;
-        }
-
         $metadata = $eventArgs->getClassMetadata();
-        if (Node::CLASS !== $metadata->getName()) {
-            return;
-        }
 
         $discriminatorMap = [];
-        foreach ($this->contentTypes as $key=>$contentType) {
-            $discriminatorMap[$key] = $contentType['class'];
+        if (Node::CLASS === $metadata->getName()) {
+            foreach ($this->contentTypes as $key=>$contentType) {
+                $discriminatorMap[$key] = $contentType['class'];
+            }
+        } elseif (Block::CLASS === $metadata->getName()) {
+            foreach ($this->blocks as $key=>$block) {
+                if(!empty($block['class'])) {
+                    $discriminatorMap[$key] = $block['class'];
+                }
+            }
+        } else {
+            return;
         }
 
         if (!empty($discriminatorMap)) {
