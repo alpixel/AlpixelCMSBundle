@@ -97,7 +97,7 @@ class AdminNode extends Admin
             ])
             ->add('type', null, [
                 'label'    => 'Type',
-                'template' => 'CMSBundle:admin:fields/list__field_type.html.twig',
+                'template' => 'AlpixelCMSBundle:admin:fields/list__field_type.html.twig',
             ])
             ->add('dateCreated', null, [
                 'label' => 'Date de création',
@@ -110,8 +110,8 @@ class AdminNode extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'Voir'        => ['template' => 'CMSBundle:admin:fields/list__action_see.html.twig'],
-                    'editContent' => ['template' => 'CMSBundle:admin:fields/list__action_edit.html.twig'],
+                    'Voir'        => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_see.html.twig'],
+                    'editContent' => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_edit.html.twig'],
                     'delete'      => [],
                 ],
             ]);

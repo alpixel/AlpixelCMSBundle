@@ -39,7 +39,7 @@ class AdminBlock extends Admin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
-                    'editContent' => ['template' => 'CMSBundle:admin:fields/list__action_edit.html.twig'],
+                    'editContent' => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_edit.html.twig'],
                     'delete'      => [],
                 ],
             ]);

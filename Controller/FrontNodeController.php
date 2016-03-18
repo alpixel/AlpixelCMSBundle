@@ -51,7 +51,7 @@ class FrontNodeController extends Controller
         $canEdit = $this->get('request')->cookies->get('can_edit');
 
         if ($canEdit !== null && $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret'))) {
-            return $this->render('CMSBundle:admin:blocks/admin_bar_page.html.twig', [
+            return $this->render('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
                 'link' => $this->generateUrl('cms_node_editContent', ['id' => $node->getId()]),
             ]);
         }
@@ -64,7 +64,7 @@ class FrontNodeController extends Controller
         $canEdit = $this->get('request')->cookies->get('can_edit');
 
         if ($canEdit !== null && $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret'))) {
-            return $this->render('CMSBundle:admin:blocks/admin_bar_page.html.twig', [
+            return $this->render('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
                 'link' => $link,
             ]);
         }

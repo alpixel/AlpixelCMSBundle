@@ -20,7 +20,7 @@ class CMSHelper
     public function nodeGetTranslation(NodeInterface $node, $locale)
     {
         $node = $this->entityManager
-                     ->getRepository('CMSBundle:Node')
+                     ->getRepository('AlpixelCMSBundle:Node')
                      ->findTranslation($node->getNode(), $locale);
 
         return $node;

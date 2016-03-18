@@ -40,7 +40,7 @@ class AdminNodeController extends Controller
         }
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
-        $translation = $entityManager->getRepository('CMSBundle:Node')
+        $translation = $entityManager->getRepository('AlpixelCMSBundle:Node')
                                      ->findTranslation($object, $locale);
 
         if ($translation !== null) {

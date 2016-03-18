@@ -50,7 +50,7 @@ class BlockExtension extends \Twig_Extension
             $block = $this
                 ->doctrine
                 ->getManager()
-                ->getRepository('CMSBundle:Block')
+                ->getRepository('AlpixelCMSBundle:Block')
                 ->findOneBy(
                     ['slug' => $blockName],
                     []
@@ -78,7 +78,7 @@ class BlockExtension extends \Twig_Extension
             } else {
                 $template = $blockConf['template'];
                 if($template === null) {
-                    $template = 'CMSBundle:front:blocks/base_block.html.twig';
+                    $template = 'AlpixelCMSBundle:front:blocks/base_block.html.twig';
                 }
                 return $twig->render($template, [
                     'block' => $block,
