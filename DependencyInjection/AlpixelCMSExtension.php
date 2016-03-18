@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class CMSExtension extends Extension
+class AlpixelCMSExtension extends Extension
 {
     private $_blockDefaultClass = 'Alpixel\Bundle\CMSBundle\Entity\Block';
 

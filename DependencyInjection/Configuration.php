@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('cms');
+        $rootNode = $treeBuilder->root('alpixel_cms');
 
         $rootNode
             ->children()
