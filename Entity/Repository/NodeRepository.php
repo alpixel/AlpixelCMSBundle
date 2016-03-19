@@ -10,7 +10,6 @@ class NodeRepository extends EntityRepository
     public function findAllWithLocale($locale)
     {
         return $this
-            ->getEntityManager()
             ->createQueryBuilder('n')
             ->andWhere('n.published = true')
             ->andWhere('n.locale = :locale')
