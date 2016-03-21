@@ -32,10 +32,6 @@ class AlpixelCMSExtension extends Extension
             if (!isset($contentType['class']) || empty($contentType['class']) || !class_exists($contentType['class'])) {
                 throw new InvalidConfigurationException('CMS '.$contentType['class'].' can\'t be found');
             }
-
-            if (empty($contentType['controller'])) {
-                throw new InvalidConfigurationException('CMS '.$contentType['controller'].' can\'t be found');
-            }
         }
         $container->setParameter('alpixel_cms.content_types', $config['content_types']);
 

@@ -19,6 +19,19 @@ class NodeRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findByTypeAndLocale($type, $locale)
+    {
+        return $this
+            ->createQueryBuilder('n')
+            ->andWhere('n.published = true')
+            ->andWhere('n.locale = :locale')
+            ->andWhere('n.type = :type')
+            ->setParameter('locale', $locale)
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findOnePublishedBySlugAndLocale($slug, $locale)
     {
         return $this
