@@ -19,6 +19,19 @@ class NodeRepository extends EntityRepository
             ->getResult();
     }
 
+    public function findOnePublishedBySlugAndLocale($slug, $locale)
+    {
+        return $this
+            ->createQueryBuilder('n')
+            ->andWhere('n.published = true')
+            ->andWhere('n.locale = :locale')
+            ->andWhere('n.slug = :slug')
+            ->setParameter('locale', $locale)
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function findTranslation(Node $node, $locale)
     {
         $nodeSource = null;
