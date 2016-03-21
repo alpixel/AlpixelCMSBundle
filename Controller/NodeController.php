@@ -25,21 +25,32 @@ class NodeController extends Controller
         if ($node !== null) {
             $contentType = $this->get('alpixel_cms.helper')->getContentTypeFromNodeElementClass($node);
             $controller = explode('::', $contentType['controller']);
-            if (count($controller) !== 2) {
-                throw new \LogicException('The parameter controller must be a valid callable controller, like "My\Namespace\Controller\Class::method"');
-            } elseif (!class_exists($controller[0]) || !method_exists($controller[0], $controller[1])) {
-                throw new \LogicException(sprintf(
-                    'Unable to find the "%s" controller or the method "%s" doesn\'t exist.',
-                    $controller[0],
-                    $controller[1]
-                ));
-            }
 
-            return $this->forward($contentType['controller'], [
-                '_route'        => $request->attributes->get('_route'),
-                '_route_params' => $request->attributes->get('_route_params'),
-                'object'        => $node,
-            ]);
+            try {
+                if (count($controller) !== 2) {
+                    throw new \LogicException('The parameter controller must be a valid callable controller, like "My\Namespace\Controller\Class::method"');
+                } elseif (!class_exists($controller[0]) || !method_exists($controller[0], $controller[1])) {
+                    throw new \LogicException(sprintf(
+                        'Unable to find the "%s" controller or the method "%s" doesn\'t exist.',
+                        $controller[0],
+                        $controller[1]
+                    ));
+                }
+
+                return $this->forward($contentType['controller'], [
+                    '_route'        => $request->attributes->get('_route'),
+                    '_route_params' => $request->attributes->get('_route_params'),
+                    'object'        => $node,
+                ]);
+            } catch(\LogicException $e) {
+                $environment = $this->container->get('kernel')->getEnvironment();
+                if ($environment !== 'prod') {
+                    $logger = $this->get('logger');
+                    $logger->error($e->getMessage());
+                } else {
+                    throw $e;
+                }
+            }
         }
 
         throw $this->createNotFoundException();
