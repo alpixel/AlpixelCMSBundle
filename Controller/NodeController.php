@@ -5,7 +5,6 @@ namespace Alpixel\Bundle\CMSBundle\Controller;
 use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Alpixel\Bundle\SEOBundle\Annotation\MetaTag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +41,7 @@ class NodeController extends Controller
                     '_route_params' => $request->attributes->get('_route_params'),
                     'object'        => $node,
                 ]);
-            } catch(\LogicException $e) {
+            } catch (\LogicException $e) {
                 $environment = $this->container->get('kernel')->getEnvironment();
                 if ($environment === 'prod') {
                     $logger = $this->get('logger');
@@ -61,7 +60,7 @@ class NodeController extends Controller
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $node = $entityManager->getRepository('AlpixelCMSBundle:Node')->find($node);
 
-        $response = new Response;
+        $response = new Response();
         $response->setPrivate();
         $response->setMaxAge(900);
 
@@ -79,7 +78,7 @@ class NodeController extends Controller
 
     public function displayCustomAdminBarAction($link)
     {
-        $response = new Response;
+        $response = new Response();
         $response->setPrivate();
         $response->setMaxAge(900);
 

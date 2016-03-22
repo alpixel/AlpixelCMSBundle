@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\FlattenException;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
-use Symfony\Component\Routing\Annotation\Route;
 
 class ExceptionController extends BaseController
 {
@@ -18,7 +17,6 @@ class ExceptionController extends BaseController
         $this->exceptionTemplate = $exceptionTemplate;
         parent::__construct($twig, $debug);
     }
-
 
     public function showAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null)
     {
