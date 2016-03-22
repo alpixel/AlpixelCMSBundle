@@ -24,7 +24,7 @@ services:
 
     alpixel_cms.exception_controller:
         class: Alpixel\Bundle\CMSBundle\Controller\ExceptionController
-        arguments: ['@twig', '%kernel.debug%']
+        arguments: ['@twig', '%kernel.debug%', '%alpixel_cms.exception_template%']
 
 
     alpixel_cms.listener.sitemap:

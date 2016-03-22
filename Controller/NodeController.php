@@ -56,29 +56,42 @@ class NodeController extends Controller
         throw $this->createNotFoundException();
     }
 
-    public function displayNodeAdminBarAction(Node $node)
+    public function displayNodeAdminBarAction($node)
     {
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+        $node = $entityManager->getRepository('AlpixelCMSBundle:Node')->find($node);
+
+        $response = new Response;
+        $response->setPrivate();
+        $response->setMaxAge(900);
+
         $canEdit = $this->get('request')->cookies->get('can_edit');
 
-        if ($canEdit !== null && $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret'))) {
-            return $this->render('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
+        if ($node !== null && $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret'))) {
+            $content = $this->renderView('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
                 'link' => $this->generateUrl('cms_node_editContent', ['id' => $node->getId()]),
             ]);
+            $response->setContent($content);
         }
 
-        return new Response();
+        return $response;
     }
 
     public function displayCustomAdminBarAction($link)
     {
+        $response = new Response;
+        $response->setPrivate();
+        $response->setMaxAge(900);
+
         $canEdit = $this->get('request')->cookies->get('can_edit');
 
-        if ($canEdit !== null && $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret'))) {
-            return $this->render('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
+        if ($canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret'))) {
+            $content = $this->renderView('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
                 'link' => $link,
             ]);
+            $response->setContent($content);
         }
 
-        return new Response();
+        return $response;
     }
 }

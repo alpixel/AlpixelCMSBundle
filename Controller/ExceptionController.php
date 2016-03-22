@@ -11,9 +11,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExceptionController extends BaseController
 {
-    /**
-     * @Route("/erreur", name="error")
-     */
+    protected $exceptionTemplate;
+
+    public function __construct(\Twig_Environment $twig, $debug, $exceptionTemplate)
+    {
+        $this->exceptionTemplate = $exceptionTemplate;
+        parent::__construct($twig, $debug);
+    }
+
+
     public function showAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null)
     {
         $currentContent = $this->getAndCleanOutputBuffering($request->headers->get('X-Php-Ob-Level', -1));
@@ -50,10 +56,8 @@ class ExceptionController extends BaseController
     protected function findTemplate(Request $request, $format, $code, $showException)
     {
         if (!$showException) {
-            // try to find a template for the given format
-            $template = sprintf($this->getParameter('alpixel_cms.exception_template'));
-            if ($this->templateExists($template)) {
-                return $template;
+            if ($this->templateExists($this->exceptionTemplate)) {
+                return $this->exceptionTemplate;
             }
         }
 
