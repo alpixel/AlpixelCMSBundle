@@ -4,6 +4,7 @@ namespace Alpixel\Bundle\CMSBundle\Twig\Extension;
 
 use Alpixel\Bundle\CMSBundle\Entity\Block;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class BlockExtension extends \Twig_Extension
 {
@@ -12,13 +13,10 @@ class BlockExtension extends \Twig_Extension
     protected $container;
     protected $request;
 
-    public function __construct($container, Registry $doctrine, $blocks = null)
+    public function __construct($container, RequestStack $requestStack, Registry $doctrine, $blocks = null)
     {
         $this->container = $container;
-
-        if ($this->container->isScopeActive('request')) {
-            $this->request = $this->container->get('request');
-        }
+        $this->request = $requestStack->getCurrentRequest();
         $this->doctrine = $doctrine;
         $this->blocks = $blocks;
     }
@@ -31,7 +29,7 @@ class BlockExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'cms_block'     => new \Twig_Function_Method($this, 'displayBlock', [
+            new \Twig_SimpleFunction('cms_block', [$this, 'displayBlock'], [
                 'is_safe'           => ['html'],
                 'needs_environment' => true,
             ]),

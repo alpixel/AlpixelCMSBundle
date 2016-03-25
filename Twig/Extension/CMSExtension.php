@@ -5,7 +5,7 @@ namespace Alpixel\Bundle\CMSBundle\Twig\Extension;
 use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Alpixel\Bundle\CMSBundle\Helper\CMSHelper;
 
-class CMSExtension extends \Twig_Extension
+class CMSExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     protected $contentTypes;
     protected $container;

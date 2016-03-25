@@ -12,6 +12,7 @@ services:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\BlockExtension
         arguments:
             - '@service_container'
+            - '@request_stack'
             - '@doctrine'
             - '%alpixel_cms.blocks%'
         tags:
@@ -37,7 +38,8 @@ services:
         class: Alpixel\Bundle\CMSBundle\Listener\KernelListener
         arguments:
             - "@request_stack"
-            - "@security.context"
+            - "@security.token_storage"
+            - "@security.authorization_checker"
             - "%secret%"
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.response' }
