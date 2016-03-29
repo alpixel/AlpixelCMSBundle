@@ -2,7 +2,7 @@ services:
     alpixel_cms.twig.extension.cms:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\CMSExtension
         arguments:
-            - '@alpixel_cms.helper'
+            - '@alpixel_cms.helper.cms'
             - '@service_container'
             - '%alpixel_cms.content_types%'
         tags:
@@ -11,17 +11,33 @@ services:
     alpixel_cms.twig.extension.block:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\BlockExtension
         arguments:
+            - '@alpixel_cms.helper.block'
             - '@service_container'
-            - '@request_stack'
-            - '@doctrine'
-            - '%alpixel_cms.blocks%'
+            - "%alpixel_cms.blocks%"
         tags:
             - { name: twig.extension }
-    alpixel_cms.helper:
+
+    alpixel_cms.twig.extension.translation:
+        class: Alpixel\Bundle\CMSBundle\Twig\Extension\TranslationExtension
+        arguments:
+            - '@alpixel_cms.helper.cms'
+            - '@alpixel_cms.helper.block'
+            - '@service_container'
+        tags:
+            - { name: twig.extension }
+
+    alpixel_cms.helper.cms:
         class: Alpixel\Bundle\CMSBundle\Helper\CMSHelper
         arguments:
             - "@doctrine.orm.entity_manager"
             - "%alpixel_cms.content_types%"
+
+    alpixel_cms.helper.block:
+        class: Alpixel\Bundle\CMSBundle\Helper\BlockHelper
+        arguments:
+            - "@request_stack"
+            - "@doctrine.orm.entity_manager"
+            - "%alpixel_cms.blocks%"
 
     alpixel_cms.exception_controller:
         class: Alpixel\Bundle\CMSBundle\Controller\ExceptionController
@@ -43,6 +59,7 @@ services:
             - "%secret%"
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.response' }
+
     alpixel_cms.listener.doctrine.node_resolver_subscriber:
         class: Alpixel\Bundle\CMSBundle\Listener\CMSResolverSubscriber
         arguments:
@@ -50,3 +67,25 @@ services:
             - '%alpixel_cms.blocks%'
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+    alpixel_cms.admin.node:
+        class: Alpixel\Bundle\CMSBundle\Admin\AdminNode
+        arguments:
+            - ~
+            - Alpixel\Bundle\CMSBundle\Entity\Node
+            - 'AlpixelCMSBundle:AdminNode'
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: 'CMS', label: 'Gestion des pages'}
+        calls:
+            - [ setTemplate, [layout, AlpixelCMSBundle:admin:page/base.html.twig]]
+
+    alpixel_cms.admin.block:
+        class: Alpixel\Bundle\CMSBundle\Admin\AdminBlock
+        arguments:
+            - ~
+            - Alpixel\Bundle\CMSBundle\Entity\Block
+            - 'AlpixelCMSBundle:AdminBlock'
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: 'CMS', label: 'Gestion des blocs'}
+        calls:
+            - [ setTemplate, [edit, AlpixelCMSBundle:admin:page/base_edit.html.twig]]

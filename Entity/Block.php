@@ -29,6 +29,13 @@ class Block
     /**
      * @var string
      *
+     * @ORM\Column(name="locale", type="string", length=10, nullable=true)
+     */
+    protected $locale;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="slug", type="string", length=255, nullable=false)
      */
     protected $slug;
@@ -65,6 +72,11 @@ class Block
 
     public function __construct()
     {
+    }
+
+    public function __set($name, $value)
+    {
+        $this->{$name} = $value;
     }
 
     public function __toString()
@@ -202,6 +214,7 @@ class Block
         return $this->slug;
     }
 
+
     /**
      * Sets the value of slug.
      *
@@ -215,4 +228,21 @@ class Block
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
 }

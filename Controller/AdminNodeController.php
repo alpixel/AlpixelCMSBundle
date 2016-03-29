@@ -12,7 +12,7 @@ class AdminNodeController extends Controller
     public function editContentAction()
     {
         $object = $this->admin->getSubject();
-
+        
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object'));
         }
@@ -41,7 +41,7 @@ class AdminNodeController extends Controller
         if ($translation !== null) {
             return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translation->getId()]));
         } else {
-            $translatedContent = $this->get('alpixel_cms.helper')->createTranslation($object, $locale);
+            $translatedContent = $this->get('alpixel_cms.helper.cms')->createTranslation($object, $locale);
             $entityManager->persist($translatedContent);
             $entityManager->flush();
 

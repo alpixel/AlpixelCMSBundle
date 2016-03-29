@@ -10,7 +10,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 class AdminNode extends Admin
 {
-    protected $baseRouteName = 'cms_node';
+    protected $baseRouteName = 'alpixel_admin_cms_node';
     protected $baseRoutePattern = 'cms';
 
     protected $datagridValues = [

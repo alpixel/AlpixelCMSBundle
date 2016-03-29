@@ -20,51 +20,12 @@ class AdminBlockController extends Controller
             throw new NotFoundHttpException(sprintf('unable to find the object'));
         }
 
-        $content = $this->findContent();
-        $className = $content[1];
-        $content = $content[0];
-
-        if ($content !== null) {
-            $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass($className);
-
-            if ($instanceAdmin !== null) {
-                return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $content->getId()]));
-            }
+        $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($object));
+        if ($instanceAdmin !== null) {
+            return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $object->getId()]));
         }
 
         throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', get_class($content)));
-    }
-
-    private function findContent()
-    {
-        $object = $this->admin->getSubject();
-
-        $classPassed = [];
-        $className = '';
-        $content = null;
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        foreach ($this->getCMSParameter() as $key => $value) {
-            if ($this->_blockDefaultClass === $value['class'] || in_array($value['class'], $classPassed)) {
-                continue;
-            }
-
-            $repository = $entityManager->getRepository($value['class']);
-
-            if ($object !== null) {
-                $className = $value['class'];
-                break;
-            }
-
-            $classPassed[] = $value['class'];
-        }
-
-        if ($object === null) {
-            $repository = $entityManager->getRepository($this->_blockDefaultClass);
-            $object = $repository->find($object);
-            $className = $this->_blockDefaultClass;
-        }
-
-        return [$object, $className];
     }
 
     public function listAction(Request $request = null)

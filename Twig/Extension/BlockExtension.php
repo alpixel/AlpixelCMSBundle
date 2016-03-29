@@ -3,22 +3,21 @@
 namespace Alpixel\Bundle\CMSBundle\Twig\Extension;
 
 use Alpixel\Bundle\CMSBundle\Entity\Block;
+use Alpixel\Bundle\CMSBundle\Helper\BlockHelper;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class BlockExtension extends \Twig_Extension
 {
-    protected $doctrine;
-    protected $blocks;
-    protected $container;
-    protected $request;
+    private $blockHelper;
+    private $container;
+    private $blockConfiguration;
 
-    public function __construct($container, RequestStack $requestStack, Registry $doctrine, $blocks = null)
+    public function __construct(BlockHelper $blockHelper, $container, $blockConfiguration)
     {
+        $this->blockHelper = $blockHelper;
         $this->container = $container;
-        $this->request = $requestStack->getCurrentRequest();
-        $this->doctrine = $doctrine;
-        $this->blocks = $blocks;
+        $this->blockConfiguration = $blockConfiguration;
     }
 
     public function getName()
@@ -30,7 +29,7 @@ class BlockExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('cms_block', [$this, 'displayBlock'], [
-                'is_safe'           => ['html'],
+                'is_safe' => ['html'],
                 'needs_environment' => true,
             ]),
         ];
@@ -38,52 +37,24 @@ class BlockExtension extends \Twig_Extension
 
     public function displayBlock(\Twig_Environment $twig, $blockName)
     {
-        if ($this->blocks === null) {
-            return;
-        }
+        $block = $this->blockHelper->loadBlock($blockName);
 
-        if (array_key_exists($blockName, $this->blocks)) {
-            $blockConf = $this->blocks[$blockName];
+        if ($block === null)
+            return null;
 
-            $block = $this
-                ->doctrine
-                ->getManager()
-                ->getRepository('AlpixelCMSBundle:Block')
-                ->findOneBy(
-                    ['slug' => $blockName],
-                    []
-                );
-
-            if ($block === null) {
-                $block = new Block();
-                $block->setName($blockConf['title']);
-                $block->setContent($blockConf['default']);
-                $block->setSlug($blockName);
-
-                if (!empty($blockConf['class']) && $blockConf['class'] !== null && $blockConf['class'] != "Alpixel\Bundle\CMSBundle\Entity\Block") {
-                    $subBlock = new $blockConf['class']();
-                    $subBlock->setBlock($block);
-                    $this->doctrine->getManager()->persist($subBlock);
-                }
-
-                $this->doctrine->getManager()->persist($block);
-                $this->doctrine->getManager()->flush();
+        $blockConf = $this->blockConfiguration[$blockName];
+        if (!empty($blockConf['service'])) {
+            $controller = $this->container->get($blockConf['service']);
+            return $controller->renderAction();
+        } else {
+            $template = $blockConf['template'];
+            if ($template === null) {
+                $template = 'AlpixelCMSBundle:front:blocks/base_block.html.twig';
             }
 
-            if (!empty($blockConf['service'])) {
-                $controller = $this->container->get($blockConf['service']);
-
-                return $controller->renderAction();
-            } else {
-                $template = $blockConf['template'];
-                if ($template === null) {
-                    $template = 'AlpixelCMSBundle:front:blocks/base_block.html.twig';
-                }
-
-                return $twig->render($template, [
-                    'block' => $block,
-                ]);
-            }
+            return $twig->render($template, [
+                'block' => $block,
+            ]);
         }
     }
 }

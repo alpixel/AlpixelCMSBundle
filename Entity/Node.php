@@ -16,7 +16,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({})
  */
-abstract class Node implements MetaTagPlaceholderInterface
+abstract class Node implements MetaTagPlaceholderInterface, TranslatableInterface
 {
     /**
      * @var int

@@ -1,7 +1,8 @@
 {% block form %}
     {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
-    {% set isMultilingual = object.id is not null and cms_languages|length > 0 %}
+    {% set isMultilingual = object.id is not null and object|is_translatable and alpixel_cms_languages|length > 0 %}
+
     {% set url = admin.id(object) is not null ? 'edit' : 'create' %}
     {% if not admin.hasRoute(url) %}
         <div>
@@ -69,7 +70,7 @@
                         <div class="box-body container-fluid">
                             {% for language in cms_languages %}
                                 {% if language != object.locale %}
-                                    {% set translation = cms_get_translation(object, language) %}
+                                    {% set translation = alpixel_cms_get_translation(object, language) %}
                                     {% if translation is not null %}
                                         {% if object.translationSource is not null and translation.id == object.translationSource.id %}
                                             {% set translationLabel = "Voir le contenu source en" %}
@@ -79,7 +80,7 @@
                                         {% set translationLink = admin.generateUrl('edit', {id: translation.id}) %}
                                     {% else %}
                                         {% set translationLabel = "Traduire en" %}
-                                        {% set translationLink = sonata_admin.url('cms.admin.node', 'createTranslation', {
+                                        {% set translationLink = sonata_admin.url('alpixel_cms.admin.node', 'createTranslation', {
                                             id: object.id,
                                             locale: language
                                         }) %}

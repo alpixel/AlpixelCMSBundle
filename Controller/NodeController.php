@@ -22,7 +22,7 @@ class NodeController extends Controller
                               ->findOnePublishedBySlugAndLocale($slug, $request->getLocale());
 
         if ($node !== null) {
-            $contentType = $this->get('alpixel_cms.helper')->getContentTypeFromNodeElementClass($node);
+            $contentType = $this->get('alpixel_cms.helper.cms')->getContentTypeFromNodeElementClass($node);
             $controller = explode('::', $contentType['controller']);
 
             try {

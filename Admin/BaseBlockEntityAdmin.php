@@ -1,19 +1,31 @@
 <?php
 
+
 namespace Alpixel\Bundle\CMSBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
-class BaseNodeEntityAdmin extends Admin
+
+/**
+ * @author Benjamin HUBERT <benjamin@alpixel.fr>
+ */
+class BaseBlockEntityAdmin extends Admin
 {
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->clearExcept(array('edit', 'delete'));
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $container = $this->getConfigurationPool()->getContainer();
 
         $realLocales = [];
-        if($container->hasParameter('lunetics_locale.allowed_locales')) {
+        if ($container->hasParameter('lunetics_locale.allowed_locales')) {
             $locales = $container->getParameter('lunetics_locale.allowed_locales');
             foreach ($locales as $val) {
                 $realLocales[$val] = $val;
@@ -23,23 +35,11 @@ class BaseNodeEntityAdmin extends Admin
         }
 
         $formMapper
-            ->add('title', null, [
-                'label' => 'Titre',
-                'required' => true,
-            ])
             ->add('content', 'ckeditor', [
                 'label' => 'Contenu',
                 'required' => true,
                 'config_name' => 'admin',
             ])
-            ->add('locale', 'choice', [
-                'label' => 'Langue du contenu',
-                'choices' => $realLocales,
-                'required' => true,
-            ])
-            ->add('published', 'checkbox', [
-                'label' => 'Publié',
-                'required' => false,
-            ]);
+            ->end();
     }
 }

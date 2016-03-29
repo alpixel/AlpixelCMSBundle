@@ -40,9 +40,7 @@ class CMSResolverSubscriber implements EventSubscriber
             }
         } elseif (Block::class === $metadata->getName()) {
             foreach ($this->blocks as $key => $block) {
-                if (!empty($block['class'])) {
-                    $discriminatorMap[$key] = $block['class'];
-                }
+                $discriminatorMap[$key] = $block['class'];
             }
         } else {
             return;

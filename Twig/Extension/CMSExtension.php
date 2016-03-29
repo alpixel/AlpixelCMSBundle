@@ -27,14 +27,12 @@ class CMSExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInt
     {
         return [
             'cms_contentTypes' => $this->contentTypes,
-            'cms_languages'    => $this->container->getParameter('lunetics_locale.allowed_locales'),
         ];
     }
 
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('cms_get_translation', [$this, 'cmsHasTranslation']),
             new \Twig_SimpleFunction('cms_contentType_get_description', [$this, 'cmsGetDescription']),
         ];
     }
@@ -46,21 +44,5 @@ class CMSExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInt
             return $contentType['description'];
         }
     }
-
-    public function getFilters()
-    {
-        return [
-            new \Twig_SimpleFilter('iso_to_country_name', [$this, 'isoToCountryName']),
-        ];
-    }
-
-    public function isoToCountryName($iso)
-    {
-        return \Locale::getDisplayLanguage($iso, $this->container->getParameter('default_locale'));
-    }
-
-    public function cmsHasTranslation(Node $node, $locale)
-    {
-        return $this->cmsHelper->nodeGetTranslation($node, $locale);
-    }
+    
 }
