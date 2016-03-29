@@ -10,8 +10,10 @@ class BlockRepository extends EntityRepository
     /**
      * @param $type
      * @param $locale
-     * @return \Alpixel\Bundle\CMSBundle\Entity\Block
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
+     *
+     * @return \Alpixel\Bundle\CMSBundle\Entity\Block
      */
     public function findBlock($type, $locale)
     {

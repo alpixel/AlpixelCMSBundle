@@ -4,8 +4,6 @@ namespace Alpixel\Bundle\CMSBundle\Twig\Extension;
 
 use Alpixel\Bundle\CMSBundle\Entity\Block;
 use Alpixel\Bundle\CMSBundle\Helper\BlockHelper;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class BlockExtension extends \Twig_Extension
 {
@@ -29,7 +27,7 @@ class BlockExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('cms_block', [$this, 'displayBlock'], [
-                'is_safe' => ['html'],
+                'is_safe'           => ['html'],
                 'needs_environment' => true,
             ]),
         ];
@@ -39,12 +37,14 @@ class BlockExtension extends \Twig_Extension
     {
         $block = $this->blockHelper->loadBlock($blockName);
 
-        if ($block === null)
-            return null;
+        if ($block === null) {
+            return;
+        }
 
         $blockConf = $this->blockConfiguration[$blockName];
         if (!empty($blockConf['service'])) {
             $controller = $this->container->get($blockConf['service']);
+
             return $controller->renderAction();
         } else {
             $template = $blockConf['template'];

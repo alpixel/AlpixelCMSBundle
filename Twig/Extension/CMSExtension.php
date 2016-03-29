@@ -44,5 +44,4 @@ class CMSExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInt
             return $contentType['description'];
         }
     }
-    
 }

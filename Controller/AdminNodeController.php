@@ -12,7 +12,7 @@ class AdminNodeController extends Controller
     public function editContentAction()
     {
         $object = $this->admin->getSubject();
-        
+
         if (!$object) {
             throw new NotFoundHttpException(sprintf('unable to find the object'));
         }
