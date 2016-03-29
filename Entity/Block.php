@@ -214,7 +214,6 @@ class Block
         return $this->slug;
     }
 
-
     /**
      * Sets the value of slug.
      *
@@ -244,5 +243,4 @@ class Block
     {
         $this->locale = $locale;
     }
-
 }

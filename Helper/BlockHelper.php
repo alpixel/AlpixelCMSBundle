@@ -3,7 +3,6 @@
 namespace Alpixel\Bundle\CMSBundle\Helper;
 
 use Alpixel\Bundle\CMSBundle\Entity\Block;
-use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -23,12 +22,13 @@ class BlockHelper
     /**
      * @param $blockType
      * @param null $locale
+     *
      * @return Block|null
      */
     public function loadBlock($blockType, $locale = null)
     {
         if (!isset($this->blocks[$blockType])) {
-            return null;
+            return;
         }
 
         if ($locale === null) {
@@ -43,7 +43,7 @@ class BlockHelper
         if ($block === null) {
             $blockConf = $this->blocks[$blockType];
 
-            $block = new $blockConf['class'];
+            $block = new $blockConf['class']();
             $block->setName($blockConf['title']);
 
             foreach ($blockConf['default'] as $key => $value) {
@@ -59,7 +59,6 @@ class BlockHelper
 
         return $block;
     }
-
 
     public function getContentTypeFromNodeElementClass(Block $object)
     {

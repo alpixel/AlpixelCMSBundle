@@ -49,5 +49,4 @@ class AdminBlock extends BaseBlockEntityAdmin
                 ],
             ]);
     }
-
 }
