@@ -11,6 +11,12 @@ class BlockExtension extends \Twig_Extension
     private $container;
     private $blockConfiguration;
 
+    /**
+     * BlockExtension constructor.
+     * @param BlockHelper $blockHelper
+     * @param $container
+     * @param $blockConfiguration
+     */
     public function __construct(BlockHelper $blockHelper, $container, $blockConfiguration)
     {
         $this->blockHelper = $blockHelper;
@@ -18,21 +24,32 @@ class BlockExtension extends \Twig_Extension
         $this->blockConfiguration = $blockConfiguration;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'cms_block';
     }
 
+    /**
+     * @return array
+     */
     public function getFunctions()
     {
         return [
             new \Twig_SimpleFunction('cms_block', [$this, 'displayBlock'], [
-                'is_safe'           => ['html'],
+                'is_safe' => ['html'],
                 'needs_environment' => true,
             ]),
         ];
     }
 
+    /**
+     * @param \Twig_Environment $twig
+     * @param $blockName
+     * @return string|void
+     */
     public function displayBlock(\Twig_Environment $twig, $blockName)
     {
         $block = $this->blockHelper->loadBlock($blockName);
@@ -47,9 +64,10 @@ class BlockExtension extends \Twig_Extension
 
             return $controller->renderAction();
         } else {
-            $template = $blockConf['template'];
-            if ($template === null) {
+            if (!isset($blockConf['template'])) {
                 $template = 'AlpixelCMSBundle:front:blocks/base_block.html.twig';
+            } else {
+                $template = $blockConf['template'];
             }
 
             return $twig->render($template, [
