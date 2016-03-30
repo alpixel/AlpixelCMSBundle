@@ -31,7 +31,7 @@
     "alpixel/userbundle": "dev-master",
     "alpixel/menu-bundle": "dev-master",
     "alpixel/seobundle": "dev-master",
-    "alpixel/mediabundle": "dev-master"
+    "alpixel/mediabundle": "dev-master",
     "lunetics/locale-bundle": "^2.4",
     "jms/i18n-routing-bundle": "^2.0",
     "jms/translation-bundle": "~1.1",
