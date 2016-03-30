@@ -32,6 +32,9 @@ class BlockHelper
         }
 
         if ($locale === null) {
+            if ($this->request === null) {
+                return;
+            }
             $locale = $this->request->getLocale();
         }
 
