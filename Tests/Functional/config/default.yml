@@ -9,12 +9,12 @@ doctrine:
         connections:
             default:
                 driver: pdo_mysql
-                host: '%database_host%'
+                host: '127.0.0.1'
                 unix_socket: null
-                port: '%database_port%'
-                dbname: '%database_name%'
-                user: '%database_user%'
-                password: '%database_password%'
+                port: null
+                dbname: 'cms_test'
+                user: 'travis'
+                password: ~
                 charset: utf8mb4
             default_table_options:
                 charset: utf8mb4
