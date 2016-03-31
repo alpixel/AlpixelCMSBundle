@@ -1,0 +1,21 @@
+admin_user_login:
+    resource: '@AlpixelUserBundle/Resources/config/routing.yml'
+    options: { i18n: false }
+
+alpixel_media:
+    resource: '@AlpixelMediaBundle/Resources/config/routing.yml'
+
+sonata_admin_home:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix: "admin"
+    options: { i18n: false }
+
+sonata_admin_base:
+    resource: .
+    type: sonata_admin
+    prefix: "admin"
+    options: { i18n: false }
+
+#SHOULD BE LAST
+alpixel_cms:
+    resource: '@AlpixelCMSBundle/Resources/config/routing.yml'
