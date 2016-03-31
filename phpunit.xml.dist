@@ -18,4 +18,10 @@
             </exclude>
         </whitelist>
     </filter>
+
+    <groups>
+        <exclude>
+            <group>performance</group>
+        </exclude>
+    </groups>
 </phpunit>
