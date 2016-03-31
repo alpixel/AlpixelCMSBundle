@@ -68,7 +68,7 @@
                             </h4>
                         </div>
                         <div class="box-body container-fluid">
-                            {% for language in cms_languages %}
+                            {% for language in alpixel_cms_languages %}
                                 {% if language != object.locale %}
                                     {% set translation = alpixel_cms_get_translation(object, language) %}
                                     {% if translation is not null %}

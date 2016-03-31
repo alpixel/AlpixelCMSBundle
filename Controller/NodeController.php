@@ -68,7 +68,7 @@ class NodeController extends Controller
 
         if ($node !== null && $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret'))) {
             $content = $this->renderView('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
-                'link' => $this->generateUrl('cms_node_editContent', ['id' => $node->getId()]),
+                'link' => $this->generateUrl('alpixel_admin_cms_node_editContent', ['id' => $node->getId()]),
             ]);
             $response->setContent($content);
         }
