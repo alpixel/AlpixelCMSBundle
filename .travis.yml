@@ -28,9 +28,6 @@ matrix:
         - php: 5.6
           env: SYMFONY_VERSION=2.7.*
 
-before_script:
-  - mysql -e 'create database cms_test;'
-
 before_install:
     - echo "memory_limit=520M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
     - travis_retry composer self-update
