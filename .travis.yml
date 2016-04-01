@@ -37,9 +37,9 @@ before_install:
 
 install:
   - composer install
-  - php app/console doctrine:database:create --env=test
-  - php app/console doctrine:schema:create --env=test
-  - php app/console doctrine:fixtures:load -n --env=test
+  - php Tests/Functional/console doctrine:database:create --env=test
+  - php Tests/Functional/console doctrine:schema:create --env=test
+  - php Tests/Functional/console doctrine:fixtures:load -n --env=test
 
 script: phpunit --coverage-text
 

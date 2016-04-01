@@ -56,7 +56,7 @@ services:
             - "@request_stack"
             - "@security.token_storage"
             - "@security.authorization_checker"
-            - "%kernel.secret%"
+            - "%secret%"
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.response' }
 

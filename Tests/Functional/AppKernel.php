@@ -50,6 +50,7 @@ class AppKernel extends Kernel
             new \Sonata\BlockBundle\SonataBlockBundle(),
             new \Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new \Pix\SortableBehaviorBundle\PixSortableBehaviorBundle(),
+            new \Knp\Bundle\MenuBundle\KnpMenuBundle(),
 
             //i18n
             new \Lunetics\LocaleBundle\LuneticsLocaleBundle(),
@@ -70,6 +71,8 @@ class AppKernel extends Kernel
             //ALPIXEL media bundle
             new \Alpixel\Bundle\MediaBundle\AlpixelMediaBundle(),
             new \Liip\ImagineBundle\LiipImagineBundle(),
+
+            new \Alpixel\Bundle\CMSBundle\Tests\Functional\Fixture\TestBundle\TestBundle(),
         );
     }
 

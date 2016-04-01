@@ -1,8 +1,17 @@
+parameters:
+    admin_path: 'admin'
+    secret: 'test'
+    db_user: travis
+    db_pass: ~
+    # db_user: root
+    # db_pass: root
+
 imports:
     - { resource: framework.yml }
     - { resource: twig.yml }
     - { resource: bundle.yml }
     - { resource: sonata.yml }
+    - { resource: '@AlpixelUserBundle/Resources/config/security.yml' }
 
 doctrine:
     dbal:
@@ -13,8 +22,8 @@ doctrine:
                 unix_socket: null
                 port: null
                 dbname: 'cms_test'
-                user: 'travis'
-                password: ~
+                user: '%db_user%'
+                password: '%db_pass%'
                 charset: utf8mb4
             default_table_options:
                 charset: utf8mb4
@@ -63,6 +72,12 @@ lunetics_locale:
         - session
         - browser
 
+knp_menu:
+    twig:
+        template: 'AlpixelMenuBundle:blocks:menu.html.twig'
+    templating: false
+    default_renderer: twig
+
 httplug:
     classes:
         client: Http\Adapter\Guzzle6\Client
@@ -78,7 +93,9 @@ pix_sortable_behavior:
 fos_user:
     db_driver: orm
     firewall_name: main
-    user_class: "Alpixel\\Bundle\\UserBundle\\Entity\\User"
+    user_class: "Alpixel\\Bundle\\CMSBundle\\Tests\\Functional\\Fixture\\TestBundle\\Entity\\User"
+    service:
+        mailer: fos_user.mailer.noop
 
 alpixel_user:
     default_login_background_image: 'not-an-image.jpg'
