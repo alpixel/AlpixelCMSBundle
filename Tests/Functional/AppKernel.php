@@ -83,7 +83,7 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/AlpixelCMSBundle';
+        return sys_get_temp_dir().'/TestBundle';
     }
 
     public function serialize()

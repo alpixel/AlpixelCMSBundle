@@ -1,10 +1,10 @@
 parameters:
     admin_path: 'admin'
     secret: 'test'
-    db_user: travis
-    db_pass: ~
-    # db_user: root
-    # db_pass: root
+    # db_user: travis
+    # db_pass: ~
+    db_user: root
+    db_pass: root
 
 imports:
     - { resource: framework.yml }
