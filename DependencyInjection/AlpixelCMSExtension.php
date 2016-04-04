@@ -26,7 +26,7 @@ class AlpixelCMSExtension extends Extension
             }
 
             if (empty($contentType['description'])) {
-                throw new InvalidConfigurationException('Content type '.$name.' shoud have a description');
+                @trigger_error('Content type '.$name.' shoud have a description', E_USER_WARNING);
             }
 
             if (!isset($contentType['class']) || empty($contentType['class']) || !class_exists($contentType['class'])) {
