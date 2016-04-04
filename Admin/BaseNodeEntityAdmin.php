@@ -28,7 +28,7 @@ class BaseNodeEntityAdmin extends Admin
             ])
             ->add('content', 'ckeditor', [
                 'label'       => 'Contenu',
-                'required'    => true,
+                'required'    => false,
                 'config_name' => 'admin',
             ])
             ->add('locale', 'choice', [
