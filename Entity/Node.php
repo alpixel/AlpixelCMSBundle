@@ -86,7 +86,7 @@ abstract class Node implements MetaTagPlaceholderInterface, TranslatableInterfac
     protected $position;
 
     /**
-     * @Gedmo\Slug(fields={"title"}, updatable=false, separator="_")
+     * @Gedmo\Slug(fields={"title"}, updatable=false, separator="-")
      * @ORM\Column(length=128, unique=true)
      **/
     protected $slug;
