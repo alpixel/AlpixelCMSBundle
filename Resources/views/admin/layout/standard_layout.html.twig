@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+{% block side_bar_after_nav_content %}
+    <a href="{{base_url}}" rel="noreferrer" target="_blank">retour au site</a>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        var BASE_URL = '{{base_url}}';
+    </script>
+    {{ parent() }}
+    <script src="{{ asset('bundles/alpixelcms/js/collection_ckeditor_fix.js') }}"></script>
+{% endblock %}
