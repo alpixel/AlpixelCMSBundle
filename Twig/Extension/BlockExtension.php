@@ -13,6 +13,7 @@ class BlockExtension extends \Twig_Extension
 
     /**
      * BlockExtension constructor.
+     *
      * @param BlockHelper $blockHelper
      * @param $container
      * @param $blockConfiguration
@@ -39,7 +40,7 @@ class BlockExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('cms_block', [$this, 'displayBlock'], [
-                'is_safe' => ['html'],
+                'is_safe'           => ['html'],
                 'needs_environment' => true,
             ]),
         ];
@@ -48,6 +49,7 @@ class BlockExtension extends \Twig_Extension
     /**
      * @param \Twig_Environment $twig
      * @param $blockName
+     *
      * @return string|void
      */
     public function displayBlock(\Twig_Environment $twig, $blockName)
