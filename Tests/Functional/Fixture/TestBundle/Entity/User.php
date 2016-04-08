@@ -2,9 +2,8 @@
 
 namespace Alpixel\Bundle\CMSBundle\Tests\Functional\Fixture\TestBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Alpixel\Bundle\UserBundle\Entity\User as BaseUser;
-
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
@@ -12,9 +11,8 @@ use Alpixel\Bundle\UserBundle\Entity\User as BaseUser;
  */
 class User extends BaseUser
 {
-
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="user_id", type="integer")
      * @ORM\Id
@@ -22,11 +20,10 @@ class User extends BaseUser
      */
     protected $id;
 
-
     /**
      * Gets the value of id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -36,7 +33,7 @@ class User extends BaseUser
     /**
      * Sets the value of id.
      *
-     * @param integer $id the id
+     * @param int $id the id
      *
      * @return self
      */

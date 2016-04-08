@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Alpixel\Bundle\CMSBundle\Tests\Functional;
-
 
 /**
  * @author Benjamin HUBERT <benjamin@alpixel.fr>
