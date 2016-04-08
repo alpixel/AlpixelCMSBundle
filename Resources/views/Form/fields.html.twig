@@ -1,0 +1,16 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block date_time_single_widget %}
+    {% spaceless %}
+        <div class="row">
+            <div class="col-xs-6">
+                {{ form_errors(form.children.date) }}
+                {{ form_widget(form.children.date) }}
+            </div>
+            <div class="col-xs-6">
+                {{ form_errors(form.children.time) }}
+                {{ form_widget(form.children.time) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock  %}

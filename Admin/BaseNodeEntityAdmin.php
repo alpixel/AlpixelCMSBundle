@@ -2,6 +2,7 @@
 
 namespace Alpixel\Bundle\CMSBundle\Admin;
 
+use Alpixel\Bundle\CMSBundle\Form\DateTimeSingleType;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Form\FormMapper;
 
@@ -18,7 +19,11 @@ class BaseNodeEntityAdmin extends Admin
                 $realLocales[$val] = $val;
             }
         } else {
-            $realLocales['fr'] = 'fr';
+            if (!$container->hasParameter('default_locale')) {
+                throw new \LogicException('You must set the default_locale parameter');
+            }
+            $locale = $container->getParameter('default_locale');
+            $realLocales[$locale] = $locale;
         }
 
         $formMapper
@@ -35,6 +40,9 @@ class BaseNodeEntityAdmin extends Admin
                 'label'    => 'Langue du contenu',
                 'choices'  => $realLocales,
                 'required' => true,
+            ])
+            ->add('dateCreated', DateTimeSingleType::class, [
+                'label'    => 'Date de création',
             ])
             ->add('published', 'checkbox', [
                 'label'    => 'Publié',
