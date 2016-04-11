@@ -37,9 +37,9 @@ class BaseAdmin extends Admin
             return $this->cmsTypes;
         }
 
-        $container       = $this->getConfigurationPool()->getContainer();
-        $types           = $container->getParameter('alpixel_cms.content_types');
-        $this->cmsTypes  = [];
+        $container = $this->getConfigurationPool()->getContainer();
+        $types = $container->getParameter('alpixel_cms.content_types');
+        $this->cmsTypes = [];
         foreach ($types as $key => $array) {
             $this->cmsTypes[$array['class']] = $array['title'];
         }
@@ -53,10 +53,10 @@ class BaseAdmin extends Admin
             return $this->cmsEntityTypes;
         }
 
-        $cmsTypes             = $this->getCMSTypes();
+        $cmsTypes = $this->getCMSTypes();
         $this->cmsEntityTypes = [];
         foreach ($cmsTypes as $class => $title) {
-            $type = lcfirst(substr($class, (strrpos($class, '\\') + 1) , strlen($class)));
+            $type = lcfirst(substr($class, (strrpos($class, '\\') + 1), strlen($class)));
             $this->cmsEntityTypes[$type] = $title;
         }
 
