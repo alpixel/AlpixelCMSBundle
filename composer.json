@@ -9,6 +9,13 @@
     "symfony",
     "bundle"
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/alpixel/SonataAdminBundle"
+
+    }
+  ],
   "homepage": "https://www.alpixel.fr",
   "license": "MIT",
   "authors": [
