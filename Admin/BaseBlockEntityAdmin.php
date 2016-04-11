@@ -2,34 +2,32 @@
 
 namespace Alpixel\Bundle\CMSBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * @author Benjamin HUBERT <benjamin@alpixel.fr>
  */
-class BaseBlockEntityAdmin extends Admin
+class BaseBlockEntityAdmin extends BaseAdmin
 {
+    protected $baseRouteName = 'alpixel_admin_cms_block';
+    protected $baseRoutePattern = 'block';
+    protected $datagridValues = [
+        '_page'       => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by'    => 'dateUpdated',
+    ];
+
+
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['edit', 'delete']);
+        $collection->clearExcept(['list', 'delete', 'edit']);
+        $collection->add('editContent', $this->getRouterIdParameter().'/edit/block');
     }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
-        $container = $this->getConfigurationPool()->getContainer();
-
-        $realLocales = [];
-        if ($container->hasParameter('lunetics_locale.allowed_locales')) {
-            $locales = $container->getParameter('lunetics_locale.allowed_locales');
-            foreach ($locales as $val) {
-                $realLocales[$val] = $val;
-            }
-        } else {
-            $realLocales['fr'] = 'fr';
-        }
-
         $formMapper
             ->add('content', 'ckeditor', [
                 'label'       => 'Contenu',
@@ -37,5 +35,34 @@ class BaseBlockEntityAdmin extends Admin
                 'config_name' => 'admin',
             ])
             ->end();
+    }
+
+    /**
+     * @param \Sonata\AdminBundle\Datagrid\ListMapper $listMapper
+     *
+     * @return void
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('id')
+            ->add('locale', null, [
+                'label' => 'Langue',
+            ])
+            ->add('name', null, [
+                'label' => 'Nom',
+            ])
+            ->add('dateCreated', null, [
+                'label' => 'Date de création',
+            ])
+            ->add('dateUpdated', null, [
+                'label' => 'Date d\'édition',
+            ])
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'editContent' => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_edit.html.twig'],
+                    'delete'      => [],
+                ],
+            ]);
     }
 }

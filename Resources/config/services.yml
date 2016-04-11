@@ -69,7 +69,7 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
 
     alpixel_cms.admin.node:
-        class: Alpixel\Bundle\CMSBundle\Admin\AdminNode
+        class: Alpixel\Bundle\CMSBundle\Admin\BaseNodeEntityAdmin
         arguments:
             - ~
             - Alpixel\Bundle\CMSBundle\Entity\Node
@@ -80,7 +80,7 @@ services:
             - [ setTemplate, [layout, AlpixelCMSBundle:admin:page/base.html.twig]]
 
     alpixel_cms.admin.block:
-        class: Alpixel\Bundle\CMSBundle\Admin\AdminBlock
+        class: Alpixel\Bundle\CMSBundle\Admin\BaseBlockEntityAdmin
         arguments:
             - ~
             - Alpixel\Bundle\CMSBundle\Entity\Block

@@ -29,6 +29,9 @@
                         </li>
                     </ul>
                 {% endif %}
+                {% if _list_filters_actions is not empty %}
+                    {{ _list_filters_actions|raw }}
+                {% endif %}
             </div>
         </nav>
     {% endif %}
