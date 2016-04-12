@@ -11,6 +11,8 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 
 class BaseNodeEntityAdmin extends BaseAdmin
 {
+    protected $baseRouteName = 'alpixel_admin_cms_node';
+    protected $baseRoutePattern = 'node';
     protected $datagridValues = [
         '_page'       => 1,
         '_sort_order' => 'DESC',
@@ -92,12 +94,12 @@ class BaseNodeEntityAdmin extends BaseAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $container = $this->getConfigurationPool()->getContainer();
+        $container     = $this->getConfigurationPool()->getContainer();
         $entityManager = $container->get('doctrine.orm.default_entity_manager');
 
         $datagridMapper
             ->add('locale', 'doctrine_orm_callback', [
-                'label'    => 'Langue',
+                'label'   => 'Langue',
                 'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
                     if (!$value['value']) {
                         return false;
