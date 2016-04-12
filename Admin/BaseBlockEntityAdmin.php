@@ -19,7 +19,6 @@ class BaseBlockEntityAdmin extends BaseAdmin
         '_sort_by'    => 'dateUpdated',
     ];
 
-
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->clearExcept(['list', 'delete', 'edit']);
