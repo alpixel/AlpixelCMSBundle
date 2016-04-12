@@ -25,7 +25,7 @@ class BaseNodeEntityAdmin extends BaseAdmin
         $collection->add('createTranslation', $this->getRouterIdParameter().'/translate');
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureMainFields(FormMapper $formMapper)
     {
         $formMapper
             ->add('title', null, [
@@ -33,10 +33,16 @@ class BaseNodeEntityAdmin extends BaseAdmin
                 'required' => true,
             ])
             ->add('content', 'ckeditor', [
-                'label'       => 'Contenu',
-                'required'    => false,
+                'label' => 'Contenu',
+                'required' => false,
                 'config_name' => 'admin',
-            ])
+            ]);
+    }
+
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        self::configureMainFields($formMapper);
+        $formMapper
             ->add('locale', 'choice', [
                 'label'    => 'Langue du contenu',
                 'choices'  => $this->getRealLocales(),
