@@ -11,7 +11,7 @@ abstract class BaseNodeEntityAdmin extends BaseAdmin
 {
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['add', 'edit', 'delete']);
+        $collection->clearExcept(['create', 'edit', 'delete']);
         $collection->add('see', $this->getRouterIdParameter().'/see');
         $collection->add('createTranslation', $this->getRouterIdParameter().'/translate');
     }
@@ -28,6 +28,14 @@ abstract class BaseNodeEntityAdmin extends BaseAdmin
                 'required'    => false,
                 'config_name' => 'admin',
             ]);
+    }
+
+    public function getNewInstance()
+    {
+        $instance = parent::getNewInstance();
+        $instance->setDateCreated(new \DateTime());
+
+        return $instance;
     }
 
     public function buildBreadcrumbs($action, MenuItemInterface $menu = null)

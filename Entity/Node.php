@@ -100,8 +100,8 @@ abstract class Node implements MetaTagPlaceholderInterface, TranslatableInterfac
     public function __clone()
     {
         $this->id = null;
-        $this->dateCreated = new \DateTime();
-        $this->dateUpdated = new \DateTime();
+        $this->dateCreated = null;
+        $this->dateUpdated = null;
         $this->position = null;
         $this->slug = null;
     }

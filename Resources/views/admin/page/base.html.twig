@@ -18,17 +18,15 @@
                     {% endif %}
                 </div>
 
-                {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown sonata-actions">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#" id="cms-content-type"><i class="fa fa-plus-circle"></i>Ajouter une nouvelle page</a></li>
-                                {# {{ _actions|raw }} #}
-                            </ul>
-                        </li>
-                    </ul>
-                {% endif %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown sonata-actions">
+                        <a href="#" id="cms-content-type">
+                            <i class="fa fa-plus"></i>
+                            Ajouter une nouvelle page
+                        </a>
+                    </li>
+                </ul>
+
                 {% if _list_filters_actions is not empty %}
                     {{ _list_filters_actions|raw }}
                 {% endif %}
@@ -41,18 +39,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Nouvelle page</h4>
+                    <h4 class="modal-title">Création d'une nouvelle page</h4>
                 </div>
                 <div class="modal-body">
                     {% if cmsContentType is defined %}
-                        {% for type in cmsContentType %}
+                        {% for type in admin.getCMSTypes() %}
                             {% if type.admin is defined and type.admin.hasRoute('create') %}
                                 <p>
-                                    <strong>{{type.title}}</strong>
+                                    <strong>{{ type.title }}</strong>
                                     <br>
-                                    {{type.description}}
+                                    {{ type.description }}
                                     {% if type.admin is defined %}
-                                        <a href="{{type.admin.generateUrl('create')}}" class="right btn btn-success pull-right cms-link-content">Créer</a>
+                                        <a href="{{ type.admin.generateUrl('create') }}"
+                                           class="right btn btn-success pull-right cms-link-content">Créer</a>
                                     {% endif %}
                                 </p>
                                 <br>
@@ -72,8 +71,8 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $(document).ready(function(){
-            $("#cms-content-type").click(function(){
+        $(document).ready(function () {
+            $("#cms-content-type").click(function () {
                 $("#cmsbundle-create-content-type-show").modal('show');
             });
         });
