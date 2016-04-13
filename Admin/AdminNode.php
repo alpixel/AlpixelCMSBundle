@@ -23,6 +23,7 @@ class AdminNode extends BaseAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->clearExcept(['list']);
+        $collection->add('forwardEdit');
     }
 
     /**

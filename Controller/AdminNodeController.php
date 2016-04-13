@@ -9,6 +9,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminNodeController extends Controller
 {
+    public function forwardEditAction(Request $request)
+    {
+        $entityManager = $this->get('doctrine.orm.entity_manager');
+
+        $node = $entityManager->getRepository('AlpixelCMSBundle:Node')
+            ->find($request->get('id'));
+
+        if ($node !== null) {
+            $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($node));
+            if($instanceAdmin !== null) {
+                return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $request->get('id')]));
+            }
+        }
+
+        $instanceAdmin = $this->admin->getConfigurationPool()->getInstance('alpixel_cms.admin.node');
+        return $this->redirect($instanceAdmin->generateUrl('list'));
+    }
+
     public function createTranslationAction(Request $request)
     {
         $object = $this->admin->getSubject();
@@ -73,11 +91,11 @@ class AdminNodeController extends Controller
         $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
         return $this->render($this->admin->getTemplate('list'), [
-            'action'         => 'list',
+            'action' => 'list',
             'cmsContentType' => $cmsContentType,
-            'form'           => $formView,
-            'datagrid'       => $datagrid,
-            'csrf_token'     => $this->getCsrfToken('sonata.batch'),
+            'form' => $formView,
+            'datagrid' => $datagrid,
+            'csrf_token' => $this->getCsrfToken('sonata.batch'),
         ], null, $request);
     }
 
