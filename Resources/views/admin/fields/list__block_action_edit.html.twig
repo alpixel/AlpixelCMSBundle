@@ -1,7 +1,7 @@
 {% set contentTypes = admin.getBlockTypes() %}
 {% for key,contentType in contentTypes %}
-    {% if object|get_class == contentType.class and key ==  object.slug %}
-        <a class="btn btn-sm btn-default edit_link" href="{{ admin.generateObjectUrl('edit', object) }}">
+    {% if object|get_class == contentType.class and key == object.slug %}
+        <a class="btn btn-sm btn-default edit_link" href="{{ contentType.admin.generateObjectUrl('edit', object) }}">
             <i class="glyphicon glyphicon-pencil"></i> Modifier
         </a>
     {% endif %}
