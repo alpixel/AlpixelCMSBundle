@@ -1,3 +1,8 @@
-<a class="btn btn-sm btn-default edit_link" href="{{ admin.generateObjectUrl('editContent', object) }}">
-    <i class="glyphicon glyphicon-edit"></i> Modifier
-</a>
+{% set contentTypes = admin.getContentTypes() %}
+{% for key,contentType in contentTypes %}
+    {% if key == object.type and contentType.admin.hasRoute('edit') %}
+        <a class="btn btn-sm btn-default edit_link" href="{{ contentType.admin.generateObjectUrl('edit', object) }}">
+            <i class="glyphicon glyphicon-pencil"></i> Modifier
+        </a>
+    {% endif %}
+{% endfor %}

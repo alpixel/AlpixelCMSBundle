@@ -3,6 +3,7 @@
 namespace Alpixel\Bundle\CMSBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -98,5 +99,47 @@ class AdminBlockController extends Controller
         $this->_cmsContentParameter = $this->container->getParameter($this->_cmsParameter);
 
         return $this->_cmsContentParameter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function redirectTo($object)
+    {
+        $request = $this->getRequest();
+
+        $url = $backToNodeList = false;
+        $instanceAdmin = $this->admin->getConfigurationPool()->getInstance('alpixel_cms.admin.block');
+
+        if (null !== $request->get('btn_update_and_list') || null !== $request->get('btn_create_and_list')) {
+            $backToNodeList = true;
+        }
+
+        if (null !== $request->get('btn_create_and_create')) {
+            $params = [];
+            if ($this->admin->hasActiveSubClass()) {
+                $params['subclass'] = $request->get('subclass');
+            }
+            $url = $this->admin->generateUrl('create', $params);
+        }
+
+        if ($this->getRestMethod() === 'DELETE') {
+            $backToNodeList = true;
+        }
+
+        if (!$url) {
+            foreach (['edit', 'show'] as $route) {
+                if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route), $object)) {
+                    $url = $this->admin->generateObjectUrl($route, $object);
+                    break;
+                }
+            }
+        }
+
+        if ($backToNodeList || !$url) {
+            $url = $instanceAdmin->generateUrl('list');
+        }
+
+        return new RedirectResponse($url);
     }
 }

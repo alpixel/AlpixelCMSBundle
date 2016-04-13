@@ -1,3 +1,9 @@
-<a class="btn btn-sm btn-default edit_link" href="{{path('alpixel_cms', {_locale: object.locale, slug: object.slug})}}" target='_blank'>
-    <i class="glyphicon glyphicon-eye-open"></i> Voir
-</a>
+{% set contentTypes = admin.getContentTypes() %}
+{% for key,contentType in contentTypes %}
+    {% if key == object.type and contentType.admin.hasRoute('see') %}
+        <a class="btn btn-sm btn-info edit_link"
+           href="{{ contentType.admin.generateObjectUrl('see', object) }}" target='_blank'>
+            <i class="glyphicon glyphicon-eye-open"></i> Voir
+        </a>
+    {% endif %}
+{% endfor %}
