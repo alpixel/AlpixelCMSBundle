@@ -40,7 +40,7 @@ class AdminNodeController extends Controller
 
         foreach ($contentTypes as $key => $contentType) {
             if ($key === $object->getType()) {
-                if (isset($contentTypes['controller'])) {
+                if (isset($contentType['controller'])) {
                     return $this->redirectToRoute('alpixel_cms', ['slug' => $object->getSlug()]);
                 } elseif ($contentType['admin'] !== null && $contentType['admin']->showCustomURL($object) !== null) {
                     return $this->redirect($contentType['admin']->showCustomURL($object));
