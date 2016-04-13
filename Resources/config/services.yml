@@ -1,4 +1,25 @@
 services:
+
+    alpixel_cms.twig.extension.text:
+        class: Alpixel\Bundle\CMSBundle\Twig\Extension\TextExtension
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.debug:
+        class: Twig_Extension_Debug
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.date:
+        class: Twig_Extensions_Extension_Date
+        tags:
+            - { name: twig.extension }
+
     alpixel_cms.twig.extension.cms:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\CMSExtension
         arguments:
@@ -69,7 +90,7 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
 
     alpixel_cms.admin.node:
-        class: Alpixel\Bundle\CMSBundle\Admin\BaseNodeEntityAdmin
+        class: Alpixel\Bundle\CMSBundle\Admin\AdminNode
         arguments:
             - ~
             - Alpixel\Bundle\CMSBundle\Entity\Node
@@ -80,7 +101,7 @@ services:
             - [ setTemplate, [layout, AlpixelCMSBundle:admin:page/base.html.twig]]
 
     alpixel_cms.admin.block:
-        class: Alpixel\Bundle\CMSBundle\Admin\BaseBlockEntityAdmin
+        class: Alpixel\Bundle\CMSBundle\Admin\AdminBlock
         arguments:
             - ~
             - Alpixel\Bundle\CMSBundle\Entity\Block

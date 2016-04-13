@@ -80,7 +80,7 @@
                                         {% set translationLink = admin.generateUrl('edit', {id: translation.id}) %}
                                     {% else %}
                                         {% set translationLabel = "Traduire en" %}
-                                        {% set translationLink = sonata_admin.url('alpixel_cms.admin.node', 'createTranslation', {
+                                        {% set translationLink = admin.generateUrl('createTranslation', {
                                             id: object.id,
                                             locale: language
                                         }) %}

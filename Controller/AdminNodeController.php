@@ -4,27 +4,11 @@ namespace Alpixel\Bundle\CMSBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AdminNodeController extends Controller
 {
-    public function editContentAction()
-    {
-        $object = $this->admin->getSubject();
-
-        if (!$object) {
-            throw new NotFoundHttpException(sprintf('unable to find the object'));
-        }
-
-        $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($object));
-        if ($instanceAdmin !== null) {
-            return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $object->getId()]));
-        }
-
-        throw new NotFoundHttpException(sprintf('unable to find a class admin for the %s class', get_class($object)));
-    }
-
     public function createTranslationAction(Request $request)
     {
         $object = $this->admin->getSubject();
@@ -36,17 +20,37 @@ class AdminNodeController extends Controller
 
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $translation = $entityManager->getRepository('AlpixelCMSBundle:Node')
-                                     ->findTranslation($object, $locale);
+            ->findTranslation($object, $locale);
 
         if ($translation !== null) {
-            return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translation->getId()]));
+            return $this->redirect($this->admin->generateUrl('edit', ['id' => $translation->getId()]));
         } else {
             $translatedContent = $this->get('alpixel_cms.helper.cms')->createTranslation($object, $locale);
             $entityManager->persist($translatedContent);
             $entityManager->flush();
 
-            return $this->redirect($this->admin->generateUrl('editContent', ['id' => $translatedContent->getId()]));
+            return $this->redirect($this->admin->generateUrl('edit', ['id' => $translatedContent->getId()]));
         }
+    }
+
+    public function seeAction(Request $request)
+    {
+        $object = $this->admin->getSubject();
+        $contentTypes = $this->admin->getCMSTypes();
+
+        foreach ($contentTypes as $key => $contentType) {
+            if ($key === $object->getType()) {
+                if (isset($contentTypes['controller'])) {
+                    return $this->redirectToRoute('alpixel_cms', ['slug' => $object->getSlug()]);
+                } elseif ($contentType['admin'] !== null && $contentType['admin']->showCustomURL($object) !== null) {
+                    return $this->redirect($contentType['admin']->showCustomURL($object));
+                }
+            }
+        }
+
+        $this->get('session')->getFlashBag()->add('warning', 'Impossible de trouver une adresse pour cette page');
+
+        return $this->redirectTo($object);
     }
 
     public function listAction(Request $request = null)
@@ -63,16 +67,6 @@ class AdminNodeController extends Controller
         }
 
         $cmsContentType = $this->container->getParameter('alpixel_cms.content_types');
-
-        foreach ($cmsContentType as $key => $value) {
-            if ($this->checkRolesCMS($value)) {
-                if ($instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass($value['class'])) {
-                    $cmsContentType[$key]['admin'] = $instanceAdmin;
-                }
-            }
-        }
-
-        // set the theme for the current Admin Form
         $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
         return $this->render($this->admin->getTemplate('list'), [
@@ -84,20 +78,45 @@ class AdminNodeController extends Controller
         ], null, $request);
     }
 
-    protected function checkRolesCMS(array $role)
+    /**
+     * {@inheritdoc}
+     */
+    protected function redirectTo($object)
     {
-        $user = $this->getUser();
+        $request = $this->getRequest();
 
-        if (!$user) {
-            throw new NotFoundHttpException(sprintf('unable to find user'));
+        $url = $backToNodeList = false;
+        $instanceAdmin = $this->admin->getConfigurationPool()->getInstance('alpixel_cms.admin.node');
+
+        if (null !== $request->get('btn_update_and_list') || null !== $request->get('btn_create_and_list')) {
+            $backToNodeList = true;
         }
 
-        $userRole = $user->getRoles()[0];
-
-        if (!array_key_exists('role', $role) || in_array($userRole, $role['role'])) {
-            return true;
+        if (null !== $request->get('btn_create_and_create')) {
+            $params = [];
+            if ($this->admin->hasActiveSubClass()) {
+                $params['subclass'] = $request->get('subclass');
+            }
+            $url = $this->admin->generateUrl('create', $params);
         }
 
-        return false;
+        if ($this->getRestMethod() === 'DELETE') {
+            $backToNodeList = true;
+        }
+
+        if (!$url) {
+            foreach (['edit', 'show'] as $route) {
+                if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route), $object)) {
+                    $url = $this->admin->generateObjectUrl($route, $object);
+                    break;
+                }
+            }
+        }
+
+        if ($backToNodeList || !$url) {
+            $url = $instanceAdmin->generateUrl('list');
+        }
+
+        return new RedirectResponse($url);
     }
 }
