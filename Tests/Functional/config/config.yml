@@ -3,6 +3,10 @@ parameters:
     secret: 'test'
     db_user: travis
     db_pass: ~
+    url_production: "http://dumb.dumber"
+    theme: 'default'
+    default_locale: 'fr'
+    enabled_locales: ['fr', 'de']
     # db_user: root
     # db_pass: root
 
@@ -31,38 +35,6 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-
-jms_translation:
-    locales: ['fr', 'en', 'de']
-    source_language: 'fr'
-    configs:
-        app:
-            dirs:
-                - '%kernel.root_dir%'
-            output_dir: '%kernel.root_dir%/Resources/translations'
-            output_format: 'xlf'
-            ignored_domains:
-                - SonataAdminBundle
-                - AlpixelCMSBundle
-            excluded_names:
-                - '*TestCase.php'
-                - '*Test.php'
-                - '*Admin.php'
-                - 'Admin*.php'
-            excluded_dirs:
-                - cache
-                - data
-                - logs
-            extractors:
-                - jms_i18n_routing
-
-jms_i18n_routing:
-    default_locale: 'fr'
-    locales: ['fr', 'en', 'de']
-    strategy: prefix
-
-lunetics_locale:
-    allowed_locales: ['fr', 'en', 'de']
 
 knp_menu:
     twig:
