@@ -4,11 +4,13 @@ namespace Alpixel\Bundle\CMSBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Yaml\Parser;
 
-class AlpixelCMSExtension extends Extension
+class AlpixelCMSExtension extends Extension implements PrependExtensionInterface
 {
     private $_blockDefaultClass = 'Alpixel\Bundle\CMSBundle\Entity\Block';
 
@@ -22,22 +24,22 @@ class AlpixelCMSExtension extends Extension
 
         foreach ($config['content_types'] as $name => $contentType) {
             if (empty($contentType['title'])) {
-                throw new InvalidConfigurationException('Content type '.$name.' shoud have a title');
+                throw new InvalidConfigurationException('Content type ' . $name . ' shoud have a title');
             }
 
             if (empty($contentType['description'])) {
-                @trigger_error('Content type '.$name.' shoud have a description', E_USER_WARNING);
+                @trigger_error('Content type ' . $name . ' shoud have a description', E_USER_WARNING);
             }
 
             if (!isset($contentType['class']) || empty($contentType['class']) || !class_exists($contentType['class'])) {
-                throw new InvalidConfigurationException('CMS '.$contentType['class'].' can\'t be found');
+                throw new InvalidConfigurationException('CMS ' . $contentType['class'] . ' can\'t be found');
             }
         }
         $container->setParameter('alpixel_cms.content_types', $config['content_types']);
 
         foreach ($config['blocks'] as $name => $contentType) {
             if (empty($contentType['title'])) {
-                throw new InvalidConfigurationException('Block '.$name.' shoud have a title');
+                throw new InvalidConfigurationException('Block ' . $name . ' shoud have a title');
             }
 
             if ((!isset($contentType['class']) || empty($contentType['class'])) && class_exists($this->_blockDefaultClass)) {
@@ -45,13 +47,25 @@ class AlpixelCMSExtension extends Extension
             }
 
             if (isset($contentType['class']) && !class_exists($contentType['class'])) {
-                throw new InvalidConfigurationException('Block '.$contentType['class'].' can\'t be found');
+                throw new InvalidConfigurationException('Block ' . $contentType['class'] . ' can\'t be found');
             }
         }
         $container->setParameter('alpixel_cms.blocks', $config['blocks']);
         $container->setParameter('alpixel_cms.exception_template', $config['exception_template']);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+    }
+
+
+    public function prepend(ContainerBuilder $container)
+    {
+        $parser = new Parser();
+        $config = $parser->parse(file_get_contents(__DIR__ . '/../Resources/config/config.yml'));
+
+        $container->prependExtensionConfig('lunetics_locale', $config['lunetics_locale']);
+        $container->prependExtensionConfig('jms_translation', $config['jms_translation']);
+        $container->prependExtensionConfig('jms_i18n_routing', $config['jms_i18n_routing']);
+        $container->prependExtensionConfig('twig', $config['twig']);
     }
 }

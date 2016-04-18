@@ -63,14 +63,6 @@ jms_i18n_routing:
 
 lunetics_locale:
     allowed_locales: ['fr', 'en', 'de']
-    switcher:
-        show_current_locale: true
-        template: 'block/language_switcher.html.twig'
-    guessing_order:
-        - query
-        - router
-        - session
-        - browser
 
 knp_menu:
     twig:

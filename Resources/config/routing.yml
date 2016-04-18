@@ -1,5 +1,6 @@
 alpixel_cms:
     path: /{slug}
-    defaults: { _controller: AlpixelCMSBundle:Node:dispatch }
+    defaults:
+      _controller: AlpixelCMSBundle:Node:dispatch
     requirements:
         url: ".+"
