@@ -50,6 +50,21 @@ class NodeController extends Controller
                     throw $e;
                 }
             }
+        } else {
+            //Trying to find another node with this slug, in another language
+            $node = $entityManager->getRepository('AlpixelCMSBundle:Node')
+                ->findOnePublishedBySlug($slug);
+
+            if ($node !== null) {
+                $translation = $entityManager->getRepository('AlpixelCMSBundle:Node')
+                    ->findTranslation($node, $request->getLocale());
+                if ($translation !== null) {
+                    return $this->redirect($this->generateUrl('alpixel_cms', [
+                        'slug' => $translation->getSlug(),
+                        '_locale' => $translation->getLocale(),
+                    ]));
+                }
+            }
         }
 
         throw $this->createNotFoundException();
