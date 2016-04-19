@@ -43,5 +43,8 @@
     "psr-4": {
       "Alpixel\\Bundle\\CMSBundle\\": ""
     }
+  },
+  "require-dev": {
+    "doctrine/doctrine-fixtures-bundle": "^2.3"
   }
 }

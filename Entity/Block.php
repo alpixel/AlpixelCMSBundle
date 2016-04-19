@@ -238,9 +238,13 @@ class Block
 
     /**
      * @param string $locale
+     *
+     * @return self
      */
     public function setLocale($locale)
     {
         $this->locale = $locale;
+
+        return $this;
     }
 }

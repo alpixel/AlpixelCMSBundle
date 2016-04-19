@@ -42,6 +42,7 @@ class AppKernel extends Kernel
             //Doctrine
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
 
             // Admin
             new \Sonata\CoreBundle\SonataCoreBundle(),

@@ -31,4 +31,12 @@ class BaseTestCase extends WebTestCase
             isset($options['config']) ? $options['config'] : 'config.yml'
         );
     }
+
+    protected function createAuthentifiedClient(array $options = array(), array $server = array())
+    {
+        $client =  parent::createClient($options, $server);
+        $this->logIn($client);
+
+        return $client;
+    }
 }
