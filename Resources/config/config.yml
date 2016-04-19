@@ -136,6 +136,11 @@ liip_imagine:
                         - 93
                     mode: outbound
 
+fos_user:
+    db_driver: orm
+    firewall_name: admin
+    user_class: Alpixel\Bundle\UserBundle\Entity\Admin
+
 sonata_admin:
     title: "Administration"
     title_logo: "/img/favicons/favicon.ico"

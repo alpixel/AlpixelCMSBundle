@@ -1,20 +1,17 @@
 parameters:
     admin_path: 'admin'
     secret: 'test'
-    db_user: travis
-    db_pass: ~
+#    db_user: travis
+#    db_pass: ~
     url_production: "http://dumb.dumber"
     theme: 'default'
     default_locale: 'fr'
     enabled_locales: ['fr', 'de']
-    # db_user: root
-    # db_pass: root
+    db_user: root
+    db_pass: root
 
 imports:
     - { resource: framework.yml }
-    - { resource: twig.yml }
-    - { resource: bundle.yml }
-    - { resource: sonata.yml }
     - { resource: '@AlpixelUserBundle/Resources/config/security.yml' }
 
 doctrine:
@@ -36,28 +33,7 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 
-knp_menu:
-    twig:
-        template: 'AlpixelMenuBundle:blocks:menu.html.twig'
-    templating: false
-    default_renderer: twig
-
-httplug:
-    classes:
-        client: Http\Adapter\Guzzle6\Client
-        message_factory: Http\Message\MessageFactory\GuzzleMessageFactory
-        uri_factory: Http\Message\UriFactory\GuzzleUriFactory
-        stream_factory: Http\Message\StreamFactory\GuzzleStreamFactory
-
-pix_sortable_behavior:
-    db_driver: orm
-    position_field:
-        default: position
-
 fos_user:
-    db_driver: orm
-    firewall_name: main
-    user_class: "Alpixel\\Bundle\\CMSBundle\\Tests\\Functional\\Fixture\\TestBundle\\Entity\\User"
     service:
         mailer: fos_user.mailer.noop
 

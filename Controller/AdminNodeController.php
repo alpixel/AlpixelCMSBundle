@@ -77,7 +77,7 @@ class AdminNodeController extends Controller
     public function listAction(Request $request = null)
     {
         if (false === $this->admin->isGranted('LIST')) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException("You can't access the list view");
         }
 
         $datagrid = $this->admin->getDatagrid();

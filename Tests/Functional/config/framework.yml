@@ -8,7 +8,13 @@ framework:
     validation:
         enabled: true
         enable_annotations: true
+    templating:
+        engines: [twig, php]
     translator:
         enabled: true
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
+
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
