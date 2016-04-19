@@ -137,7 +137,7 @@ sonata_admin:
     title_logo: /img/favicons/favicon.ico
     templates:
         layout: AlpixelCMSBundle:admin:layout/standard_layout.html.twig
-        user_block: block/user_block.html.twig
+        user_block: AlpixelCMSBundle:admin:block/user_block.html.twig
     security:
         handler: sonata.admin.security.handler.role
         information:
@@ -172,3 +172,8 @@ sonata_block:
 alpixel_cms:
     content_types: {}
     blocks: {}
+
+pix_sortable_behavior:
+    db_driver: orm
+    position_field:
+        default: position
