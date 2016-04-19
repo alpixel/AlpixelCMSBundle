@@ -72,7 +72,7 @@ ivory_ck_editor:
             allowedContent: true
             disallowedContent: 'script; *[on*]'
             extraPlugins: 'fileuploader'
-            contentsCss: 'css/wysiwyg.min.css'
+            contentsCss: ['css/admin_wysiwyg.min.css']
     styles:
         alpixel_styles:
             - { name: "Image 100% largeur", element: "img",  attributes: { class: "block"}}
