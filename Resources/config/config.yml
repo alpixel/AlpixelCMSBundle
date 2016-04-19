@@ -172,8 +172,3 @@ sonata_block:
 alpixel_cms:
     content_types: {}
     blocks: {}
-
-pix_sortable_behavior:
-    db_driver: orm
-    position_field:
-        default: position
