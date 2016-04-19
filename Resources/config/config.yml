@@ -2,7 +2,6 @@ lunetics_locale:
     allowed_locales: '%enabled_locales%'
     switcher:
         show_current_locale: true
-        template: 'block/language_switcher.html.twig'
     guessing_order:
         - query
         - router
@@ -138,13 +137,13 @@ liip_imagine:
                     mode: outbound
 
 sonata_admin:
-    title: Administration
-    title_logo: /img/favicons/favicon.ico
+    title: "Administration"
+    title_logo: "/img/favicons/favicon.ico"
     templates:
-        layout: AlpixelCMSBundle:admin:layout/standard_layout.html.twig
-        user_block: AlpixelCMSBundle:admin:block/user_block.html.twig
+        layout: "AlpixelCMSBundle:admin:layout/standard_layout.html.twig"
+        user_block: "AlpixelCMSBundle:admin:blocks/user_block.html.twig"
     security:
-        handler: sonata.admin.security.handler.role
+        handler: "sonata.admin.security.handler.role"
         information:
             EDIT: EDIT
             LIST: LIST
