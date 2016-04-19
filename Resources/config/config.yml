@@ -74,6 +74,11 @@ ivory_ck_editor:
             disallowedContent: 'script; *[on*]'
             extraPlugins: 'fileuploader'
             contentsCss: 'css/wysiwyg.min.css'
+    styles:
+        alpixel_styles:
+            - { name: "Image 100% largeur", element: "img",  attributes: { class: "block"}}
+            - { name: 'Image à gauche', element: 'img', attributes: { 'class': 'left' }}
+            - { name: 'Image à droite', element: 'img', attributes: { 'class': 'right' }}
     toolbars:
         configs:
             admin_bar:
