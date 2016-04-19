@@ -41,6 +41,134 @@ twig:
     exception_controller: 'alpixel_cms.exception_controller:showAction'
     globals:
         base_url: '%url_production%'
+    form:
+        resources:
+            - 'AlpixelCMSBundle:Form:fields.html.twig'
     paths:
         - '%kernel.root_dir%/Resources/themes/%theme%/views/'
         - '%kernel.root_dir%/Resources/themes/admin/views/'
+
+happyr_translation:
+  locales: '%enabled_locales%'
+  domains: ['messages', 'validators', 'routes']
+
+httplug:
+    classes:
+        client: Http\Adapter\Guzzle6\Client
+        message_factory: Http\Message\MessageFactory\GuzzleMessageFactory
+        uri_factory: Http\Message\UriFactory\GuzzleUriFactory
+        stream_factory: Http\Message\StreamFactory\GuzzleStreamFactory
+
+
+ivory_ck_editor:
+    plugins:
+        fileuploader:
+            path:     "/bundles/alpixelmedia/fileuploader/"
+            filename: "plugin.js"
+    configs:
+        admin:
+            toolbar: "admin_bar"
+            format_tags: 'p;h1;h2;h3;pre'
+            filebrowserUploadRoute: 'upload_wysiwyg'
+            allowedContent: true
+            disallowedContent: 'script; *[on*]'
+            extraPlugins: 'fileuploader'
+            contentsCss: 'css/wysiwyg.min.css'
+    toolbars:
+        configs:
+            admin_bar:
+                - "@basicsStyles"
+                - "-"
+                - "@paragraph"
+                - "/"
+                - "@styles"
+                - "-"
+                - "@links"
+                - "/"
+                - "@clipboard"
+                - "-"
+                - "@upload"
+        items:
+            clipboard:      [ "Source", "-", "Save" ]
+            basicsStyles:    [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ]
+            paragraph:      [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl','-','Table' ]
+            links:          [ 'Link','Unlink','Anchor' ]
+            insert:         [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ]
+            styles:         [ 'Styles','Format','Font','FontSize' ]
+            colors:         [ 'TextColor','BGColor' ]
+            upload:         [ 'Uploader' ]
+
+stof_doctrine_extensions:
+    default_locale: '%default_locale%'
+    orm:
+        default:
+            timestampable: true
+            sluggable: true
+            sortable: true
+            translatable: true
+
+sonata_seo:
+    page:
+        title: "ALPIXEL Symfony 2.8"
+
+seo:
+    sitemap_base_url: '%url_production%'
+
+liip_imagine:
+    resolvers:
+        default:
+            web_path:
+                web_root: '%alpixel_media.upload_folder%'
+                cache_prefix: filters
+    filter_sets:
+        cache: null
+        admin:
+            quality: 100
+            filters:
+                auto_rotate: null
+                thumbnail:
+                    size:
+                        - 140
+                        - 93
+                    mode: outbound
+
+sonata_admin:
+    title: Administration
+    title_logo: /img/favicons/favicon.ico
+    templates:
+        layout: AlpixelCMSBundle:admin:layout/standard_layout.html.twig
+        user_block: block/user_block.html.twig
+    security:
+        handler: sonata.admin.security.handler.role
+        information:
+            EDIT: EDIT
+            LIST: LIST
+            CREATE: CREATE
+            VIEW: VIEW
+            DELETE: DELETE
+            EXPORT: EXPORT
+            OPERATOR: OPERATOR
+            MASTER: MASTER
+        admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
+        object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
+    dashboard:
+        blocks:
+            - { position: none, type: sonata.admin.block.admin_list  }
+
+sonata_block:
+    default_contexts: [sonata_page_bundle]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+        sonata.user.block.menu:
+            contexts: [admin]
+        sonata.user.block.account:
+            contexts: [admin]
+        sonata.block.service.text:
+            contexts: [admin]
+        sonata.admin.block.search_result:
+            contexts: [admin]
+
+alpixel_cms:
+    content_types: {}
+    blocks: {}

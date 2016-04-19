@@ -63,9 +63,8 @@ class AlpixelCMSExtension extends Extension implements PrependExtensionInterface
         $parser = new Parser();
         $config = $parser->parse(file_get_contents(__DIR__ . '/../Resources/config/config.yml'));
 
-        $container->prependExtensionConfig('lunetics_locale', $config['lunetics_locale']);
-        $container->prependExtensionConfig('jms_translation', $config['jms_translation']);
-        $container->prependExtensionConfig('jms_i18n_routing', $config['jms_i18n_routing']);
-        $container->prependExtensionConfig('twig', $config['twig']);
+        foreach ($config as $key => $configuration) {
+            $container->prependExtensionConfig($key, $configuration);
+        }
     }
 }
