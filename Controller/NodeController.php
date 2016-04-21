@@ -12,8 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class NodeController extends Controller
 {
     /**
-     * @MetaTag("node", providerClass="Alpixel\Bundle\CMSBundle\Entity\Node", title="Page de contenu")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function dispatchAction(Request $request, $slug)
     {
