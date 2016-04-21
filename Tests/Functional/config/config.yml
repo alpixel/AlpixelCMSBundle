@@ -1,14 +1,14 @@
 parameters:
     admin_path: 'admin'
     secret: 'test'
-#    db_user: travis
-#    db_pass: ~
+    db_user: travis
+    db_pass: ~
     url_production: "http://dumb.dumber"
     theme: 'default'
     default_locale: 'fr'
     enabled_locales: ['fr', 'de']
-    db_user: root
-    db_pass: root
+    #db_user: root
+    #db_pass: root
 
 imports:
     - { resource: framework.yml }
