@@ -5,6 +5,7 @@ namespace Alpixel\Bundle\CMSBundle\Admin;
 use Alpixel\Bundle\CMSBundle\Form\DateTimeSingleType;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\Filter\DateTimeType;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 abstract class BaseNodeEntityAdmin extends BaseAdmin
@@ -67,18 +68,35 @@ abstract class BaseNodeEntityAdmin extends BaseAdmin
         self::configureMainFields($formMapper);
 
         $formMapper
-            ->add('locale', 'choice', [
-                'label'    => 'Langue du contenu',
-                'choices'  => $this->getRealLocales(),
-                'required' => true,
-            ])
-            ->add('dateCreated', DateTimeSingleType::class, [
-                'label' => 'Date de création',
-            ])
-            ->add('published', 'checkbox', [
-                'label'    => 'Publié',
-                'required' => false,
-            ]);
+            ->end()
+            ->with('Paramétrage')
+                ->add('locale', 'choice', [
+                    'label'    => 'Langue du contenu',
+                    'choices'  => $this->getRealLocales(),
+                    'required' => true,
+                ])
+                ->add('dateCreated', 'date', [
+                    'label' => 'Date de création',
+                ])
+                ->add('published', 'checkbox', [
+                    'label'    => 'Publié',
+                    'required' => false,
+                ])
+            ->end();
+
+        if($this->subject->getId() !== null) {
+            $baseUrl = $this->getConfigurationPool()->getContainer()->getParameter('url_production');
+            $formMapper
+                ->with('SEO')
+                ->add('slug', null, [
+                    'required' => true,
+                    'label' => 'Adresse de la page'
+                ])
+                ->setHelps([
+                    'slug' => sprintf('Partie qui apparait après l\'adresse de votre site. Exemple : %s/fr/<b>%s</b>', $baseUrl, $this->subject->getSlug())
+                ])
+            ->end();
+        }
     }
 
     public function showCustomURL($object = null)
