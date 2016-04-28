@@ -65,12 +65,6 @@ services:
         arguments: ['@twig', '%kernel.debug%', '%alpixel_cms.exception_template%']
 
 
-    alpixel_cms.listener.sitemap:
-        class: Alpixel\Bundle\CMSBundle\Listener\SitemapListener
-        arguments: ['@doctrine', '@router']
-        tags:
-            - { name: kernel.event_listener, event: 'seo.sitemap.populate', method: populateSitemap }
-
     alpixel_cms.listener.kernel:
         class: Alpixel\Bundle\CMSBundle\Listener\KernelListener
         arguments:
