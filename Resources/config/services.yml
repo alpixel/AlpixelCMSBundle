@@ -5,6 +5,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    alpixel_cms.routing_loader:
+        class: Alpixel\Bundle\CMSBundle\Routing\CMSRouteLoader
+        tags:
+            - { name: routing.loader }
+
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
         tags:
