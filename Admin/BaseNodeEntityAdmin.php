@@ -11,7 +11,7 @@ abstract class BaseNodeEntityAdmin extends BaseAdmin
 {
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(['create', 'edit', 'delete']);
+        $collection->clearExcept(['create', 'edit', 'delete', 'batch']);
         $collection->add('see', $this->getRouterIdParameter().'/see');
         $collection->add('createTranslation', $this->getRouterIdParameter().'/translate');
     }
