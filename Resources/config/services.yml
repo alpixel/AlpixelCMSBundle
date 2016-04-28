@@ -5,6 +5,17 @@ services:
         tags:
             - { name: twig.extension }
 
+    alpixel_cms.sitemap.listener:
+        class: Alpixel\Bundle\CMSBundle\Listener\SitemapListener
+        arguments:
+            - "@router"
+            - "@doctrine.orm.entity_manager"
+            - "%default_locale%"
+            - "%enabled_locales%"
+            - "%url_production%"
+        tags:
+            - { name: presta.sitemap.listener }
+
     alpixel_cms.routing_loader:
         class: Alpixel\Bundle\CMSBundle\Routing\CMSRouteLoader
         tags:

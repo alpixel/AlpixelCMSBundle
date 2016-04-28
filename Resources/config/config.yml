@@ -102,6 +102,9 @@ ivory_ck_editor:
             colors:         [ 'TextColor','BGColor' ]
             upload:         [ 'Uploader' ]
 
+presta_sitemap:
+    dumper_base_url: "%url_production%"
+
 stof_doctrine_extensions:
     default_locale: '%default_locale%'
     orm:
