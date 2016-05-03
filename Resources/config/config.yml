@@ -73,6 +73,7 @@ ivory_ck_editor:
             disallowedContent: 'script; *[on*]'
             extraPlugins: 'fileuploader'
             contentsCss: ['css/admin_wysiwyg.min.css']
+            height: '450px'
     styles:
         alpixel_styles:
             - { name: "Image 100% largeur", element: "img",  attributes: { class: "block"}}
@@ -162,13 +163,13 @@ sonata_admin:
         object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
     dashboard:
         blocks:
-            - { position: none, type: sonata.admin.block.admin_list  }
+            - { position: top, class: col-md-3, type: "alpixel_cms.sonata.admin.block.hello" }
+            - { position: top, class: col-md-3, type: "alpixel_cms.sonata.admin.block.alpixel" }
+            - { position: left, class: col-md-3, type: "alpixel_cms.sonata.admin.block.timeline" }
 
 sonata_block:
     default_contexts: [sonata_page_bundle]
     blocks:
-        sonata.admin.block.admin_list:
-            contexts: [admin]
         sonata.user.block.menu:
             contexts: [admin]
         sonata.user.block.account:
@@ -176,6 +177,12 @@ sonata_block:
         sonata.block.service.text:
             contexts: [admin]
         sonata.admin.block.search_result:
+            contexts: [admin]
+        alpixel_cms.sonata.admin.block.hello:
+            contexts: [admin]
+        alpixel_cms.sonata.admin.block.timeline:
+            contexts: [admin]
+        alpixel_cms.sonata.admin.block.alpixel:
             contexts: [admin]
 
 alpixel_cms:

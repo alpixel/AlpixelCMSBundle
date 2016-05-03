@@ -1,6 +1,10 @@
 {% extends 'SonataAdminBundle::standard_layout.html.twig' %}
-{% block side_bar_after_nav_content %}
-    <a href="{{base_url}}" rel="noreferrer" target="_blank">retour au site</a>
+
+{% block side_bar_after_nav %}
+    <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px">
+        <a href="{{base_url}}" rel="noreferrer" target="_blank">retour au site</a>
+    </p>
+    <p class="text-center small" style="padding-top: 10px; color: #b8c7ce">Version {{ constant('Alpixel\\Bundle\\CMSBundle\\AlpixelCMSBundle::VERSION') }}</p>
 {% endblock %}
 
 {% block javascripts %}
