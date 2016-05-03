@@ -37,7 +37,7 @@ class SitemapCommand extends DumpSitemapsCommand implements ContainerAwareInterf
         $arguments['target']->setDefault($this->container->getParameter('kernel.root_dir') . '/../web/');
         $definition->setArguments($arguments);
 
-        if (!$input->hasArgument('target')) {
+        if (count($input->getArguments()) === 0) {
             $input = new ArgvInput(null, $definition);
             $input->setArgument('target', $this->container->getParameter('kernel.root_dir') . '/../web/');
         }
