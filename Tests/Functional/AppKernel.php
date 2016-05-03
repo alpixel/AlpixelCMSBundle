@@ -62,9 +62,9 @@ class AppKernel extends Kernel
             new \Http\HttplugBundle\HttplugBundle(),
 
             //Alpixel SEO
-            new Sonata\SeoBundle\SonataSeoBundle(),
-            new Presta\SitemapBundle\PrestaSitemapBundle(),
-            new Alpixel\Bundle\SEOBundle\SEOBundle(),
+            new \Sonata\SeoBundle\SonataSeoBundle(),
+            new \Presta\SitemapBundle\PrestaSitemapBundle(),
+            new \Alpixel\Bundle\SEOBundle\SEOBundle(),
 
             //ALPIXEL User
             new \Alpixel\Bundle\UserBundle\AlpixelUserBundle(),
