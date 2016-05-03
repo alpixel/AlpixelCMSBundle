@@ -74,6 +74,7 @@ ivory_ck_editor:
             extraPlugins: 'fileuploader'
             contentsCss: ['css/admin_wysiwyg.min.css']
             height: '450px'
+            stylesSet: "alpixel_styles"
     styles:
         alpixel_styles:
             - { name: "Image 100% largeur", element: "img",  attributes: { class: "block"}}
