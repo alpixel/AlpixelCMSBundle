@@ -4,6 +4,7 @@
 namespace Alpixel\Bundle\CMSBundle\Command;
 
 use Presta\SitemapBundle\Command\DumpSitemapsCommand;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Alpixel\Bundle\CronBundle\Annotation\CronJob;
@@ -31,8 +32,16 @@ class SitemapCommand extends DumpSitemapsCommand implements ContainerAwareInterf
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $target = $this->container->getParameter('kernel.root_dir') . '/../web/';
-        $input->setArgument('target', $target);
-        parent::execute($input, $output);
+        $definition = $this->getDefinition();
+        $arguments = $definition->getArguments();
+        $arguments['target']->setDefault($this->container->getParameter('kernel.root_dir') . '/../web/');
+        $definition->setArguments($arguments);
+
+        if (!$input->hasArgument('target')) {
+            $input = new ArgvInput(null, $definition);
+            $input->setArgument('target', $this->container->getParameter('kernel.root_dir') . '/../web/');
+        }
+
+        return parent::execute($input, $output);
     }
 }
