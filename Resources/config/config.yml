@@ -163,9 +163,9 @@ sonata_admin:
         object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
     dashboard:
         blocks:
-            - { position: top, class: col-md-3, type: "alpixel_cms.sonata.admin.block.hello" }
-            - { position: top, class: col-md-3, type: "alpixel_cms.sonata.admin.block.alpixel" }
-            - { position: left, class: col-md-3, type: "alpixel_cms.sonata.admin.block.timeline" }
+            - { position: center, class: col-md-3, type: "alpixel_cms.sonata.admin.block.alpixel" }
+            - { position: left, class: col-md-3, type: "alpixel_cms.sonata.admin.block.hello" }
+            - { position: right, class: col-md-3, type: "alpixel_cms.sonata.admin.block.timeline" }
 
 sonata_block:
     default_contexts: [sonata_page_bundle]
