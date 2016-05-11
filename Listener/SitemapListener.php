@@ -36,7 +36,7 @@ class SitemapListener implements SitemapListenerInterface
 
             foreach ($pages as $page) {
                 $url = $this->router->generate('alpixel_cms', [
-                    'slug' => $page->getSlug(),
+                    'slug'    => $page->getSlug(),
                     '_locale' => $page->getLocale(),
                 ]);
 
@@ -52,9 +52,9 @@ class SitemapListener implements SitemapListenerInterface
                     if ($locale !== $this->defaultLocale) {
                         $translatedPage = $nodeRepository->findTranslation($page, $locale);
 
-                        if($translatedPage !== null) {
+                        if ($translatedPage !== null) {
                             $url = $this->router->generate('alpixel_cms', [
-                                'slug' => $translatedPage->getSlug(),
+                                'slug'    => $translatedPage->getSlug(),
                                 '_locale' => $translatedPage->getLocale(),
                             ]);
 

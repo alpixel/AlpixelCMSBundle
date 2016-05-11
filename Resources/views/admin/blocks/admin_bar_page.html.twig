@@ -1,3 +1,17 @@
 <div class="wrap-admin-edit-link">
-	<a href='{{link}}' id="admin-edit-link">Editer cette page</a>
+    {% if node is defined and node.published == false -%}
+        {% set text = "Editer cette page<br />vous consultez un brouillon, seul un administrateur peut voir cette page." %}
+        {% set class = "fa-danger" %}
+        <style type="text/css">
+            body {
+                background-color: RGBA(255, 246, 222, 1) !important;
+            }
+        </style>
+    {% else %}
+        {% set text = "Editer cette page" %}
+        {% set class = "fa-pencil" %}
+    {% endif %}
+    <a href='{{ link }}' id="admin-edit-link" class="btn {{ class }}">
+        {{ text|raw }}
+    </a>
 </div>
