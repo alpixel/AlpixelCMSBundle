@@ -2,10 +2,8 @@
 
 namespace Alpixel\Bundle\CMSBundle\Admin;
 
-use Alpixel\Bundle\CMSBundle\Form\DateTimeSingleType;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\Filter\DateTimeType;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 abstract class BaseNodeEntityAdmin extends BaseAdmin
@@ -84,16 +82,16 @@ abstract class BaseNodeEntityAdmin extends BaseAdmin
                 ])
             ->end();
 
-        if($this->subject->getId() !== null) {
+        if ($this->subject->getId() !== null) {
             $baseUrl = $this->getConfigurationPool()->getContainer()->getParameter('url_production');
             $formMapper
                 ->with('SEO')
                 ->add('slug', null, [
                     'required' => true,
-                    'label' => 'Adresse de la page'
+                    'label'    => 'Adresse de la page',
                 ])
                 ->setHelps([
-                    'slug' => sprintf('Partie qui apparait après l\'adresse de votre site. Exemple : %s/fr/<b>%s</b>', $baseUrl, $this->subject->getSlug())
+                    'slug' => sprintf('Partie qui apparait après l\'adresse de votre site. Exemple : %s/fr/<b>%s</b>', $baseUrl, $this->subject->getSlug()),
                 ])
             ->end();
         }
