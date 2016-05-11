@@ -1,16 +1,14 @@
 <?php
 
-
 namespace Alpixel\Bundle\CMSBundle\Command;
 
+use Alpixel\Bundle\CronBundle\Annotation\CronJob;
 use Presta\SitemapBundle\Command\DumpSitemapsCommand;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Alpixel\Bundle\CronBundle\Annotation\CronJob;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-
 
 /**
  * @author Benjamin HUBERT <benjamin@alpixel.fr>
@@ -34,12 +32,12 @@ class SitemapCommand extends DumpSitemapsCommand implements ContainerAwareInterf
     {
         $definition = $this->getDefinition();
         $arguments = $definition->getArguments();
-        $arguments['target']->setDefault($this->container->getParameter('kernel.root_dir') . '/../web/');
+        $arguments['target']->setDefault($this->container->getParameter('kernel.root_dir').'/../web/');
         $definition->setArguments($arguments);
 
         if (count($input->getArguments()) === 0) {
             $input = new ArgvInput(null, $definition);
-            $input->setArgument('target', $this->container->getParameter('kernel.root_dir') . '/../web/');
+            $input->setArgument('target', $this->container->getParameter('kernel.root_dir').'/../web/');
         }
 
         return parent::execute($input, $output);

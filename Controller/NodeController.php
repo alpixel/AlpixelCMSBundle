@@ -3,19 +3,17 @@
 namespace Alpixel\Bundle\CMSBundle\Controller;
 
 use Alpixel\Bundle\CMSBundle\Entity\Node;
-use Alpixel\Bundle\SEOBundle\Annotation\MetaTag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Serializer\Serializer;
 
 class NodeController extends Controller
 {
     /**
      * @Method({"GET", "POST"})
+     *
      * @param Request $request
      * @param         $slug
      *
@@ -99,7 +97,7 @@ class NodeController extends Controller
                 'node' => $node,
                 'link' => $this->generateUrl('alpixel_admin_cms_node_forwardEdit', [
                     'type' => $node->getType(),
-                    'id'   => $node->getId()
+                    'id'   => $node->getId(),
                 ]),
             ]);
             $response->setContent($content);
@@ -141,12 +139,13 @@ class NodeController extends Controller
                 try {
                     $token = unserialize($request->getSession()->get('_security_admin'));
                     $user = $token->getUser();
-                    return ($canEdit === hash('sha256', 'can_edit' . $this->container->getParameter('secret') . $user->getSalt()));
-                } catch (ContextErrorException $e) {
 
+                    return $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret').$user->getSalt());
+                } catch (ContextErrorException $e) {
                 }
             }
         }
+
         return false;
     }
 }
