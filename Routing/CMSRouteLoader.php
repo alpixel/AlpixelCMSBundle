@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Alpixel\Bundle\CMSBundle\Routing;
 
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\RouteCollection;
-
 
 /**
  * @author Benjamin HUBERT <benjamin@alpixel.fr>

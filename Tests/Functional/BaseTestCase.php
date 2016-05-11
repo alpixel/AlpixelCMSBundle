@@ -2,10 +2,7 @@
 
 namespace Alpixel\Bundle\CMSBundle\Tests\Functional;
 
-use FOS\UserBundle\Doctrine\UserManager;
-use Symfony\Bridge\Doctrine\Security\User\EntityUserProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 

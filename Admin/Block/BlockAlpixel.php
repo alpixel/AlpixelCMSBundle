@@ -2,8 +2,8 @@
 
 namespace Alpixel\Bundle\CMSBundle\Admin\Block;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Sonata\BlockBundle\Block\BaseBlockService;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Alexis BUSSIERES <alexis@alpixel.fr>
