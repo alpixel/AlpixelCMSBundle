@@ -68,7 +68,7 @@ ivory_ck_editor:
     configs:
         admin:
             toolbar: "admin_bar"
-            format_tags: 'p;h1;h2;h3;pre'
+            format_tags: 'p;h2;h3'
             filebrowserUploadRoute: 'upload_wysiwyg'
             allowedContent: true
             disallowedContent: 'script; *[on*]'
@@ -78,9 +78,21 @@ ivory_ck_editor:
             stylesSet: "alpixel_styles"
     styles:
         alpixel_styles:
-            - { name: "Image 100% largeur", element: "img",  attributes: { class: "block"}}
+            - { name: 'Image 10% largeur', element: 'img', attributes: { 'class': 'w10' }}
+            - { name: 'Image 20% largeur', element: 'img', attributes: { 'class': 'w20' }}
+            - { name: 'Image 30% largeur', element: 'img', attributes: { 'class': 'w30' }}
+            - { name: 'Image 40% largeur', element: 'img', attributes: { 'class': 'w40' }}
+            - { name: 'Image 50% largeur', element: 'img', attributes: { 'class': 'w50' }}
+            - { name: 'Image 60% largeur', element: 'img', attributes: { 'class': 'w60' }}
+            - { name: 'Image 70% largeur', element: 'img', attributes: { 'class': 'w70' }}
+            - { name: 'Image 80% largeur', element: 'img', attributes: { 'class': 'w80' }}
+            - { name: 'Image 90% largeur', element: 'img', attributes: { 'class': 'w90' }}
+            - { name: "Image 100% largeur", element: "img",  attributes: { 'class': 'block'}}
             - { name: 'Image à gauche', element: 'img', attributes: { 'class': 'left' }}
             - { name: 'Image à droite', element: 'img', attributes: { 'class': 'right' }}
+            - { name: 'Image centrée', element: 'img', attributes: { 'class': 'centered' }}
+            - { name: 'Tableau sans bordures', element: 'table', attributes: { 'class': 'no-lines' }}
+            - { name: 'Bouton', element: 'a', attributes: { 'class': 'btn' }}
     toolbars:
         configs:
             admin_bar:
