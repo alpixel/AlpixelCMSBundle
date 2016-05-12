@@ -6,6 +6,7 @@ parameters:
     url_production: "http://dumb.dumber"
     theme: 'default'
     default_locale: 'fr'
+    loco_api_key: ~
     enabled_locales: ['fr', 'de']
     #db_user: root
     #db_pass: root
