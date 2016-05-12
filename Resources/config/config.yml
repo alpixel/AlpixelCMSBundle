@@ -31,6 +31,11 @@ jms_translation:
             extractors:
                 - jms_i18n_routing
 
+happyr_translation:
+  projects:
+    app:
+      api_key: '%loco_api_key%'
+
 jms_i18n_routing:
     default_locale: '%default_locale%'
     locales: '%enabled_locales%'
