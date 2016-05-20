@@ -7,6 +7,7 @@ use Presta\SitemapBundle\Event\SitemapPopulateEvent;
 use Presta\SitemapBundle\Service\SitemapListenerInterface;
 use Presta\SitemapBundle\Sitemap\Url\GoogleMultilangUrlDecorator;
 use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 class SitemapListener implements SitemapListenerInterface
@@ -38,7 +39,7 @@ class SitemapListener implements SitemapListenerInterface
                 $url = $this->router->generate('alpixel_cms', [
                     'slug'    => $page->getSlug(),
                     '_locale' => $page->getLocale(),
-                ]);
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $url = new UrlConcrete(
                     $url,
@@ -56,7 +57,7 @@ class SitemapListener implements SitemapListenerInterface
                             $url = $this->router->generate('alpixel_cms', [
                                 'slug'    => $translatedPage->getSlug(),
                                 '_locale' => $translatedPage->getLocale(),
-                            ]);
+                            ], UrlGeneratorInterface::ABSOLUTE_URL);
 
                             $urlLang->addLink($url, $locale);
                         }
