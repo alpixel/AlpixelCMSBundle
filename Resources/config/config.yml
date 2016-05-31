@@ -46,6 +46,7 @@ twig:
     exception_controller: 'alpixel_cms.exception_controller:showAction'
     globals:
         base_url: '%url_production%'
+        enabled_locales: '%enabled_locales%'
     form:
         resources:
             - 'AlpixelCMSBundle:Form:fields.html.twig'
