@@ -33,6 +33,7 @@ jms_translation:
                 - jms_i18n_routing
 
 happyr_translation:
+  locales: '%enabled_locales%'
   projects:
     app:
       api_key: '%loco_api_key%'
