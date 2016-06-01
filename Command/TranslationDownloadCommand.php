@@ -47,7 +47,11 @@ class TranslationDownloadCommand extends ContainerAwareCommand
         $uri = [];
         foreach ($languages as $language) {
             foreach ($domains as $domain) {
-                $url = Loco::BASE_URL . 'export/locale/' . $language . '.xlf?' . http_build_query(array_merge($query, [
+                $realQuery = $query;
+                if($domain === 'routes') {
+                    unset($realQuery['index']);
+                }
+                $url = Loco::BASE_URL . 'export/locale/' . $language . '.xlf?' . http_build_query(array_merge($realQuery, [
                         'filter' => $domain
                     ]));
                 $uri[$url] = $domain . '.' . $language . '.xlf';
