@@ -1,9 +1,5 @@
 services:
-
-    alpixel_cms.twig.extension.text:
-        class: Alpixel\Bundle\CMSBundle\Twig\Extension\TextExtension
-        tags:
-            - { name: twig.extension }
+    # Twig extensions
 
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
@@ -20,12 +16,8 @@ services:
         tags:
             - { name: twig.extension }
 
-    alpixel_cms.twig.extension.cms:
-        class: Alpixel\Bundle\CMSBundle\Twig\Extension\CMSExtension
-        arguments:
-            - '@alpixel_cms.helper.cms'
-            - '@service_container'
-            - '%alpixel_cms.content_types%'
+    alpixel_cms.twig.extension.text:
+        class: Alpixel\Bundle\CMSBundle\Twig\Extension\TextExtension
         tags:
             - { name: twig.extension }
 
@@ -38,6 +30,15 @@ services:
         tags:
             - { name: twig.extension }
 
+    alpixel_cms.twig.extension.cms:
+        class: Alpixel\Bundle\CMSBundle\Twig\Extension\CMSExtension
+        arguments:
+            - '@alpixel_cms.helper.cms'
+            - '@service_container'
+            - '%alpixel_cms.content_types%'
+        tags:
+            - { name: twig.extension }
+
     alpixel_cms.twig.extension.translation:
         class: Alpixel\Bundle\CMSBundle\Twig\Extension\TranslationExtension
         arguments:
@@ -46,6 +47,46 @@ services:
             - '@service_container'
         tags:
             - { name: twig.extension }
+
+    # Listeners
+
+    alpixel_cms.sitemap.listener:
+        class: Alpixel\Bundle\CMSBundle\Listener\SitemapListener
+        arguments:
+            - "@router"
+            - "@doctrine.orm.entity_manager"
+            - "%default_locale%"
+            - "%enabled_locales%"
+            - "%url_production%"
+        tags:
+            - { name: presta.sitemap.listener }
+
+    alpixel_cms.listener.kernel:
+        class: Alpixel\Bundle\CMSBundle\Listener\KernelListener
+        arguments:
+            - "@request_stack"
+            - "@security.token_storage"
+            - "@security.authorization_checker"
+            - "%secret%"
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.response' }
+
+    # Subscribers
+
+    alpixel_cms.listener.doctrine.node_resolver_subscriber:
+        class: Alpixel\Bundle\CMSBundle\Listener\CMSResolverSubscriber
+        arguments:
+            - '%alpixel_cms.content_types%'
+            - '%alpixel_cms.blocks%'
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    # Helpers, Utils
+
+    alpixel_cms.routing_loader:
+        class: Alpixel\Bundle\CMSBundle\Routing\CMSRouteLoader
+        tags:
+            - { name: routing.loader }
 
     alpixel_cms.helper.cms:
         class: Alpixel\Bundle\CMSBundle\Helper\CMSHelper
@@ -60,34 +101,7 @@ services:
             - "@doctrine.orm.entity_manager"
             - "%alpixel_cms.blocks%"
 
-    alpixel_cms.exception_controller:
-        class: Alpixel\Bundle\CMSBundle\Controller\ExceptionController
-        arguments: ['@twig', '%kernel.debug%', '%alpixel_cms.exception_template%']
-
-
-    alpixel_cms.listener.sitemap:
-        class: Alpixel\Bundle\CMSBundle\Listener\SitemapListener
-        arguments: ['@doctrine', '@router']
-        tags:
-            - { name: kernel.event_listener, event: 'seo.sitemap.populate', method: populateSitemap }
-
-    alpixel_cms.listener.kernel:
-        class: Alpixel\Bundle\CMSBundle\Listener\KernelListener
-        arguments:
-            - "@request_stack"
-            - "@security.token_storage"
-            - "@security.authorization_checker"
-            - "%secret%"
-        tags:
-            - { name: 'kernel.event_listener', event: 'kernel.response' }
-
-    alpixel_cms.listener.doctrine.node_resolver_subscriber:
-        class: Alpixel\Bundle\CMSBundle\Listener\CMSResolverSubscriber
-        arguments:
-            - '%alpixel_cms.content_types%'
-            - '%alpixel_cms.blocks%'
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
+    # Sonata Admin
 
     alpixel_cms.admin.node:
         class: Alpixel\Bundle\CMSBundle\Admin\AdminNode
@@ -110,3 +124,29 @@ services:
             - {name: sonata.admin, manager_type: orm, group: 'CMS', label: 'Gestion des blocs'}
         calls:
             - [ setTemplate, [edit, AlpixelCMSBundle:admin:page/base_edit.html.twig]]
+
+    # Sonata block
+
+    alpixel_cms.sonata.admin.block.hello:
+        class: Alpixel\Bundle\CMSBundle\Admin\Block\BlockHello
+        arguments: ['alpixel_cms.sonata.admin.block.hello', "@templating"]
+        tags:
+            - { name: sonata.block }
+
+    alpixel_cms.sonata.admin.block.alpixel:
+        class: Alpixel\Bundle\CMSBundle\Admin\Block\BlockAlpixel
+        arguments: ['alpixel_cms.sonata.admin.block.alpixel', "@templating"]
+        tags:
+            - { name: sonata.block }
+
+    alpixel_cms.sonata.admin.block.timeline:
+        class: Alpixel\Bundle\CMSBundle\Admin\Block\BlockTimeline
+        arguments: ['alpixel_cms.sonata.admin.block.timeline', "@templating"]
+        tags:
+            - { name: sonata.block }
+
+    # Exception
+
+    alpixel_cms.exception_controller:
+        class: Alpixel\Bundle\CMSBundle\Controller\ExceptionController
+        arguments: ['@twig', '%kernel.debug%', '%alpixel_cms.exception_template%']

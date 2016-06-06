@@ -57,15 +57,24 @@ class AlpixelCMSExtension extends Extension implements PrependExtensionInterface
         $loader->load('services.yml');
     }
 
-
     public function prepend(ContainerBuilder $container)
     {
         $parser = new Parser();
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+        $bundleConfig = $this->processConfiguration(new Configuration(), $configs);
+
         $config = $parser->parse(file_get_contents(__DIR__ . '/../Resources/config/config.yml'));
 
-        $container->prependExtensionConfig('lunetics_locale', $config['lunetics_locale']);
-        $container->prependExtensionConfig('jms_translation', $config['jms_translation']);
-        $container->prependExtensionConfig('jms_i18n_routing', $config['jms_i18n_routing']);
-        $container->prependExtensionConfig('twig', $config['twig']);
+        foreach ($config as $key => $configuration) {
+            if ($key == "sonata_admin" && $bundleConfig['white_label'] === true) {
+                foreach ($configuration['dashboard']['blocks'] as $blockKey => $block) {
+                    if ($block['type'] === 'alpixel_cms.sonata.admin.block.alpixel') {
+                        unset($configuration['dashboard']['blocks'][$blockKey]);
+                    }
+                }
+            }
+            $container->prependExtensionConfig($key, $configuration);
+        }
     }
 }

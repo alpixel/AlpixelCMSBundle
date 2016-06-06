@@ -18,12 +18,13 @@ class AdminNodeController extends Controller
 
         if ($node !== null) {
             $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($node));
-            if($instanceAdmin !== null) {
+            if ($instanceAdmin !== null) {
                 return $this->redirect($instanceAdmin->generateUrl('edit', ['id' => $request->get('id')]));
             }
         }
 
         $instanceAdmin = $this->admin->getConfigurationPool()->getInstance('alpixel_cms.admin.node');
+
         return $this->redirect($instanceAdmin->generateUrl('list'));
     }
 
@@ -60,7 +61,7 @@ class AdminNodeController extends Controller
             if ($key === $object->getType()) {
                 if (isset($contentType['controller'])) {
                     return $this->redirectToRoute('alpixel_cms', [
-                        'slug' => $object->getSlug(),
+                        'slug'    => $object->getSlug(),
                         '_locale' => $object->getLocale(),
                     ]);
                 } elseif ($contentType['admin'] !== null && $contentType['admin']->showCustomURL($object) !== null) {
@@ -77,7 +78,7 @@ class AdminNodeController extends Controller
     public function listAction(Request $request = null)
     {
         if (false === $this->admin->isGranted('LIST')) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException("You can't access the list view");
         }
 
         $datagrid = $this->admin->getDatagrid();
@@ -91,11 +92,11 @@ class AdminNodeController extends Controller
         $this->get('twig')->getExtension('form')->renderer->setTheme($formView, $this->admin->getFilterTheme());
 
         return $this->render($this->admin->getTemplate('list'), [
-            'action' => 'list',
+            'action'         => 'list',
             'cmsContentType' => $cmsContentType,
-            'form' => $formView,
-            'datagrid' => $datagrid,
-            'csrf_token' => $this->getCsrfToken('sonata.batch'),
+            'form'           => $formView,
+            'datagrid'       => $datagrid,
+            'csrf_token'     => $this->getCsrfToken('sonata.batch'),
         ], null, $request);
     }
 

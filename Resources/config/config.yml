@@ -2,7 +2,6 @@ lunetics_locale:
     allowed_locales: '%enabled_locales%'
     switcher:
         show_current_locale: true
-        template: 'block/language_switcher.html.twig'
     guessing_order:
         - query
         - router
@@ -32,6 +31,12 @@ jms_translation:
             extractors:
                 - jms_i18n_routing
 
+happyr_translation:
+  locales: '%enabled_locales%'
+  projects:
+    app:
+      api_key: '%loco_api_key%'
+
 jms_i18n_routing:
     default_locale: '%default_locale%'
     locales: '%enabled_locales%'
@@ -41,6 +46,165 @@ twig:
     exception_controller: 'alpixel_cms.exception_controller:showAction'
     globals:
         base_url: '%url_production%'
+        enabled_locales: '%enabled_locales%'
+    form:
+        resources:
+            - 'AlpixelCMSBundle:Form:fields.html.twig'
     paths:
         - '%kernel.root_dir%/Resources/themes/%theme%/views/'
         - '%kernel.root_dir%/Resources/themes/admin/views/'
+
+happyr_translation:
+  locales: '%enabled_locales%'
+  domains: ['messages', 'validators', 'routes']
+
+httplug:
+    classes:
+        client: Http\Adapter\Guzzle6\Client
+        message_factory: Http\Message\MessageFactory\GuzzleMessageFactory
+        uri_factory: Http\Message\UriFactory\GuzzleUriFactory
+        stream_factory: Http\Message\StreamFactory\GuzzleStreamFactory
+
+
+ivory_ck_editor:
+    plugins:
+        fileuploader:
+            path:     "/bundles/alpixelmedia/fileuploader/"
+            filename: "plugin.js"
+    configs:
+        admin:
+            toolbar: "admin_bar"
+            format_tags: 'p;h2;h3'
+            filebrowserUploadRoute: 'upload_wysiwyg'
+            allowedContent: true
+            disallowedContent: 'script; *[on*]'
+            extraPlugins: 'fileuploader'
+            contentsCss: ['css/admin_wysiwyg.min.css']
+            height: '450px'
+            stylesSet: "alpixel_styles"
+    styles:
+        alpixel_styles:
+            - { name: 'Image 10% largeur', element: 'img', attributes: { 'class': 'w10' }}
+            - { name: 'Image 20% largeur', element: 'img', attributes: { 'class': 'w20' }}
+            - { name: 'Image 30% largeur', element: 'img', attributes: { 'class': 'w30' }}
+            - { name: 'Image 40% largeur', element: 'img', attributes: { 'class': 'w40' }}
+            - { name: 'Image 50% largeur', element: 'img', attributes: { 'class': 'w50' }}
+            - { name: 'Image 60% largeur', element: 'img', attributes: { 'class': 'w60' }}
+            - { name: 'Image 70% largeur', element: 'img', attributes: { 'class': 'w70' }}
+            - { name: 'Image 80% largeur', element: 'img', attributes: { 'class': 'w80' }}
+            - { name: 'Image 90% largeur', element: 'img', attributes: { 'class': 'w90' }}
+            - { name: "Image 100% largeur", element: "img",  attributes: { 'class': 'block'}}
+            - { name: 'Image à gauche', element: 'img', attributes: { 'class': 'left' }}
+            - { name: 'Image à droite', element: 'img', attributes: { 'class': 'right' }}
+            - { name: 'Image centrée', element: 'img', attributes: { 'class': 'centered' }}
+            - { name: 'Tableau sans bordures', element: 'table', attributes: { 'class': 'no-lines' }}
+            - { name: 'Bouton', element: 'a', attributes: { 'class': 'btn' }}
+    toolbars:
+        configs:
+            admin_bar:
+                - "@basicsStyles"
+                - "-"
+                - "@paragraph"
+                - "/"
+                - "@styles"
+                - "-"
+                - "@links"
+                - "/"
+                - "@clipboard"
+                - "-"
+                - "@upload"
+        items:
+            clipboard:      [ "Source", "-", "Save" ]
+            basicsStyles:    [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ]
+            paragraph:      [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl','-','Table' ]
+            links:          [ 'Link','Unlink','Anchor' ]
+            insert:         [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ]
+            styles:         [ 'Styles','Format','Font','FontSize' ]
+            colors:         [ 'TextColor','BGColor' ]
+            upload:         [ 'Uploader' ]
+
+presta_sitemap:
+    dumper_base_url: "%url_production%"
+
+stof_doctrine_extensions:
+    default_locale: '%default_locale%'
+    orm:
+        default:
+            timestampable: true
+            sluggable: true
+            sortable: true
+            translatable: true
+
+sonata_seo:
+    page:
+        title: "ALPIXEL Symfony 2.8"
+
+liip_imagine:
+    resolvers:
+        default:
+            web_path:
+                web_root: '%alpixel_media.upload_folder%'
+                cache_prefix: filters
+    filter_sets:
+        cache: null
+        admin:
+            quality: 100
+            filters:
+                auto_rotate: null
+                thumbnail:
+                    size:
+                        - 140
+                        - 93
+                    mode: outbound
+
+fos_user:
+    db_driver: orm
+    firewall_name: admin
+    user_class: Alpixel\Bundle\UserBundle\Entity\Admin
+
+sonata_admin:
+    title: "Administration"
+    title_logo: "/img/favicons/favicon.ico"
+    templates:
+        layout: "AlpixelCMSBundle:admin:layout/standard_layout.html.twig"
+        user_block: "AlpixelCMSBundle:admin:blocks/user_block.html.twig"
+    security:
+        handler: "sonata.admin.security.handler.role"
+        information:
+            EDIT: EDIT
+            LIST: LIST
+            CREATE: CREATE
+            VIEW: VIEW
+            DELETE: DELETE
+            EXPORT: EXPORT
+            OPERATOR: OPERATOR
+            MASTER: MASTER
+        admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
+        object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
+    dashboard:
+        blocks:
+            - { position: center, class: col-md-3, type: "alpixel_cms.sonata.admin.block.alpixel" }
+            - { position: left, class: col-md-3, type: "alpixel_cms.sonata.admin.block.hello" }
+            - { position: right, class: col-md-3, type: "alpixel_cms.sonata.admin.block.timeline" }
+
+sonata_block:
+    default_contexts: [sonata_page_bundle]
+    blocks:
+        sonata.user.block.menu:
+            contexts: [admin]
+        sonata.user.block.account:
+            contexts: [admin]
+        sonata.block.service.text:
+            contexts: [admin]
+        sonata.admin.block.search_result:
+            contexts: [admin]
+        alpixel_cms.sonata.admin.block.hello:
+            contexts: [admin]
+        alpixel_cms.sonata.admin.block.timeline:
+            contexts: [admin]
+        alpixel_cms.sonata.admin.block.alpixel:
+            contexts: [admin]
+
+alpixel_cms:
+    content_types: {}
+    blocks: {}

@@ -33,7 +33,8 @@ class KernelListener
         $token = $this->tokenStorage->getToken();
 
         if ($token !== null && $this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            $cookie = new Cookie('can_edit', hash('sha256', 'can_edit'.$this->secret), 0, '/', null, false, false);
+            $userSecret = $this->tokenStorage->getToken()->getUser()->getSalt();
+            $cookie = new Cookie('can_edit', hash('sha256', 'can_edit'.$this->secret.$userSecret), 0, '/', null, false, false);
             $response->headers->setCookie($cookie);
         } elseif (!in_array($route, ['_profiler', '_wdt']) && $cookies->has('can_edit2')) {
             $response->headers->clearCookie('can_edit', '/');

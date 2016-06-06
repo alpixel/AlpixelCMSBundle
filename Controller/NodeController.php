@@ -3,25 +3,33 @@
 namespace Alpixel\Bundle\CMSBundle\Controller;
 
 use Alpixel\Bundle\CMSBundle\Entity\Node;
-use Alpixel\Bundle\SEOBundle\Annotation\MetaTag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class NodeController extends Controller
 {
     /**
-     * @MetaTag("node", providerClass="Alpixel\Bundle\CMSBundle\Entity\Node", title="Page de contenu")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
+     *
+     * @param Request $request
+     * @param         $slug
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function dispatchAction(Request $request, $slug)
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $node = $entityManager->getRepository('AlpixelCMSBundle:Node')
-            ->findOnePublishedBySlugAndLocale($slug, $request->getLocale());
+                              ->findOneBySlugAndLocale($slug, $request->getLocale());
 
         if ($node !== null) {
+            if ($node->getPublished() === false && !$this->isAuthenticated($request)) {
+                throw $this->createNotFoundException();
+            }
+
             $contentType = $this->get('alpixel_cms.helper.cms')->getContentTypeFromNodeElementClass($node);
             $controller = explode('::', $contentType['controller']);
 
@@ -37,9 +45,9 @@ class NodeController extends Controller
                 }
 
                 return $this->forward($contentType['controller'], [
-                    '_route' => $request->attributes->get('_route'),
+                    '_route'        => $request->attributes->get('_route'),
                     '_route_params' => $request->attributes->get('_route_params'),
-                    'object' => $node,
+                    'object'        => $node,
                 ]);
             } catch (\LogicException $e) {
                 $environment = $this->container->get('kernel')->getEnvironment();
@@ -53,14 +61,14 @@ class NodeController extends Controller
         } else {
             //Trying to find another node with this slug, in another language
             $node = $entityManager->getRepository('AlpixelCMSBundle:Node')
-                ->findOnePublishedBySlug($slug);
+                                  ->findOnePublishedBySlug($slug);
 
             if ($node !== null) {
                 $translation = $entityManager->getRepository('AlpixelCMSBundle:Node')
-                    ->findTranslation($node, $request->getLocale());
+                                             ->findTranslation($node, $request->getLocale());
                 if ($translation !== null) {
                     return $this->redirect($this->generateUrl('alpixel_cms', [
-                        'slug' => $translation->getSlug(),
+                        'slug'    => $translation->getSlug(),
                         '_locale' => $translation->getLocale(),
                     ]));
                 }
@@ -70,7 +78,12 @@ class NodeController extends Controller
         throw $this->createNotFoundException();
     }
 
-    public function displayNodeAdminBarAction($node)
+    /**
+     * @param $node
+     *
+     * @return Response
+     */
+    public function displayNodeAdminBarAction(Request $request, $node)
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $node = $entityManager->getRepository('AlpixelCMSBundle:Node')->find($node);
@@ -79,11 +92,13 @@ class NodeController extends Controller
         $response->setPrivate();
         $response->setMaxAge(900);
 
-        $canEdit = $this->get('request')->cookies->get('can_edit');
-
-        if ($node !== null && $canEdit === hash('sha256', 'can_edit' . $this->container->getParameter('secret'))) {
+        if ($this->isAuthenticated($request)) {
             $content = $this->renderView('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
-                'link' => $this->generateUrl('alpixel_admin_cms_node_forwardEdit', ['type' => $node->getType(), 'id' => $node->getId()]),
+                'node' => $node,
+                'link' => $this->generateUrl('alpixel_admin_cms_node_forwardEdit', [
+                    'type' => $node->getType(),
+                    'id'   => $node->getId(),
+                ]),
             ]);
             $response->setContent($content);
         }
@@ -91,15 +106,18 @@ class NodeController extends Controller
         return $response;
     }
 
-    public function displayCustomAdminBarAction($link)
+    /**
+     * @param $link
+     *
+     * @return Response
+     */
+    public function displayCustomAdminBarAction(Request $request, $link)
     {
         $response = new Response();
         $response->setPrivate();
         $response->setMaxAge(900);
 
-        $canEdit = $this->get('request')->cookies->get('can_edit');
-
-        if ($canEdit === hash('sha256', 'can_edit' . $this->container->getParameter('secret'))) {
+        if ($this->isAuthenticated($request)) {
             $content = $this->renderView('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
                 'link' => $link,
             ]);
@@ -107,5 +125,27 @@ class NodeController extends Controller
         }
 
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     */
+    private function isAuthenticated(Request $request)
+    {
+        $canEdit = $request->cookies->get('can_edit');
+
+        if (isset($canEdit)) {
+            if ($request->getSession()->has('_security_admin')) {
+                try {
+                    $token = unserialize($request->getSession()->get('_security_admin'));
+                    $user = $token->getUser();
+
+                    return $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret').$user->getSalt());
+                } catch (ContextErrorException $e) {
+                }
+            }
+        }
+
+        return false;
     }
 }
