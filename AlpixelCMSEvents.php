@@ -6,7 +6,7 @@ namespace Alpixel\Bundle\CMSBundle;
 /**
  * @author Alexis BUSSIERES <alexis@alpixel.fr>
  */
-class AppEvents
+class AlpixelCMSEvents
 {
-    const SLUG_UPDATED = 'alpixelcmsbundle.event.slug.updated';
+    const SLUG_UPDATED = 'alpixel.cms.event.slug.updated';
 }
