@@ -32,6 +32,7 @@ jms_translation:
                 - jms_i18n_routing
 
 happyr_translation:
+  locales: '%enabled_locales%'
   projects:
     app:
       api_key: '%loco_api_key%'
@@ -45,6 +46,7 @@ twig:
     exception_controller: 'alpixel_cms.exception_controller:showAction'
     globals:
         base_url: '%url_production%'
+        enabled_locales: '%enabled_locales%'
     form:
         resources:
             - 'AlpixelCMSBundle:Form:fields.html.twig'
@@ -69,6 +71,9 @@ ivory_ck_editor:
         fileuploader:
             path:     "/bundles/alpixelmedia/fileuploader/"
             filename: "plugin.js"
+        horizontalrule:
+            path:     "/bundles/alpixelcms/ckeditor/plugins/horizontalrule/"
+            filename: "plugin.js"
     configs:
         admin:
             toolbar: "admin_bar"
@@ -76,7 +81,7 @@ ivory_ck_editor:
             filebrowserUploadRoute: 'upload_wysiwyg'
             allowedContent: true
             disallowedContent: 'script; *[on*]'
-            extraPlugins: 'fileuploader'
+            extraPlugins: 'fileuploader,horizontalrule'
             contentsCss: ['css/admin_wysiwyg.min.css']
             height: '450px'
             stylesSet: "alpixel_styles"
@@ -114,9 +119,9 @@ ivory_ck_editor:
         items:
             clipboard:      [ "Source", "-", "Save" ]
             basicsStyles:    [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ]
-            paragraph:      [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl','-','Table' ]
+            paragraph:      [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','HorizontalRule','-','BidiLtr','BidiRtl','-','Table' ]
             links:          [ 'Link','Unlink','Anchor' ]
-            insert:         [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe' ]
+            insert:         [ 'Image','Flash','Table','Smiley','SpecialChar','PageBreak','Iframe' ]
             styles:         [ 'Styles','Format','Font','FontSize' ]
             colors:         [ 'TextColor','BGColor' ]
             upload:         [ 'Uploader' ]
