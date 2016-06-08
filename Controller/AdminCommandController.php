@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminCommandController extends Controller
 {
-    public function commandAction(): Response
+    public function commandAction()
     {
         $request     = $this->getRequest();
         $query       = $request->query;
@@ -70,7 +70,7 @@ class AdminCommandController extends Controller
         ), null, $request);
     }
 
-    protected function commandFlushCache(): Response
+    protected function commandFlushCache()
     {
         $environment = $this->get('kernel')->getEnvironment();
         $inputs      = [
@@ -81,7 +81,7 @@ class AdminCommandController extends Controller
         return $this->executeCommand($inputs);
     }
 
-    protected function executeCommand(array $inputs): Response
+    protected function executeCommand(array $inputs)
     {
         if (empty($inputs) || !isset($inputs['command'])) {
             throw new \Exception('The array is empty or "command" index is missing');
