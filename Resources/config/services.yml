@@ -125,6 +125,15 @@ services:
         calls:
             - [ setTemplate, [edit, AlpixelCMSBundle:admin:page/base_edit.html.twig]]
 
+    alpixel_cms.admin.command.loco_translation:
+        class: Alpixel\Bundle\CMSBundle\Admin\AdminTranslation
+        arguments:
+            - ~
+            - ~
+            - 'AlpixelCMSBundle:AdminTranslation'
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: 'CMS', label: 'Gestion des traductions'}
+
     # Sonata block
 
     alpixel_cms.sonata.admin.block.hello:
