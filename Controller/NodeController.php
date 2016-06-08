@@ -50,8 +50,7 @@ class NodeController extends Controller
                     'object'        => $node,
                 ]);
             } catch (\LogicException $e) {
-                $environment = $this->container->get('kernel')->getEnvironment();
-                if ($environment === 'prod') {
+                if (!$this->container->get('kernel')->isDebug()) {
                     $logger = $this->get('logger');
                     $logger->error($e->getMessage());
                 } else {

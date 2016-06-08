@@ -122,6 +122,13 @@ class AdminNodeController extends Controller
             $url = $this->admin->generateUrl('create', $params);
         }
 
+        if (null !== $request->get('btn_update_and_see_page') || null !== $request->get('btn_create_and_see_page')) {
+            return $this->redirectToRoute('alpixel_cms', [
+                'slug' => $object->getSlug(),
+                '_locale' => $object->getLocale(),
+            ]);
+        }
+
         if ($this->getRestMethod() === 'DELETE') {
             $backToNodeList = true;
         }

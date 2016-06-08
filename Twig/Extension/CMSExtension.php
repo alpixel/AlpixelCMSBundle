@@ -34,6 +34,7 @@ class CMSExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInt
     {
         return [
             new \Twig_SimpleFunction('cms_contentType_get_description', [$this, 'cmsGetDescription']),
+            new \Twig_SimpleFunction('cms_contentType_get', [$this, 'cmsGet']),
         ];
     }
 
@@ -43,5 +44,10 @@ class CMSExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInt
         if ($contentType !== null) {
             return $contentType['description'];
         }
+    }
+
+    public function cmsGet(Node $node)
+    {
+        return $this->cmsHelper->getContentTypeFromNodeElementClass($node);
     }
 }
