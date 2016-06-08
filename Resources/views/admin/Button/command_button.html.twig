@@ -1,0 +1,20 @@
+{% if admin.hasRoute('command') and admin.isGranted('COMMAND') %}
+    {% set commands = [] %}
+
+    {% if admin.getAvailableCommands is defined and admin.getAvailableCommands is not empty %}
+        {% set commands = admin.getAvailableCommands %}
+    {% endif %}
+
+    {% if commands is not empty %}
+        {% for command in commands if command.name is not null and command.label is not null %}
+            <li>
+                <a class="sonata-action-element" href="{{ admin.generateUrl('command', {'name': command.name}|merge(command.arguments) ) }}">
+                    {% if command.icon is defined and command.icon is not null %}
+                        <i class="fa fa-{{- command.icon -}}"></i>
+                    {% endif %}
+                    {{ command.label }}
+                </a>
+            </li>
+        {% endfor %}
+    {% endif %}
+{% endif %}
