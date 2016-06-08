@@ -2,13 +2,13 @@
 
 namespace Alpixel\Bundle\CMSBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * @author Alexis BUSSIERES <alexis@alpixel.fr>
  */
-class AdminTranslation extends Admin
+class AdminTranslation extends AbstractAdmin
 {
     protected $baseRouteName = 'alpixel_admin_cms_command_translation';
     protected $baseRoutePattern = 'command/translation';
@@ -22,12 +22,12 @@ class AdminTranslation extends Admin
     public static function getAvailableCommands()
     {
         return [[
-            'name'  => 'happyr:translation:download',
+            'name'      => 'alpixel:cms:translations:download',
             'arguments' => [
                 'flush_cache' => true,
             ],
-            'label' => 'Importer les traductions',
-            'icon'  => 'download'
+            'label'     => 'Importer les traductions',
+            'icon'      => 'download'
         ]];
     }
 }
