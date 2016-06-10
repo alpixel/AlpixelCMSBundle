@@ -82,7 +82,7 @@ ivory_ck_editor:
             allowedContent: true
             disallowedContent: 'script; *[on*]'
             extraPlugins: 'fileuploader,horizontalrule'
-            contentsCss: ['css/admin_wysiwyg.min.css']
+            contentsCss: ['css/wysiwyg.min.css']
             height: '450px'
             stylesSet: "alpixel_styles"
     styles:
