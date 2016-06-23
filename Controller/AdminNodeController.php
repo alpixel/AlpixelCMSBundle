@@ -133,7 +133,7 @@ class AdminNodeController extends Controller
             $backToNodeList = true;
         }
 
-        if (!$url) {
+        if (!$url && !$backToNodeList) {
             foreach (['edit', 'show'] as $route) {
                 if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route), $object)) {
                     $url = $this->admin->generateObjectUrl($route, $object);
