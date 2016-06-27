@@ -16,6 +16,10 @@ class AdminNodeController extends Controller
         $node = $entityManager->getRepository('AlpixelCMSBundle:Node')
             ->find($request->get('id'));
 
+        // Forward edit action from EN page set locale for admin to EN instead default locale
+        $defaultLocale = $this->getParameter('default_locale');
+        $request->setLocale($defaultLocale);
+
         if ($node !== null) {
             $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($node));
             if ($instanceAdmin !== null) {
