@@ -2,7 +2,6 @@
 
 namespace Alpixel\Bundle\CMSBundle;
 
-
 /**
  * @author Alexis BUSSIERES <alexis@alpixel.fr>
  */
