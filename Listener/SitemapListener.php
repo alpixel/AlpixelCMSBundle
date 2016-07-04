@@ -17,14 +17,16 @@ class SitemapListener implements SitemapListenerInterface
     private $defaultLocale;
     private $locales;
     private $baseUrl;
+    private $contentTypes;
 
-    public function __construct(RouterInterface $router, EntityManager $entityManager, $defaultLocale, $locales, $baseUrl)
+    public function __construct(RouterInterface $router, EntityManager $entityManager, $defaultLocale, $locales, $baseUrl, $contentTypes)
     {
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->defaultLocale = $defaultLocale;
         $this->locales = $locales;
         $this->baseUrl = $baseUrl;
+        $this->contentTypes = $contentTypes;
     }
 
     public function populateSitemap(SitemapPopulateEvent $event)
@@ -36,6 +38,18 @@ class SitemapListener implements SitemapListenerInterface
             $pages = $nodeRepository->findAllWithLocale($this->defaultLocale);
 
             foreach ($pages as $page) {
+                $hasController = true;
+                foreach ($this->contentTypes as $contentType) {
+                    if(get_class($page) == $contentType['class'] && $contentType['controller'] === null)
+                    {
+                        $hasController = false;
+                    }
+                }
+
+                if ($hasController === false) {
+                    continue;
+                }
+
                 $url = $this->router->generate('alpixel_cms', [
                     'slug'    => $page->getSlug(),
                     '_locale' => $page->getLocale(),
