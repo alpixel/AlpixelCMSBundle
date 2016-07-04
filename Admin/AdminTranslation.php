@@ -27,7 +27,7 @@ class AdminTranslation extends AbstractAdmin
                 'flush_cache' => true,
             ],
             'label'     => 'Importer les traductions',
-            'icon'      => 'download'
+            'icon'      => 'download',
         ]];
     }
 }
