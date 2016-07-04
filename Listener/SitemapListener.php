@@ -40,8 +40,7 @@ class SitemapListener implements SitemapListenerInterface
             foreach ($pages as $page) {
                 $hasController = true;
                 foreach ($this->contentTypes as $contentType) {
-                    if(get_class($page) == $contentType['class'] && $contentType['controller'] === null)
-                    {
+                    if (get_class($page) == $contentType['class'] && $contentType['controller'] === null) {
                         $hasController = false;
                     }
                 }
