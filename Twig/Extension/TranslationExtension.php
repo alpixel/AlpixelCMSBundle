@@ -70,10 +70,9 @@ class TranslationExtension extends \Twig_Extension implements \Twig_Extension_Gl
 
     public function translationSourceProperty($object, $property)
     {
-
         if (!is_object($object)) {
             throw new \InvalidArgumentException('The "$object" parameter must be an object.');
-        } else if (empty($property) || !is_string($property)) {
+        } elseif (empty($property) || !is_string($property)) {
             throw new \InvalidArgumentException('The "$property" parameter must be a non empty string.');
         }
 

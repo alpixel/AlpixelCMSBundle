@@ -4,7 +4,6 @@ namespace Alpixel\Bundle\CMSBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-
 /**
  * @author Alexis BUSSIERES <alexis@alpixel.fr>
  *
@@ -18,6 +17,7 @@ class SlugEvent extends Event
 
     /**
      * SlugEvent constructor.
+     *
      * @param $entity object
      * @param $property string
      */

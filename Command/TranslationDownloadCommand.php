@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Alpixel\Bundle\CMSBundle\Command;
 
 use Happyr\TranslationBundle\Http\RequestManager;
@@ -11,13 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
  * @author Benjamin HUBERT <benjamin@alpixel.fr>
  */
 class TranslationDownloadCommand extends ContainerAwareCommand
 {
-
     /**
      * {@inheritdoc}
      */
@@ -41,24 +38,24 @@ class TranslationDownloadCommand extends ContainerAwareCommand
             'key'      => $container->getParameter('loco_api_key'),
             'fallback' => $container->getParameter('default_locale'),
             'index'    => 'text',
-            'format'   => 'symfony'
+            'format'   => 'symfony',
         ];
 
         $uri = [];
         foreach ($languages as $language) {
             foreach ($domains as $domain) {
                 $realQuery = $query;
-                if($domain === 'routes') {
+                if ($domain === 'routes') {
                     unset($realQuery['index']);
                 }
-                $url = Loco::BASE_URL . 'export/locale/' . $language . '.xlf?' . http_build_query(array_merge($realQuery, [
-                        'filter' => $domain
+                $url = Loco::BASE_URL.'export/locale/'.$language.'.xlf?'.http_build_query(array_merge($realQuery, [
+                        'filter' => $domain,
                     ]));
-                $uri[$url] = $domain . '.' . $language . '.xlf';
+                $uri[$url] = $domain.'.'.$language.'.xlf';
             }
         }
 
         $requestManager->downloadFiles($fileSystem, $uri);
-        $output->writeln("Translations downloaded");
+        $output->writeln('Translations downloaded');
     }
 }

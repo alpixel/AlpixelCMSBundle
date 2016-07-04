@@ -16,9 +16,9 @@ class AdminCommandController extends Controller
 {
     public function commandAction()
     {
-        $request     = $this->getRequest();
-        $query       = $request->query;
-        $command     = $query->get('name');
+        $request = $this->getRequest();
+        $query = $request->query;
+        $command = $query->get('name');
         $environment = $this->get('kernel')->getEnvironment();
 
         if ($query->has('flush_cache') && $query->getInt('flush_cache') === 1) {
@@ -63,17 +63,17 @@ class AdminCommandController extends Controller
             $this->admin->setListMode($listMode);
         }
 
-        return $this->render('AlpixelCMSBundle:admin/page:base_list.html.twig', array(
+        return $this->render('AlpixelCMSBundle:admin/page:base_list.html.twig', [
             'object'     => null,
             'action'     => 'list',
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
-        ), null, $request);
+        ], null, $request);
     }
 
     protected function commandFlushCache()
     {
         $environment = $this->get('kernel')->getEnvironment();
-        $inputs      = [
+        $inputs = [
             'command' => 'cache:clear',
             '--env'   => $environment,
         ];
@@ -87,11 +87,11 @@ class AdminCommandController extends Controller
             throw new \Exception('The array is empty or "command" index is missing');
         }
 
-        $kernel      = $this->get('kernel');
+        $kernel = $this->get('kernel');
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        $input  = new ArrayInput($inputs);
+        $input = new ArrayInput($inputs);
         $output = new BufferedOutput(
             OutputInterface::VERBOSITY_NORMAL,
             true
