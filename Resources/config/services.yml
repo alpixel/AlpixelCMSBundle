@@ -58,6 +58,7 @@ services:
             - "%default_locale%"
             - "%enabled_locales%"
             - "%url_production%"
+            - '%alpixel_cms.content_types%'
         tags:
             - { name: presta.sitemap.listener }
 
@@ -124,15 +125,6 @@ services:
             - {name: sonata.admin, manager_type: orm, group: 'CMS', label: 'Gestion des blocs'}
         calls:
             - [ setTemplate, [edit, AlpixelCMSBundle:admin:page/base_edit.html.twig]]
-
-    alpixel_cms.admin.command.loco_translation:
-        class: Alpixel\Bundle\CMSBundle\Admin\AdminTranslation
-        arguments:
-            - ~
-            - ~
-            - 'AlpixelCMSBundle:AdminTranslation'
-        tags:
-            - {name: sonata.admin, manager_type: orm, group: 'CMS', label: 'Gestion des traductions'}
 
     # Sonata block
 
