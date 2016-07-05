@@ -7,6 +7,7 @@ lunetics_locale:
         - router
         - session
         - browser
+    guessing_excluded_pattern: "^%admin_path%"
 
 jms_translation:
     locales: '%enabled_locales%'
