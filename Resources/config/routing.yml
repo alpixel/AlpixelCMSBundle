@@ -6,12 +6,20 @@ sonata_admin_home:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix: "%admin_path%"
     options: { i18n: false }
+    defaults:
+      _locale: "%default_locale%"
+    requirements:
+      _locale: "%default_locale%"
 
 sonata_admin_base:
     resource: 'sonata_admin'
     type: sonata_admin
     prefix: "%admin_path%"
     options: { i18n: false }
+    defaults:
+      _locale: "%default_locale%"
+    requirements:
+      _locale: "%default_locale%"
 
 alpixel_seo:
     resource: '@SEOBundle/Resources/config/routing.yml'
