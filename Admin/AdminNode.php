@@ -182,6 +182,10 @@ class AdminNode extends BaseAdmin
                 foreach ($nodes as $node) {
                     $nodesId[] = $node->getId();
                 }
+                
+                if (count($nodesId) > 0) {
+                    $orX->add($queryBuilder->expr()->in($queryBuilder->getRootAlias() . '.id', $nodesId));
+                }
 
                 $orX->add($queryBuilder->expr()->in($queryBuilder->getRootAlias().'.id', $nodesId));
             }
