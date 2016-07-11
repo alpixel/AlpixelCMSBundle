@@ -2,9 +2,9 @@
 
 namespace Alpixel\Bundle\CMSBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-abstract class BaseAdmin extends Admin
+abstract class BaseAdmin extends AbstractAdmin
 {
     protected $realLocales;
     protected $cmsTypes;
@@ -55,7 +55,7 @@ abstract class BaseAdmin extends Admin
         if (!empty($this->cmsTypes)) {
             return $this->cmsTypes;
         }
-
+        
         $container = $this->getConfigurationPool()->getContainer();
         $types = $container->getParameter('alpixel_cms.content_types');
         $this->cmsTypes = $types;

@@ -1,6 +1,6 @@
 {% set contentTypes = admin.getContentTypes() %}
 {% for key,contentType in contentTypes %}
-    {% if key == object.type and contentType.admin.hasRoute('edit') %}
+    {% if key == object.type and contentType.admin.hasRoute('edit') and contentType.admin.isGranted('EDIT') %}
         <a class="btn btn-sm btn-default edit_link" href="{{ contentType.admin.generateObjectUrl('edit', object) }}">
             <i class="glyphicon glyphicon-pencil"></i> Modifier
         </a>
