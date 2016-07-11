@@ -55,7 +55,7 @@ abstract class BaseAdmin extends AbstractAdmin
         if (!empty($this->cmsTypes)) {
             return $this->cmsTypes;
         }
-        
+
         $container = $this->getConfigurationPool()->getContainer();
         $types = $container->getParameter('alpixel_cms.content_types');
         $this->cmsTypes = $types;
