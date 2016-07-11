@@ -1,6 +1,6 @@
 {% set contentTypes = admin.getContentTypes() %}
 {% for key,contentType in contentTypes %}
-    {% if key == object.type and contentType.admin.hasRoute('delete') %}
+    {% if key == object.type and contentType.admin.hasRoute('delete') and contentType.admin.isGranted('DELETE') %}
     <a class="btn btn-sm btn-danger edit_link" href="{{ contentType.admin.generateObjectUrl('delete', object) }}">
         <i class="glyphicon glyphicon-trash"></i> Supprimer
     </a>

@@ -2,9 +2,9 @@
 
 namespace Alpixel\Bundle\CMSBundle\Admin;
 
-use Sonata\AdminBundle\Admin\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
 
-abstract class BaseAdmin extends Admin
+abstract class BaseAdmin extends AbstractAdmin
 {
     protected $realLocales;
     protected $cmsTypes;
