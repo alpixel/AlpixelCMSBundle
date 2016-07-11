@@ -6,6 +6,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class AlpixelCMSBundle extends Bundle
 {
-    const VERSION = '1.1.4';
-    const VERSION_ID = 10104;
+    const VERSION = '1.1.6';
+    const VERSION_ID = 10106;
 }
