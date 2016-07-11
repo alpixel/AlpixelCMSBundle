@@ -6,6 +6,7 @@ use Alpixel\Bundle\CMSBundle\Entity\Node;
 use Alpixel\Bundle\CMSBundle\Entity\TranslatableInterface;
 use Alpixel\Bundle\CMSBundle\Helper\BlockHelper;
 use Alpixel\Bundle\CMSBundle\Helper\CMSHelper;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class TranslationExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
@@ -44,6 +45,7 @@ class TranslationExtension extends \Twig_Extension implements \Twig_Extension_Gl
         return [
             new \Twig_SimpleFilter('iso_to_country_name', [$this, 'isoToCountryName']),
             new \Twig_SimpleFilter('is_translatable', [$this, 'isTranslatable']),
+            new \Twig_SimpleFilter('translation_source_property', [$this, 'translationSourceProperty']),
         ];
     }
 
@@ -64,5 +66,22 @@ class TranslationExtension extends \Twig_Extension implements \Twig_Extension_Gl
         } else {
             return $this->blockHelper->blockGetTranslation($object, $locale);
         }
+    }
+
+    public function translationSourceProperty($object, $property)
+    {
+        if (!is_object($object)) {
+            throw new \InvalidArgumentException('The "$object" parameter must be an object.');
+        } elseif (empty($property) || !is_string($property)) {
+            throw new \InvalidArgumentException('The "$property" parameter must be a non empty string.');
+        }
+
+        if ($this->isTranslatable($object) && $object->getTranslationSource() !== null) {
+            $object = $object->getTranslationSource();
+        }
+
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        return $accessor->getValue($object, $property);
     }
 }

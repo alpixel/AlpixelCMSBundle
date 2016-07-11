@@ -16,6 +16,10 @@ class AdminNodeController extends Controller
         $node = $entityManager->getRepository('AlpixelCMSBundle:Node')
             ->find($request->get('id'));
 
+        // Forward edit action from EN page set locale for admin to EN instead default locale
+        $defaultLocale = $this->getParameter('default_locale');
+        $request->setLocale($defaultLocale);
+
         if ($node !== null) {
             $instanceAdmin = $this->admin->getConfigurationPool()->getAdminByClass(get_class($node));
             if ($instanceAdmin !== null) {
@@ -122,11 +126,18 @@ class AdminNodeController extends Controller
             $url = $this->admin->generateUrl('create', $params);
         }
 
+        if (null !== $request->get('btn_update_and_see_page') || null !== $request->get('btn_create_and_see_page')) {
+            return $this->redirectToRoute('alpixel_cms', [
+                'slug'    => $object->getSlug(),
+                '_locale' => $object->getLocale(),
+            ]);
+        }
+
         if ($this->getRestMethod() === 'DELETE') {
             $backToNodeList = true;
         }
 
-        if (!$url) {
+        if (!$url && !$backToNodeList) {
             foreach (['edit', 'show'] as $route) {
                 if ($this->admin->hasRoute($route) && $this->admin->isGranted(strtoupper($route), $object)) {
                     $url = $this->admin->generateObjectUrl($route, $object);

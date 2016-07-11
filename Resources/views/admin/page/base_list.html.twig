@@ -1,0 +1,32 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends base_template %}
+
+{% block actions %}
+    {% include 'SonataAdminBundle:CRUD:action_buttons.html.twig' %}
+    {% include 'AlpixelCMSBundle:admin/Button:command_button.html.twig' %}
+{% endblock %}
+
+{% block tab_menu %}{{ knp_menu_render(admin.sidemenu(action), {'currentClass' : 'active', 'template': sonata_admin.adminPool.getTemplate('tab_menu_template')}, 'twig') }}{% endblock %}
+
+{% block list_table %}
+    <div class="col-xs-12 col-md-12">
+
+    </div>
+{% endblock %}
+
+{% block list_filters_actions %}
+{% endblock %}
+
+{% block list_filters %}
+
+{% endblock %}
