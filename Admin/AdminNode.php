@@ -186,8 +186,6 @@ class AdminNode extends BaseAdmin
                 if (count($nodesId) > 0) {
                     $orX->add($queryBuilder->expr()->in($queryBuilder->getRootAlias() . '.id', $nodesId));
                 }
-
-                $orX->add($queryBuilder->expr()->in($queryBuilder->getRootAlias().'.id', $nodesId));
             }
             $queryBuilder->andWhere($orX);
 
