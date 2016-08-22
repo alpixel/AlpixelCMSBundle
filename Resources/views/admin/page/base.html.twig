@@ -44,7 +44,7 @@
                 <div class="modal-body">
                     {% if cmsContentType is defined %}
                         {% for type in admin.getCMSTypes() %}
-                            {% if type.admin is defined and type.admin.hasRoute('create') %}
+                            {% if type.admin is defined and type.admin.hasRoute('create') and type.admin.isGranted('CREATE') %}
                                 <p>
                                     <strong>{{ type.title }}</strong>
                                     <br>
