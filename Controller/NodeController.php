@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\Router;
 
 class NodeController extends Controller
 {
@@ -17,13 +19,13 @@ class NodeController extends Controller
      * @param Request $request
      * @param         $slug
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function dispatchAction(Request $request, $slug)
     {
         $entityManager = $this->get('doctrine.orm.entity_manager');
         $node = $entityManager->getRepository('AlpixelCMSBundle:Node')
-                              ->findOneBySlugAndLocale($slug, $request->getLocale());
+            ->findOneBySlugAndLocale($slug, $request->getLocale());
 
         if ($node !== null) {
             if ($node->getPublished() === false && !$this->isAuthenticated($request)) {
@@ -35,20 +37,48 @@ class NodeController extends Controller
 
             try {
                 if (count($controller) !== 2) {
-                    throw new \LogicException('The parameter controller must be a valid callable controller, like "My\Namespace\Controller\Class::method"');
+                    throw new \LogicException(
+                        'The parameter controller must be a valid callable controller, like "My\Namespace\Controller\Class::method"'
+                    );
                 } elseif (!class_exists($controller[0]) || !method_exists($controller[0], $controller[1])) {
-                    throw new \LogicException(sprintf(
-                        'Unable to find the "%s" controller or the method "%s" doesn\'t exist.',
-                        $controller[0],
-                        $controller[1]
-                    ));
+                    throw new \LogicException(
+                        sprintf(
+                            'Unable to find the "%s" controller or the method "%s" doesn\'t exist.',
+                            $controller[0],
+                            $controller[1]
+                        )
+                    );
                 }
 
-                return $this->forward($contentType['controller'], [
-                    '_route'        => $request->attributes->get('_route'),
-                    '_route_params' => $request->attributes->get('_route_params'),
-                    'object'        => $node,
-                ]);
+                /** Generating the alternate link for SEO */
+                $seoHelper = $this->get('sonata.seo.page.default');
+                $translatedPages = $entityManager->getRepository('AlpixelCMSBundle:Node')->findTranslations($node);
+
+                $router = $this->get('router');
+                foreach ($translatedPages as $translation) {
+                    if ($translation !== $node) {
+                        $seoHelper->addLangAlternate(
+                            $router->generate(
+                                "alpixel_cms",
+                                [
+                                    'slug'    => $translation->getSlug(),
+                                    '_locale' => $translation->getLocale(),
+                                ],
+                                Router::ABSOLUTE_URL
+                            ),
+                            $translation->getLocale()
+                        );
+                    }
+                }
+
+                return $this->forward(
+                    $contentType['controller'],
+                    [
+                        '_route'        => $request->attributes->get('_route'),
+                        '_route_params' => $request->attributes->get('_route_params'),
+                        'object'        => $node,
+                    ]
+                );
             } catch (\LogicException $e) {
                 if (!$this->container->get('kernel')->isDebug()) {
                     $logger = $this->get('logger');
@@ -60,16 +90,21 @@ class NodeController extends Controller
         } else {
             //Trying to find another node with this slug, in another language
             $node = $entityManager->getRepository('AlpixelCMSBundle:Node')
-                                  ->findOnePublishedBySlug($slug);
+                ->findOnePublishedBySlug($slug);
 
             if ($node !== null) {
                 $translation = $entityManager->getRepository('AlpixelCMSBundle:Node')
-                                             ->findTranslation($node, $request->getLocale());
+                    ->findTranslation($node, $request->getLocale());
                 if ($translation !== null) {
-                    return $this->redirect($this->generateUrl('alpixel_cms', [
-                        'slug'    => $translation->getSlug(),
-                        '_locale' => $translation->getLocale(),
-                    ]));
+                    return $this->redirect(
+                        $this->generateUrl(
+                            'alpixel_cms',
+                            [
+                                'slug'    => $translation->getSlug(),
+                                '_locale' => $translation->getLocale(),
+                            ]
+                        )
+                    );
                 }
             }
         }
@@ -92,13 +127,19 @@ class NodeController extends Controller
         $response->setMaxAge(900);
 
         if ($this->isAuthenticated($request)) {
-            $content = $this->renderView('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
-                'node' => $node,
-                'link' => $this->generateUrl('alpixel_admin_cms_node_forwardEdit', [
-                    'type' => $node->getType(),
-                    'id'   => $node->getId(),
-                ]),
-            ]);
+            $content = $this->renderView(
+                'AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig',
+                [
+                    'node' => $node,
+                    'link' => $this->generateUrl(
+                        'alpixel_admin_cms_node_forwardEdit',
+                        [
+                            'type' => $node->getType(),
+                            'id'   => $node->getId(),
+                        ]
+                    ),
+                ]
+            );
             $response->setContent($content);
         }
 
@@ -117,9 +158,12 @@ class NodeController extends Controller
         $response->setMaxAge(900);
 
         if ($this->isAuthenticated($request)) {
-            $content = $this->renderView('AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig', [
-                'link' => $link,
-            ]);
+            $content = $this->renderView(
+                'AlpixelCMSBundle:admin:blocks/admin_bar_page.html.twig',
+                [
+                    'link' => $link,
+                ]
+            );
             $response->setContent($content);
         }
 
@@ -139,7 +183,10 @@ class NodeController extends Controller
                     $token = unserialize($request->getSession()->get('_security_admin'));
                     $user = $token->getUser();
 
-                    return $canEdit === hash('sha256', 'can_edit'.$this->container->getParameter('secret').$user->getSalt());
+                    return $canEdit === hash(
+                        'sha256',
+                        'can_edit'.$this->container->getParameter('secret').$user->getSalt()
+                    );
                 } catch (ContextErrorException $e) {
                 }
             }
