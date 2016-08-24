@@ -56,19 +56,17 @@ class NodeController extends Controller
 
                 $router = $this->get('router');
                 foreach ($translatedPages as $translation) {
-                    if ($translation !== $node) {
-                        $seoHelper->addLangAlternate(
-                            $router->generate(
-                                "alpixel_cms",
-                                [
-                                    'slug'    => $translation->getSlug(),
-                                    '_locale' => $translation->getLocale(),
-                                ],
-                                Router::ABSOLUTE_URL
-                            ),
-                            $translation->getLocale()
-                        );
-                    }
+                    $seoHelper->addLangAlternate(
+                        $router->generate(
+                            "alpixel_cms",
+                            [
+                                'slug'    => $translation->getSlug(),
+                                '_locale' => $translation->getLocale(),
+                            ],
+                            Router::ABSOLUTE_URL
+                        ),
+                        $translation->getLocale()
+                    );
                 }
 
                 return $this->forward(
