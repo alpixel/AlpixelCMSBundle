@@ -1,4 +1,6 @@
 lunetics_locale:
+    strict_mode: false
+    strict_match: true
     allowed_locales: '%enabled_locales%'
     switcher:
         show_current_locale: true
