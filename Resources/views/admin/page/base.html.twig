@@ -2,37 +2,35 @@
 
 
 {% block sonata_page_content_nav %}
-    {% if _tab_menu is not empty or _actions is not empty %}
-        <nav class="navbar navbar-default" role="navigation">
-            {% block tab_menu_navbar_header %}
-                {% if _navbar_title is not empty %}
-                    <div class="navbar-header">
-                        <span class="navbar-brand">{{ _navbar_title|raw }}</span>
-                    </div>
-                {% endif %}
-            {% endblock %}
-            <div class="container-fluid">
-                <div class="navbar-left">
-                    {% if _tab_menu is not empty %}
-                        {{ _tab_menu|raw }}
-                    {% endif %}
+    <nav class="navbar navbar-default" role="navigation">
+        {% block tab_menu_navbar_header %}
+            {% if _navbar_title is not empty %}
+                <div class="navbar-header">
+                    <span class="navbar-brand">{{ _navbar_title|raw }}</span>
                 </div>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown sonata-actions">
-                        <a href="#" id="cms-content-type">
-                            <i class="fa fa-plus"></i>
-                            Ajouter une nouvelle page
-                        </a>
-                    </li>
-                </ul>
-
-                {% if _list_filters_actions is not empty %}
-                    {{ _list_filters_actions|raw }}
+            {% endif %}
+        {% endblock %}
+        <div class="container-fluid">
+            <div class="navbar-left">
+                {% if _tab_menu is not empty %}
+                    {{ _tab_menu|raw }}
                 {% endif %}
             </div>
-        </nav>
-    {% endif %}
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown sonata-actions">
+                    <a href="#" id="cms-content-type">
+                        <i class="fa fa-plus"></i>
+                        Ajouter une nouvelle page
+                    </a>
+                </li>
+            </ul>
+
+            {% if _list_filters_actions is not empty %}
+                {{ _list_filters_actions|raw }}
+            {% endif %}
+        </div>
+    </nav>
 
     <div id="cmsbundle-create-content-type-show" class="modal fade">
         <div class="modal-dialog">
