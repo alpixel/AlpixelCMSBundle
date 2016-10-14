@@ -101,7 +101,7 @@ class NodeController extends Controller
                                 'slug'    => $translation->getSlug(),
                                 '_locale' => $translation->getLocale(),
                             ]
-                        )
+                        ), 301
                     );
                 }
             }
