@@ -72,8 +72,16 @@ services:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.response' }
 
-    # Subscribers
+    alpixel_cms.listener.locale_choosing_listener:
+        class: Alpixel\Bundle\CMSBundle\Listener\LocaleChoosingListener
+        arguments:
+          - "%jms_i18n_routing.default_locale%"
+          - "%jms_i18n_routing.locales%"
+          - "@jms_i18n_routing.locale_resolver"
+        tags:
+            - { name: 'kernel.event_listener', event: 'kernel.exception', priority: 129 }
 
+    # Subscribers
     alpixel_cms.listener.doctrine.node_resolver_subscriber:
         class: Alpixel\Bundle\CMSBundle\Listener\CMSResolverSubscriber
         arguments:
