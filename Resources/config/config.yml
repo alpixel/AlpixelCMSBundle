@@ -50,9 +50,8 @@ twig:
     globals:
         base_url: '%url_production%'
         enabled_locales: '%enabled_locales%'
-    form:
-        resources:
-            - 'AlpixelCMSBundle:Form:fields.html.twig'
+    form_themes:
+        - 'AlpixelCMSBundle:Form:fields.html.twig'
     paths:
         - '%kernel.root_dir%/Resources/themes/%theme%/views/'
         - '%kernel.root_dir%/Resources/themes/admin/views/'
@@ -129,9 +128,6 @@ ivory_ck_editor:
             colors:         [ 'TextColor','BGColor' ]
             upload:         [ 'Uploader' ]
 
-presta_sitemap:
-    dumper_base_url: "%url_production%"
-
 stof_doctrine_extensions:
     default_locale: '%default_locale%'
     orm:
@@ -167,6 +163,9 @@ fos_user:
     db_driver: orm
     firewall_name: admin
     user_class: Alpixel\Bundle\UserBundle\Entity\Admin
+    from_email: 
+        address: "%default_mail%"
+        sender_name: "%default_mail%"
 
 sonata_admin:
     title: "Administration"
