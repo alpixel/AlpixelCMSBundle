@@ -4,6 +4,7 @@ namespace Alpixel\Bundle\CMSBundle\Admin;
 
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
 /**
  * @author Benjamin HUBERT <benjamin@alpixel.fr>
@@ -26,7 +27,7 @@ class BaseBlockEntityAdmin extends BaseAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('content', 'ckeditor', [
+            ->add('content',  CKEditorType::class, [
                 'label'       => 'Contenu',
                 'required'    => true,
                 'config_name' => 'admin',
