@@ -5,6 +5,7 @@ namespace Alpixel\Bundle\CMSBundle\Admin;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
 abstract class BaseNodeEntityAdmin extends BaseAdmin
 {
@@ -22,7 +23,7 @@ abstract class BaseNodeEntityAdmin extends BaseAdmin
                 'label'    => 'Titre',
                 'required' => true,
             ])
-            ->add('content', 'ckeditor', [
+            ->add('content', CKEditorType::class, [
                 'label'       => 'Contenu',
                 'required'    => false,
                 'config_name' => 'admin',
