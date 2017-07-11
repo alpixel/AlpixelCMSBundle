@@ -43,6 +43,7 @@ class BlockExtension extends \Twig_Extension
                 'is_safe'           => ['html'],
                 'needs_environment' => true,
             ]),
+            new \Twig_SimpleFunction('cms_block_object', [$this, 'getCMSBlockObject']),
         ];
     }
 
@@ -76,5 +77,14 @@ class BlockExtension extends \Twig_Extension
                 'block' => $block,
             ]);
         }
+    }
+
+    /**
+     * @param string $blockName
+     * @return \Alpixel\Bundle\CMSBundle\Entity\Block|null
+     */
+    public function getCMSBlockObject($blockName)
+    {
+        return $this->blockHelper->loadBlock($blockName);
     }
 }
