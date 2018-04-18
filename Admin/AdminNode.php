@@ -38,53 +38,71 @@ class AdminNode extends BaseAdmin
         $container = $this->getConfigurationPool()->getContainer();
         $entityManager = $container->get('doctrine.orm.default_entity_manager');
         $datagridMapper
-            ->add('locale', 'doctrine_orm_callback', [
-                'label'    => 'Langue',
-                'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
-                    if (!$value['value']) {
-                        return false;
-                    }
-                    $queryBuilder
-                        ->andWhere($alias.'.locale = :locale')
-                        ->setParameter('locale', $value['value']);
+            ->add(
+                'locale',
+                'doctrine_orm_callback',
+                [
+                    'label'    => 'Langue',
+                    'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
+                        if (!$value['value']) {
+                            return false;
+                        }
+                        $queryBuilder
+                            ->andWhere($alias.'.locale = :locale')
+                            ->setParameter('locale', $value['value']);
 
-                    return true;
-                },
-            ],
+                        return true;
+                    },
+                ],
                 'choice',
                 [
                     'choices' => $this->getRealLocales(),
-                ])
-            ->add('title', null, [
-                'label' => 'Page',
-            ])
-            ->add('published', null, [
-                'label' => 'Publié',
-            ])
-            ->add('node', 'doctrine_orm_callback', [
-                'label'    => 'Type de contenu',
-                'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) use ($entityManager) {
-                    if (!$value['value']) {
-                        return false;
-                    }
-                    // We can't query the type from the AlpixelCMSBundle:Node repository (InheritanceType) because of that
-                    // we try to get the repository in AppBundle with the value which is the class name of entity. :pig:
-                    try {
-                        $repository = $entityManager->getRepository(sprintf('AppBundle:%s', ucfirst($value['value'])));
-                    } catch (\Doctrine\Common\Persistence\Mapping\MappingException $e) {
-                        return false;
-                    }
-                    $data = $repository->findAll();
-                    if (empty($data)) {
-                        return false;
-                    }
-                    $queryBuilder
-                        ->andWhere($alias.'.id IN (:ids)')
-                        ->setParameter('ids', $data);
+                ]
+            )
+            ->add(
+                'title',
+                null,
+                [
+                    'label' => 'Page',
+                ]
+            )
+            ->add(
+                'published',
+                null,
+                [
+                    'label' => 'Publié',
+                ]
+            )
+            ->add(
+                'node',
+                'doctrine_orm_callback',
+                [
+                    'label'    => 'Type de contenu',
+                    'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) use ($entityManager) {
+                        if (!$value['value']) {
+                            return false;
+                        }
 
-                    return true;
-                },
-            ],
+                        try {
+                            $types = $this->getCMSTypes();
+                            if (array_key_exists($value['value'], $types)) {
+                                $className = $types[$value['value']]['class'];
+                                $repository = $entityManager->getRepository($className);
+                            }
+                        } catch (\Doctrine\Common\Persistence\Mapping\MappingException $e) {
+                            return false;
+                        }
+                        $data = $repository->findAll();
+                        if (empty($data)) {
+                            return false;
+                        }
+                        $queryBuilder
+                            ->andWhere($alias.'.id IN (:ids)')
+                            ->setParameter('ids', $data);
+
+                        return true;
+                    },
+                ],
                 'choice',
                 [
                     'choices' => $this->getCMSEntityTypes(),
@@ -101,32 +119,60 @@ class AdminNode extends BaseAdmin
     {
         $listMapper
             ->add('id')
-            ->add('locale', null, [
-                'label' => 'Langue',
-            ])
-            ->add('title', null, [
-                'label' => 'Page',
-            ])
-            ->add('type', null, [
-                'label'    => 'Type',
-                'template' => 'AlpixelCMSBundle:admin:fields/list__field_type.html.twig',
-            ])
-            ->add('dateCreated', null, [
-                'label' => 'Date de création',
-            ])
-            ->add('dateUpdated', null, [
-                'label' => 'Date d\'édition',
-            ])
-            ->add('published', null, [
-                'label' => 'Publié',
-            ])
-            ->add('_action', 'actions', [
-                'actions' => [
-                    'see'    => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_see.html.twig'],
-                    'edit'   => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_edit.html.twig'],
-                    'delete' => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_delete.html.twig'],
-                ],
-            ]);
+            ->add(
+                'locale',
+                null,
+                [
+                    'label' => 'Langue',
+                ]
+            )
+            ->add(
+                'title',
+                null,
+                [
+                    'label' => 'Page',
+                ]
+            )
+            ->add(
+                'type',
+                null,
+                [
+                    'label'    => 'Type',
+                    'template' => 'AlpixelCMSBundle:admin:fields/list__field_type.html.twig',
+                ]
+            )
+            ->add(
+                'dateCreated',
+                null,
+                [
+                    'label' => 'Date de création',
+                ]
+            )
+            ->add(
+                'dateUpdated',
+                null,
+                [
+                    'label' => 'Date d\'édition',
+                ]
+            )
+            ->add(
+                'published',
+                null,
+                [
+                    'label' => 'Publié',
+                ]
+            )
+            ->add(
+                '_action',
+                'actions',
+                [
+                    'actions' => [
+                        'see'    => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_see.html.twig'],
+                        'edit'   => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_edit.html.twig'],
+                        'delete' => ['template' => 'AlpixelCMSBundle:admin:fields/list__action_delete.html.twig'],
+                    ],
+                ]
+            );
     }
 
     public function buildBreadcrumbs($action, MenuItemInterface $menu = null)
@@ -137,11 +183,13 @@ class AdminNode extends BaseAdmin
 
         $menu = $this->menuFactory->createItem('root');
 
-        $menu = $menu->addChild('Dashboard',
+        $menu = $menu->addChild(
+            'Dashboard',
             ['uri' => $this->routeGenerator->generate('sonata_admin_dashboard')]
         );
 
-        $menu = $menu->addChild('Gestion des pages',
+        $menu = $menu->addChild(
+            'Gestion des pages',
             ['uri' => $this->routeGenerator->generate('alpixel_admin_cms_node_list')]
         );
 
@@ -182,9 +230,9 @@ class AdminNode extends BaseAdmin
                 foreach ($nodes as $node) {
                     $nodesId[] = $node->getId();
                 }
-                
+
                 if (count($nodesId) > 0) {
-                    $orX->add($queryBuilder->expr()->in($queryBuilder->getRootAlias() . '.id', $nodesId));
+                    $orX->add($queryBuilder->expr()->in($queryBuilder->getRootAlias().'.id', $nodesId));
                 }
             }
             $queryBuilder->andWhere($orX);
